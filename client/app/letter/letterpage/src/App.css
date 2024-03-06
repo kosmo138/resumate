@@ -1,0 +1,10 @@
+/* image 1 */
+body {
+  position: absolute;
+  width: 1920px;
+  height: 2244px;
+  left: 0px;
+  top: 0px;
+
+  background: url(image.png);
+}

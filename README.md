@@ -78,6 +78,7 @@ Docker 컨테이너로 필요 환경을 설치했으며
 5. `.env`, `application.yml`과 같은 환경 변수 파일에 별도로 저장하시기 바랍니다.
 6. **GitHub 서버에 민감 정보를 포함한 파일이 업로드되지 않도록 주의해 주시기 바랍니다.**
 7. 제외 파일은 다음 사진과 같이 파일 이름이 회색으로 표시됩니다.
+
 ![File tree - gitignore](docs/images/readme-01.jpg)
 
 ### 브랜치

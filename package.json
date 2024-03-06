@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "yarn": "^1.22.21"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.63"
+  }
+}

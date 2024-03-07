@@ -1,31 +1,29 @@
-export default function write() {
-  return <h1>write</h1>;
+import React from "react";
+import "./App.css";
+
+interface BoxProps {
+  text: string;
 }
-// 등록페이지
 
-// <이력서제목>
-// [인적사항]
-// -이름
-// -사진
-// -나이
-// -개인정보 수집 동의서
-// -성별
-// -주소
-// -이메일
-// -핸드폰번호
+const Box: React.FC<BoxProps> = ({ text }) => {
+  return (
+    <div className="box">
+      <p>{text}</p>
+    </div>
+  );
+};
 
-// [이력서 항목]
-// -경력
-// -학력
-// -희망연봉
-// -희망 지역
-// -희망 직무,직업
-// (직무전문분야 택2)
-// -포트폴리오
-// -나의 스킬
-// -어학
-// -자격증
-// -수상
-// -자기소개서
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <h1>자소서</h1>
+      <div className="box-container">
+        {[...Array(12).keys()].map((index) => (
+          <Box key={index} text={`자소서 ${index + 1}`} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-// 저장버튼
+export default App;

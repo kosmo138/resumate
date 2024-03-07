@@ -99,6 +99,21 @@ main: 사용자에게 배포 가능한 상태
 2. **본인의 브랜치에서 commit & push를 1일 1회 이상 진행해 주시기 바랍니다.**
 기능 구현 여부와 관계 없이 실시간 진행도를 파악하기 위한 목적입니다.
 
+### 책임 범위
+본인의 담당 기능에 관련된 모든 작업은 본인이 해야 합니다.
+
+* UML 다이어그램 (Usecase, Class, E-R) 작성 :arrow_right: Figma 이용
+* 프론트엔드 UI 목업 작성 :arrow_right: Figma 이용
+* 데이터베이스 구성
+* 프론트엔드 코드 구현
+* 백엔드 REST API 개발
+* 단위/통합 테스트
+* dev 브랜치에 기능 병합
+
+단, 다음의 작업은 통합적인 것으로 김수영이 합니다.
+* 초기의 공통적인 데이터베이스 설정 (사용자, 권한 설정 등)
+* UML 다이어그램 (Package) 작성
+
 ## Style Guide
 1. **Formatter를 꼭 사용해 주시기 바랍니다.**
 2. VS Code에서의 `Format Document` 단축키: `Alt + Shift + F`
@@ -110,6 +125,7 @@ main: 사용자에게 배포 가능한 상태
 * [Java 코딩 스타일 가이드](http://developer.gaeasoft.co.kr/development-guide/java-guide/java-coding-style-guide/)
 * Formatter: [Language Support for Java(TM) by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)
 * Eclipse 단축키: `Ctrl + Shift + F`
+
 ### Javascript
 * [코딩 스타일](https://ko.javascript.info/coding-style)
 * Formatter: [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
@@ -117,7 +133,7 @@ main: 사용자에게 배포 가능한 상태
 * [구글 Python 스타일 가이드](https://yosseulsin-job.github.io/Google-Python-Style-Guide-kor/#s1.1)
 * Formatter: [Black Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter)
 ### Git Commit
-* [[Git] Commit Message Convension (협업을 위한 git 커밋컨벤션)](https://velog.io/@msung99/Git-Commit-Message-Convension)
+* [[Git] Commit Message Convention (협업을 위한 git 커밋컨벤션)](https://velog.io/@msung99/Git-Commit-Message-Convension)
 ### 파일 및 폴더 이름
 * 영문 소문자와 숫자로만 구성한다.
 * 가능하면 짧게 구성한다(축약어 사용).
@@ -129,7 +145,15 @@ main: 사용자에게 배포 가능한 상태
 (Good) /analysis-project/01-test/01-result
 ```
 
-## Front-end
+## Frontend 작업 안내
+### CSS
+CSS 라이브러리로 Tailwind CSS를 기본 적용하였습니다.
+
+사용 방법은 아래 링크를 통해 Docs 참고 바랍니다.
+
+* Docs https://tailwindcss.com/docs/installation
+* Tailwind 연습 https://play.tailwindcss.com/
+
 ### MUI
 1. Google의 Material Design을 구현한 오픈소스 React 컴포넌트 라이브러리입니다.
 2. MUI를 이용하여 UI 요소를 간편하게 추가할 수 있습니다.
@@ -138,7 +162,15 @@ main: 사용자에게 배포 가능한 상태
     * [컴포넌트 목록](https://mui.com/components/)
     * [템플릿](https://mui.com/material-ui/getting-started/templates/)
 ### [Figma](https://www.figma.com/)
-1. 일관성 있는 UI 구현을 위해 Figma를 이용하여 선 디자인, 후 코딩 방식으로 진행해 주시기 바랍니다.
-2. 다음의 Figma 작업 파일에서 컴포넌트를 복사/붙여넣기 하셔서 UI 요소를 간단하게 추가할 수 있습니다.
+1. 일관성 있는 UI 구현을 위해 Figma를 이용하여 **선 디자인, 후 코딩** 방식으로 진행해 주시기 바랍니다.
+2. Discord에 공유한 Figma 파일 링크를 확인해 주세요.
+3. 다음의 Figma 작업 파일에서 컴포넌트를 복사/붙여넣기 하셔서 UI 요소를 간단하게 추가할 수 있습니다.
     * [Material UI for Figma (and MUI X)](https://www.figma.com/community/file/912837788133317724)
-3. Discord에 공유한 Figma 파일 링크를 확인해 주세요.
+
+## 참고 자료
+### https://github.com/jmadupalli/redy-blog
+1. (Front) Next.js + (Back) SpringBoot
+2. 로그인 및 글 작성/조회 기능이 구현된 블로그 프로젝트입니다.
+3. Resumate의 기본 CRUD 기능을 구현하는 데 있어서 좋은 예시가 될 것이라 생각합니다.
+4. 프로젝트의 구조와 파일 이름 등이 컨벤션을 준수합니다.
+5. 위 프로젝트를 참고하여 파일 및 디렉토리 생성을 진행해 주시기 바랍니다.

@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
-import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const noto_sans_kr = Noto_Sans_KR({ subsets: ["latin"] });
+import "@/styles/globals.css";
+
+const noto_sans_kr = Noto_Sans_KR({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Hello Next.js!",
@@ -16,7 +21,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={noto_sans_kr.className}>{children}</body>
+      <head />
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          noto_sans_kr.variable
+        )}
+      >
+        {children}
+      </body>
     </html>
   );
 }

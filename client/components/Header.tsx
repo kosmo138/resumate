@@ -1,5 +1,5 @@
-import Logo from "@/data/logo.svg";
 import Link from "next/link";
+import Logo from "@/data/logo.svg";
 import siteMetadata from "@/data/siteMetadata.json";
 
 export default function Header() {

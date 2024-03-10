@@ -553,3 +553,4 @@ database/mysql
 nginx/modules
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,eclipse,jupyternotebooks,java,gradle,nextjs,node,python
+client/components/ui/button.tsx

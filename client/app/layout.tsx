@@ -4,12 +4,10 @@ import Header from "@/components/Header";
 
 import "@/styles/globals.css";
 
-const noto_sans_kr = Noto_Sans_KR({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Hello Next.js!",
-  description: "Hello Next.js! with TypeScript, Tailwind CSS",
-};
+const noto_sans_kr = Noto_Sans_KR({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export default function RootLayout({
   children,
@@ -17,8 +15,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body className={noto_sans_kr.className}>{children}</body>
+    <html lang={siteMetadata.language} className={noto_sans_kr.variable}>
+      <head>
+        <title>{siteMetadata.title}</title>
+        <meta
+          charSet="UTF-8"
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+      </head>
+      <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

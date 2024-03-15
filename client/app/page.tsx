@@ -1,20 +1,13 @@
-import { Button } from "@/components/ui/button";
+import Hero from "@/components/pages/hero"
+import FeatureCards from "@/components/pages/feature-cards"
+import Features from "@/components/pages/features"
 
 export default function Home() {
   return (
-    <>
-      <header></header>
-      <main>
-        <div>
-          Hello from Next.js
-          <br />
-          This is index page!
-          <br />
-          한글 출력 테스트
-          <br />
-          <Button>로그인</Button>
-        </div>
-      </main>
-    </>
-  );
+    <main>
+      <Hero />
+      <FeatureCards />
+      <Features />
+    </main>
+  )
 }

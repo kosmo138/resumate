@@ -327,6 +327,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!client/lib/
 lib64/
 parts/
 sdist/
@@ -477,11 +478,6 @@ pyrightconfig.json
 
 ### VisualStudioCode ###
 .vscode
-# !.vscode/settings.json
-# !.vscode/tasks.json
-# !.vscode/launch.json
-# !.vscode/extensions.json
-# !.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/
@@ -549,7 +545,8 @@ gradle-app.setting
 
 ### Docker ###
 docker
-database/mysql
+
+### Nginx ###
 nginx/modules
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,eclipse,jupyternotebooks,java,gradle,nextjs,node,python

@@ -10,24 +10,20 @@ export default function Navigation() {
     <nav className={styles.nav}>
       <ul>
         <li>
-          <Link href="/User/ResumateMng">Resumate Mng</Link>
-          {path === "/User/ResumateMng" ? "📁" : ""}
+          <Link href="/User/resumate">이력서</Link>
+          {path === "/User/resumate" ? "📁" : ""}
         </li>
         <li>
-          <Link href="/User/Resume/Complete">Complete</Link>
-          {path === "/User/Resume/Complete" ? "📝" : ""}
+          <Link href="/User/editor">자소서</Link>
+          {path === "/User/editor" ? "🖋" : ""}
         </li>
         <li>
-          <Link href="/User/Resume/Edit">Edit</Link>
-          {path === "/User/Resume/Edit" ? "🖋" : ""}
+          <Link href="/User/community">커뮤니티</Link>
+          {path === "/User/community" ? "📝" : ""}
         </li>
         <li>
-          <Link href="/User/Resume/View">View</Link>
-          {path === "/User/Resume/View" ? "👓" : ""}
-        </li>
-        <li>
-          <Link href="/User/Resume/Write">Write</Link>
-          {path === "/User/Resume/Write" ? "📋" : ""}
+          <Link href="/User/help">도움말</Link>
+          {path === "/User/help" ? "👓" : ""}
         </li>
       </ul>
     </nav>

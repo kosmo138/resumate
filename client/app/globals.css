@@ -17,28 +17,25 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+/* 기타 스타일 정의 */
 .p {
   text-align: center;
-  color: black;
-}
-body {
-  color: rgb(var(--foreground-rgb));
-  background: #ededed;
 }
 .h1 {
   padding: 10px;
 }
 .resumateListBox {
   padding: 20px;
-  position: fixed; /* 화면에 고정 */
-  top: 40%; /* 화면 상단으로부터 50% 위치에 배치 */
-  left: 20%; /* 화면 좌측으로부터 50% 위치에 배치 */
-  transform: translate(-50%, -50%); /* 박스의 중심을 화면의 가운데로 이동 */
+  position: fixed;
+  top: 40%;
+  left: 20%;
+  transform: translate(-50%, -50%);
 }
-.원티드이력서소개 {
+.resumname {
   padding: 50px;
-  color: rgb(17, 101, 255);
-  position: fixed; /* 화면에 고정 */
-  top: 15%; /* 화면 상단으로부터 50% 위치에 배치 */
-  left: 0%; /* 화면 좌측으로부터 50% 위치에 배치 */
+  color: rgb(0, 0, 0);
+  position: fixed;
+  top: 15%;
+  left: 0%;
 }

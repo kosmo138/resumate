@@ -1,17 +1,5 @@
-SHOW DATABASES;
-/* 
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| mysql              |
-| performance_schema |
-| sys                |
-+--------------------+
-4 rows in set (0.00 sec)
- */
-
 /* 로컬에서 root 계정으로 접속 */
+SHOW DATABASES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '{MYSQL_ROOTPW}';
 CREATE DATABASE resumate;
 CREATE USER '{MYSQL_USERNAME}'@'%' IDENTIFIED BY '{MYSQL_PASSWORD}';

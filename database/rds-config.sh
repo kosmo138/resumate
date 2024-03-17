@@ -1,13 +1,14 @@
 #!/bin/bash
 
+# EC2에서 포트 포워딩 설정 -> TCP 3306 요청을 RDS MySQL 데이터베이스로 전달합니다
+
 # 참고 문서
 # https://hons.io/how-to-ufw-port-forward/
 
-# EC2에서 RDS에 접속하기 위해 실행한 명령어
-apt list mysql-client*
 apt install mysql-client-core-8.0
-mysql -V
 
+# MySQL 클라이언트 설치 이후 버전 확인
+mysql -V
 # mysql  Ver 8.0.36-0ubuntu0.22.04.1 for Linux on x86_64 ((Ubuntu))
 
 mysql -u root -h {MYSQL_ENDPOINT} -p
@@ -18,6 +19,8 @@ sudo -s
 ufw allow 3306
 ufw route allow proto tcp from any to {RDS_INSTANCE_IP} port 3306
 ufw status
+
+# 시작
 
 # Status: active
 
@@ -38,6 +41,8 @@ ufw status
 
 # 172.31.64.78 3306/tcp      ALLOW FWD   Anywhere
 
+# 끝
+
 vim /etc/default/ufw
 # DEFAULT_FORWARD_POLICY="ACCEPT"
 
@@ -48,25 +53,34 @@ vim /etc/ufw/sysctl.conf
 
 vim /etc/ufw/before.rules
 
+# 시작
+
 #   ufw-before-output
 #   ufw-before-forward
 #
 
+# 아래의 내용을 추가 (주석 해제)
 # NAT
 # *nat
 # :PREROUTING ACCEPT [0:0]
-
 # -A PREROUTING -i eth0 -p tcp --dport 3306 -j DNAT --to-destination 172.31.64.78:3306
 # -A PREROUTING -i eth1 -p tcp --dport 3306 -j DNAT --to-destination 172.31.64.78:3306
 # -A POSTROUTING -j MASQUERADE
 
+# 이하 내용은 기존과 동일
 # COMMIT
 
 # Don't delete these required lines, otherwise there will be errors
 
+# 끝
+
 ufw reload
 
 iptables -t nat -L -v
+
+# 정책 적용 확인
+
+# 시작
 
 # Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
 #  pkts bytes target     prot opt in     out     source               destination         
@@ -82,6 +96,8 @@ iptables -t nat -L -v
 # Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
 #  pkts bytes target     prot opt in     out     source               destination         
 #    14  1016 MASQUERADE  all  --  any    any     anywhere             anywhere
+
+# 끝
 
 reboot
 

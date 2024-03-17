@@ -10,8 +10,7 @@ const baseUrl = "https://resumate.site"
 export const siteConfig: SiteConfig = {
   name: "Resumate",
   author: "kosmo",
-  description:
-    "세상에서 자기소개서를 가장 편하게 쓰는 방법",
+  description: "세상에서 자기소개서를 가장 편하게 쓰는 방법",
   keywords: [
     "자기소개서",
     "이력서",
@@ -35,5 +34,5 @@ export const siteConfig: SiteConfig = {
 }
 
 export const contactConfig: ContactConfig = {
-  email: "janreynald.pangilinan@gmail.com",
+  email: "su02ga@outlook.com",
 }

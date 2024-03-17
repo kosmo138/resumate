@@ -35,36 +35,36 @@ const icons = {
   blank: () => {
     return <></>
   },
-  nextjs: () => {
+  featcard1: () => {
     return (
       <Image
-        src="next.svg"
+        src="featcard1.svg"
         className="dark:brightness-0 dark:invert-[1]"
         width={100}
         height={100}
-        alt="Card image"
+        alt="Card image 1"
       />
     )
   },
-  shadcnUi: () => {
+  featcard2: () => {
     return (
       <Image
-        src="shadcn-ui.svg"
+        src="featcard2.svg"
         className="dark:brightness-0 dark:invert-[1]"
         width={100}
         height={100}
-        alt="Card image"
+        alt="Card image 2"
       />
     )
   },
-  vercel: () => {
+  featcard3: () => {
     return (
       <Image
-        src="vercel.svg"
+        src="featcard3.svg"
         className="dark:brightness-0 dark:invert-[1]"
-        width={20}
-        height={20}
-        alt="Card image"
+        width={100}
+        height={100}
+        alt="Card image 3"
       />
     )
   },

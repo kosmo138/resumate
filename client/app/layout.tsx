@@ -9,7 +9,7 @@ import { settings } from "@/config/settings"
 const noto_sans_kr = Noto_Sans_KR({
   subsets: ["latin"],
   variable: "--font-sans",
-});
+})
 
 // metadata 객체의 속성들은 <head> 내부의 <meta> 태그로 변환됩니다.
 export const metadata = {
@@ -29,7 +29,7 @@ export const metadata = {
   creator: siteConfig.author,
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "ko_KR",
     url: siteConfig.url.base,
     title: siteConfig.name,
     description: siteConfig.description,
@@ -68,7 +68,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ko">
       <body
         className={`${noto_sans_kr.className} flex min-h-screen flex-col bg-background text-primary`}
       >

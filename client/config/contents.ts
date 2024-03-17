@@ -8,51 +8,51 @@ import { HeroHeader, ContentSection } from "@/types/contents"
  ==================== */
 
 export const heroHeader: HeroHeader = {
-  header: `Landing pages made easy`,
-  subheader: `Easy to setup. Customizable. Quick. Responsive.`,
+  header: `세상에서 가장 쉬운 자기소개서 작성`,
+  subheader: `최소의 이력서 정보 입력으로 3분만에 자기소개서를 완성할 수 있습니다`,
   image: `/hero-img.webp`,
 }
 
 export const featureCards: ContentSection = {
-  header: `Powered by`,
-  subheader: `What makes Next Landing possible`,
+  header: `어떤 내용을 쓸지 고민하지 마세요`,
+  subheader: `자기소개서의 모든 것, 레쥬메이트가 해결해 드립니다`,
   content: [
     {
-      text: `Next.js`,
-      subtext: `The React Framework`,
-      icon: "nextjs",
+      text: `경쟁력 있는 초안 작성`,
+      subtext: `기업 맞춤형 자기소개서를 작성합니다`,
+      icon: "featcard1",
     },
     {
-      text: `shadcn/ui`,
-      subtext: `Beautifully designed components`,
-      icon: "shadcnUi",
+      text: `고성능 AI`,
+      subtext: `“어떻게 쓰지?” 고민은 AI에게 맡겨 주세요`,
+      icon: "featcard2",
     },
     {
-      text: `Vercel`,
-      subtext: `Develop. Preview. Ship.`,
-      icon: "vercel",
+      text: `쉬운 조작법`,
+      subtext: `모든 메뉴를 한 번에 익힐 수 있습니다`,
+      icon: "featcard3",
     },
   ],
 }
 
 export const features: ContentSection = {
-  header: `Features`,
-  subheader: `Why use Next Landing?`,
-  image: `/features-img.webp`,
+  header: `기능 소개`,
+  subheader: `레쥬메이트의 주요 기능을 소개합니다`,
+  image: `https://fastly.picsum.photos/id/312/400/300.jpg?hmac=rheDmE3u5ebZsvOy_qXh_WcTr7FNRXcUOLtMnVlG7s0`,
   content: [
     {
-      text: `SEO Optimized`,
-      subtext: `Improved website visibility on search engines`,
+      text: `이력서와 지원 직무 입력`,
+      subtext: `자기소개서 작성에 필요한 최소의 정보입니다`,
       icon: "fileSearch",
     },
     {
-      text: `Highly Performant`,
-      subtext: `Fast loading times and smooth performance`,
+      text: `지원 회사 탐색`,
+      subtext: `AI가 내용의 우선순위를 판단하여 자소서를 작성합니다`,
       icon: "barChart",
     },
     {
-      text: `Easy Customizability`,
-      subtext: `Change your content and layout with little effort`,
+      text: `초안 수정`,
+      subtext: `초안을 직접 수정하지 않고 AI 명령으로 보완할 수 있습니다`,
       icon: "settings",
     },
   ],

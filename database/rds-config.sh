@@ -53,7 +53,7 @@ vim /etc/ufw/before.rules
 #
 
 # NAT
-*nat
+# *nat
 # :PREROUTING ACCEPT [0:0]
 
 # -A PREROUTING -i eth0 -p tcp --dport 3306 -j DNAT --to-destination 172.31.64.78:3306

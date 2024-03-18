@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { siteConfig } from "@/config/site"
-import { navLinks } from "@/lib/links"
+import { siteConfig } from "@/config/metadata"
+import { navLinks } from "@/config/navlinks"
 
 export default function Footer() {
   return (
@@ -22,15 +22,15 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-        <hr className="my-6 text-muted-foreground sm:mx-auto lg:my-8" />
+        <hr className="my-6 text-muted-foreground sm:mx-auto" />
         <span className="block text-sm text-muted-foreground sm:text-center">
           © {new Date().getFullYear()}{" "}
           <a
             target="_blank"
-            href="https://redpangilinan.live/"
+            href="https://github.com/kosmo138/resumate"
             className="hover:underline"
           >
-            Red Pangilinan
+            kosmo138
           </a>
           . All Rights Reserved.
         </span>

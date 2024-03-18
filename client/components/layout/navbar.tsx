@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ModeToggle } from "@/components/mode-toggle"
-import { siteConfig } from "@/config/site"
-import { navLinks } from "@/lib/links"
+import { siteConfig } from "@/config/metadata"
+import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
 import Image from "next/image"
 

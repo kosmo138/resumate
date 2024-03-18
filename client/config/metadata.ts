@@ -1,11 +1,11 @@
-import { SiteConfig, ContactConfig } from "@/types"
+import { SiteConfig } from "@/types"
 
 /* ====================
 [> WEBSITE CONFIG <]
 -- Fill the details about your website
  ==================== */
 
-const baseUrl = "https://resumate.site"
+export const baseUrl = "https://www.resumate.site"
 
 export const siteConfig: SiteConfig = {
   name: "Resumate",
@@ -31,8 +31,4 @@ export const siteConfig: SiteConfig = {
     author: "https://github.com/kosmo138",
   },
   ogImage: `${baseUrl}/og.jpg`,
-}
-
-export const contactConfig: ContactConfig = {
-  email: "su02ga@outlook.com",
 }

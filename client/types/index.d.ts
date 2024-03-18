@@ -1,24 +1,25 @@
 export type SiteConfig = {
-  name: string
-  author: string
-  description: string
-  keywords: Array<string>
-  url: {
-    base: string
+    name: string
     author: string
+    description: string
+    keywords: Array<string>
+    url: {
+      base: string
+      author: string
+    }
+    ogImage: string
   }
-  ogImage: string
-}
-
-export type Settings = {
-  themeToggleEnabled: boolean
-}
-
-export type Layout = {
-  heroHeader: string
-  featureCards: string
-  headers: {
+  
+  export type Settings = {
+    themeToggleEnabled: boolean
+  }
+  
+  export type Layout = {
+    heroHeader: string
     featureCards: string
-    features: string
+    headers: {
+      featureCards: string
+      features: string
+    }
   }
-}
+  

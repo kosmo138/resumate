@@ -4,7 +4,7 @@
 아이디어 기획, 일정 관리, 프로토타입 제작
 * dev
 * feat/database
-* feat/landing
+* feat/prototype
 ### 백소나 [@baeksona](https://github.com/baeksona)
 웹 스크랩, 자연어 처리
 * feat/web-scrap
@@ -137,7 +137,7 @@ Docker 컨테이너로 필요 환경을 설치했으며
 main: 사용자에게 배포 가능한 상태
 └── dev: 개별 기능 통합, 테스트 이후 main 병합
     ├── feat/database: 데이터베이스 구축
-    ├── feat/landing: 랜딩 페이지
+    ├── feat/prototype: 프로토타입 (프론트엔드 -> 백엔드)
     ├── feat/login-session: 세션 방식 로그인 (이메일)
     ├── feat/login-token: 토큰 방식 로그인 (카카오 OAuth)
     ├── feat/resume-1: 이력서 기능 - 1

@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ModeToggle } from "@/components/mode-toggle"
-import { siteConfig } from "@/config/site"
-import { navLinks } from "@/lib/links"
+import { siteConfig } from "@/config/metadata"
+import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
 import Image from "next/image"
 
-export default function Navbar() {  
+export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
 
   const handleClick = async () => {
@@ -25,15 +25,26 @@ export default function Navbar() {
 
   return (
     <header className="select-none">
-      <nav className="mx-auto justify-between px-4 md:flex md:items-center md:px-8 lg:max-w-7xl">
+      <nav className="mx-auto justify-between px-4 py-5 md:flex md:items-center md:px-8 lg:max-w-7xl">
         <div>
-          <div className="flex items-center justify-between py-3 md:block md:py-5">
-            <Link href="/" onClick={handleClick}>
-              <Image src="/logo.svg" alt="Resumate Logo" width={40} height={40} />
-              <h1 className="text-2xl font-bold duration-200 lg:hover:scale-[1.10]">
-                {siteConfig.name}
-              </h1>
+          <div className="flex flex-row justify-between">
+            <Link
+              href="/"
+              onClick={handleClick}
+              className="flex flex-row items-center gap-2 text-primary duration-200 lg:hover:scale-[1.10]"
+            >
+              <Image
+                src="/logo.svg"
+                alt="Resumate Logo"
+                width={40}
+                height={40}
+              />
+              <h1 className="text-2xl font-bold">{siteConfig.name}</h1>
             </Link>
+            {/**
+             * 모바일 페이지를 고려한 반응형 디자인
+             * @see https://tailwindcss.com/docs/responsive-design
+             */}
             <div className="flex gap-1 md:hidden">
               <button
                 className="rounded-md p-2 text-primary outline-none focus:border focus:border-primary"
@@ -75,12 +86,14 @@ export default function Navbar() {
           </div>
         </div>
         <div>
+          {/* 모바일: 햄버거 메뉴 클릭 시 메뉴 표시 */}
           <div
             className={`absolute left-0 right-0 z-10 m-auto justify-self-center rounded-md border bg-background p-4 md:static md:mt-0 md:block md:border-none md:p-0 ${
               navbar ? "block" : "hidden"
             }`}
             style={{ width: "100%", maxWidth: "20rem" }}
           >
+            {/* navLinks = 이력서, 자소서, 채용정보 */}
             <ul className="flex flex-col items-center space-y-4 text-primary opacity-60 md:flex-row md:space-x-6 md:space-y-0">
               {navLinks.map((link) => (
                 <li key={link.route}>

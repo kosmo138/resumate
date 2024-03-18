@@ -30,5 +30,5 @@ export const siteConfig: SiteConfig = {
     base: baseUrl,
     author: "https://github.com/kosmo138",
   },
-  ogImage: `${baseUrl}/og.jpg`,
+  ogImage: `${baseUrl}/og.png`,
 }

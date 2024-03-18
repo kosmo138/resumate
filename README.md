@@ -221,7 +221,7 @@ CSS 라이브러리로 Tailwind CSS를 적용하였습니다.
 ![Git Branch](docs/readme/git-00.png)
 
 1. 위의 사진과 같이 특정 브랜치에 저장한 commit을 다른 브랜치에 반영하고 싶다면 브랜치를 병합(Merge)해야 합니다.
-2. resumate 리포지토리의 브랜치 구성은 위에 설명하였습니다.
+2. resumate 리포지토리의 브랜치 구성은 위에서 설명하였습니다. [이동하기: #브랜치](/#브랜치)
 
 ### Merge
 1. 부모 브랜치 -> 자식 브랜치 병합은 자유롭게 할 수 있지만, 자식 브랜치 -> 부모 브랜치 병합은 Pull Request를 등록한 후 부모 브랜치 관리자의 검토 및 승인을 통해 진행할 수 있습니다.
@@ -232,39 +232,52 @@ CSS 라이브러리로 Tailwind CSS를 적용하였습니다.
 자식 브랜치: feat/resume-2
 ```
 3. 현재 브랜치는 `feat/resume-2` 브랜치가 선택되어 있습니다. Source Control 메뉴에서 다음과 같이 선택합니다.
+
 ![VS code source control](docs/readme/git-01.png)
 
 4. `dev` 브랜치를 선택합니다. 이는 `dev` 브랜치의 변경 내용을 `feat/resume-2` 브랜치로 병합하겠다는 의미입니다.
+
 ![Select branch](docs/readme/git-02.png)
 
 5. `dev` 브랜치의 커밋에서 수정된 파일 중에서 `feat/resume-2` 브랜치의 커밋에도 수정된 것이 있다면 충돌이 발생합니다. 다음과 같이 Merge Changes 아래에 수동 처리가 필요한 파일이 표시됩니다.
+
 ![Merge conflicts 1](docs/readme/git-03.png)
+
 ![Merge conflicts 2](docs/readme/git-04.png)
 
 6. Merge Changes 아래 첫 번째 파일인 `package.json`을 클릭합니다. 이후 `Resolve in Merge Editor`를 클릭합니다.
+
 ![Resolve conflicts 1](docs/readme/git-05.png)
 
 7. 상단 좌/우측에 표시되는 2가지를 비교하여 둘 중 선택할 변경 내용을 `Ctrl + A` -> `Ctrl + C` -> `Ctrl + V` 합니다.
+
 ![Resolve conflicts 2](docs/readme/git-06.png)
 
 8. 완료, 종료합니다.
+
 ![Resolve conflicts 3](docs/readme/git-07.png)
+
 ![Resolve conflicts 4](docs/readme/git-08.png)
 
 9. 이후 남아 있는 파일에 대해서도 같은 작업을 반복합니다. 다음과 같이 자식 브랜치에서 본인이 직접 작성한 코드가 있을 수도 있습니다. 저도 그래서 코드의 전체 부분을 주의 깊게 읽고 선택합니다.
+
 ![Resolve conflicts 5](docs/readme/git-09.png)
 
 10. 충돌을 모두 해결하면 다음과 같이 Commit 버튼이 다시 활성화됩니다. 그대로 Commit & Push 진행합니다.
+
 ![Commit available](docs/readme/git-10.png)
 
 11. GitHub 레포지토리 페이지 접속 시 다음과 같이 방금 push되었다고 표시되면 성공입니다.
+
 ![Push complete](docs/readme/git-11.png)
 
 ### Pull Request
 1. 다음과 같이 부모 브랜치보다 자식 브랜치가 앞선 상태라면, Pull Request를 등록할 수 있습니다.
+
 ![Pull Request](docs/readme/git-12.png)
 
 2. 제목과 내용은 Commit 메시지 작성과 비슷하게 입력하시면 됩니다. `Create pull request`를 눌러 PR을 등록하시면 제가 확인 후에 dev 또는 main 브랜치에 반영해 드립니다.
+
 ![Pull Request](docs/readme/git-13.png)
 
 ## 참고 자료

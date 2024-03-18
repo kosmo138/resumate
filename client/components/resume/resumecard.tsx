@@ -2,10 +2,10 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export default function ResumeCard({
   title,
-  date,
+  updatedAt
 }: {
-  title: string
-  date: string
+  title?: string
+  updatedAt?: string
 }) {
   return (
     <Card>
@@ -13,7 +13,7 @@ export default function ResumeCard({
         <h3>{title}</h3>
       </CardContent>
       <CardFooter>
-        <p>{date}</p>
+        <p>{updatedAt}</p>
       </CardFooter>
     </Card>
   )

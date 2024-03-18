@@ -10,10 +10,6 @@ export type SiteConfig = {
   ogImage: string
 }
 
-export type ContactConfig = {
-  email: string
-}
-
 export type Settings = {
   themeToggleEnabled: boolean
 }

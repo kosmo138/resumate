@@ -1,5 +1,5 @@
 import HeadingText from "@/components/heading-text"
-import { features } from "@/config/contents"
+import { features } from "@/config/landing-content"
 import { Icons } from "@/components/icons"
 
 export default function Features() {

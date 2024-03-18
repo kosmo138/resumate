@@ -1,5 +1,5 @@
 import "./globals.css"
-import { siteConfig } from "@/config/site"
+import { siteConfig } from "@/config/metadata"
 import { Noto_Sans_KR } from "next/font/google"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"

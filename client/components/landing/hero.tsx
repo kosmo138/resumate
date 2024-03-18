@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { heroHeader } from "@/config/contents"
+import { heroHeader } from "@/config/landing-content"
 
 /* Hero Section */
 /* 랜딩 페이지에서 Logo와 Menu 바로 아래에 바로 보이는 섹션 */

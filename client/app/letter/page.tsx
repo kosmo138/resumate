@@ -1,8 +1,10 @@
 import HeadingText from "@/components/heading-text"
-import ResumeCard from "@/components/resume/resumecard"
+import LetterCard from "@/components/letter/lettercard"
+import { LetterHead } from "@/types/letter"
+import Link from "next/link"
 
-export default function ResumeList() {
-  const resumeData = [
+export default function LetterSelector() {
+  const letterList: Array<LetterHead> = [
     {
       id: 1,
       title: "첫 번째 자기소개서",
@@ -29,13 +31,11 @@ export default function ResumeList() {
       <HeadingText subtext="수정할 자기소개서를 선택해 주세요">
         자기소개서
       </HeadingText>
-      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {resumeData.map((resume) => (
-          <ResumeCard
-            key={resume.id}
-            title={resume.title}
-            updatedAt={resume.updatedAt}
-          />
+      <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {letterList.map((letterHead, index) => (
+          <Link href={`/letter/${letterHead.id}`} key={index}>
+            <LetterCard letterHead={letterHead} />
+          </Link>
         ))}
       </div>
     </main>

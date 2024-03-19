@@ -7,9 +7,13 @@ import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
 import Image from "next/image"
+import { LoginDialog } from "@/components/auth/login"
+import { MemberMenu } from "../auth/membermenu"
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
+  /* true: 드롭다운 메뉴, false: 로그인 버튼 */
+  const loginFlag = true
 
   const handleClick = async () => {
     setNavbar(false)
@@ -35,6 +39,7 @@ export default function Navbar() {
             >
               <Image
                 src="/logo.svg"
+                className="dark:brightness-0 dark:invert-[1]"
                 alt="Resumate Logo"
                 width={40}
                 height={40}
@@ -110,7 +115,10 @@ export default function Navbar() {
           </div>
         </div>
         {settings.themeToggleEnabled && (
-          <div className="hidden md:block">
+          <div className="hidden space-x-4 md:block">
+            {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
+            {loginFlag && <MemberMenu />}
+            {!loginFlag && <LoginDialog />}
             <ModeToggle />
           </div>
         )}

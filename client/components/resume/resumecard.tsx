@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export default function ResumeCard({
   title,
-  updatedAt
+  updatedAt,
 }: {
   title?: string
   updatedAt?: string

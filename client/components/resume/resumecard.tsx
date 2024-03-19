@@ -1,19 +1,14 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { ResumeHead } from "@/types/resume"
 
-export default function ResumeCard({
-  title,
-  updatedAt
-}: {
-  title?: string
-  updatedAt?: string
-}) {
+export default function ResumeCard({resumeHead}: {resumeHead: ResumeHead}) {
   return (
     <Card>
       <CardContent>
-        <h3>{title}</h3>
+        <h3>{resumeHead.title}</h3>
       </CardContent>
       <CardFooter>
-        <p>{updatedAt}</p>
+        <p>{resumeHead.updatedAt}</p>
       </CardFooter>
     </Card>
   )

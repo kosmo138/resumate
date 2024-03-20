@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export function ResumeInputWideForm({
   title,
@@ -12,11 +12,7 @@ export function ResumeInputWideForm({
       <div className="mb-5">
         <label className="mr-5 flex-shrink-0 text-2xl font-bold">{title}</label>
       </div>
-      <Input
-        type="text"
-        placeholder={content}
-        className="w-full h-40 whitespace-normal"
-      />
+      <Textarea placeholder={content} className="pt-12 my-5 ml-10 h-40" />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
@@ -23,47 +22,36 @@ export function DoubleForm({
   };
 
   return (
-    <div className="w-full my-3">
-      <div>
+    <div className="grid grid-cols-10 w-full my-3">
+      {/* 왼쪽 열 */}
+      <div className="col-span-7">
         <div className="mb-5">
-          <label className="mr-5 mb-1 text-2xl font-bold">{title}</label>
+          <label className="mb-1 text-2xl font-bold">{title}</label>
         </div>
-        <div>
-          <div className="flex items-center">
-            <span className="mr-5 flex-shrink-0">{contentdate}</span>
-            <Input type="text" placeholder={period} className="mr-10" />
-            <Input type="text" placeholder={contents} />
-          </div>
-        </div>
-      </div>
-
-      {[...Array(formCount - 1)].map((_, index) => (
-        <div key={index} className="flex items-center mt-4">
-          <div className="w-4/5 my-3">
-            <div className="flex items-center">
-              <span className="mr-5 flex-shrink-0">{contentdate}</span>
-              <Input
-                type="text"
-                placeholder={period}
-                className="w-full mr-10"
-              />{" "}
-              {/* 인풋 박스의 너비를 100%로 설정 */}
-              <Input
-                type="text"
-                placeholder={contents}
-                className="w-full"
-              />{" "}
-              {/* 인풋 박스의 너비를 100%로 설정 */}
+        {[...Array(formCount)].map((_, index) => (
+          <div key={index} className="flex mt-4 ml-5">
+            <div className="my-3 w-full">
+              <div className="flex items-center">
+                <span className="mr-5 flex-shrink-0">{contentdate}</span>
+                <Input
+                  type="text"
+                  placeholder={period}
+                  className="w-1/4 mr-5"
+                />
+                <Input type="text" placeholder={contents} className="w-full" />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-
-      <img
-        src="/plus-button.svg"
-        onClick={handleAddForm}
-        className="mt-4"
-      ></img>
+        ))}
+      </div>
+      {/* 오른쪽 열 */}
+      <div className="col-span-3 flex flex-col justify-end items-start ml-3">
+        <img
+          src="/plus-button.svg"
+          onClick={handleAddForm}
+          className="mt-4 cursor-pointer"
+        />
+      </div>
     </div>
   );
 }

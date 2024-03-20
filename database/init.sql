@@ -27,3 +27,5 @@ INSERT INTO resume (member_id, title) VALUES (1, '테스트 이력서 제목');
 
 SELECT * FROM member;
 SELECT * FROM resume;
+
+DESCRIBE member;

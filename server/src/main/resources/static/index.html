@@ -6,36 +6,57 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Index Page</title>
+    <title>Login Test</title>
+    <style>
+      h1 {
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      input {
+        margin: 10px 0;
+        padding: 10px;
+        width: 300px;
+      }
+      button {
+        margin: 10px 0;
+        padding: 10px;
+        width: 300px;
+      }
+    </style>
   </head>
 
   <body>
-    <h1>Index Page</h1>
-    <input type="text" id="email" placeholder="이메일" />
-    <input type="password" id="password" placeholder="비밀번호" />
-    <button id="login">로그인</button>
+    <h1>Login Test</h1>
+    <form id="loginForm">
+      <input type="text" id="email" placeholder="이메일" />
+      <input type="password" id="password" placeholder="비밀번호" />
+      <button id="login" type="submit">로그인</button>
+    </form>
     <script>
-      document.querySelectorAll("#login")[0].addEventListener("click", () => {
-        const email = document.querySelectorAll("#email")[0].value;
-        const password = document.querySelectorAll("#password")[0].value;
-        fetch("/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: {
-            email: email,
-            password: password,
-          },
-        })
-          .then((data) => {
-            if (data.result === "success") {
-              console.log(data.message);
+      document
+        .querySelectorAll("#loginForm")[0]
+        .addEventListener("submit", () => {
+          event.preventDefault();
+          const email = document.querySelectorAll("#email")[0].value;
+          const password = document.querySelectorAll("#password")[0].value;
+          fetch("/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          }).then((data) => {
+            if (data.status === 200) {
+              alert("로그인 성공");
             } else {
-              console.log("로그인 실패");
+              alert("로그인 실패");
             }
           });
-      });
+        });
     </script>
   </body>
 </html>

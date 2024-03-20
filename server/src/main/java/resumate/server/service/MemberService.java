@@ -2,8 +2,8 @@ package resumate.server.service;
 
 import org.springframework.stereotype.Service;
 
-import resumate.server.dto.MemberDTO;
 import resumate.server.mybatis.MybatisMapper;
+
 
 @Service
 public class MemberService {
@@ -14,9 +14,6 @@ public class MemberService {
     }
 
     public String getCreatedAt(String email, String password) {
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setEmail(email);
-        memberDTO.setPassword(password);
-        return mybatisMapper.getCreatedAt(memberDTO).toString();
+        return mybatisMapper.getCreatedAt(email, password).toString();
     }
 }

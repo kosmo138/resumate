@@ -7,7 +7,7 @@
   <!-- parameterType: 파라미터의 자료형 -->
   <!-- resultType: 결과의 자료형 -->
 
-  <select id="getCreatedAt" parameterType="resumate.server.dto.MemberDTO" resultType="java.util.Date">
+  <select id="getCreatedAt" parameterType="java.lang.String" resultType="java.util.Date">
     SELECT created_at FROM member
     WHERE email = #{email} AND password = #{password}
   </select>

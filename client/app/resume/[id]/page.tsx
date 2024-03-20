@@ -8,6 +8,7 @@ import SaveButton from "@/components/resume/button";
 import { ResumeInputForm } from "@/components/resume/resume-form";
 import { DoubleForm } from "@/components/resume/double-form";
 import { ResumeTextarea } from "@/components/resume/resume-textarea";
+import { ResumeInputWideForm } from "@/components/resume/resume-wideform";
 
 export default async function ResumeEditor(id: string) {
   /* GET 요청에 대한 응답이 없으면 404 오류 페이지를 표시합니다 */
@@ -43,7 +44,7 @@ export default async function ResumeEditor(id: string) {
         contents="출신 학교를 입력해 주세요."
         count={2}
       />
-      <ResumeInputForm title="스킬" content="개발 스택, 디자인 툴 어쩌구" />
+      <ResumeInputWideForm title="스킬" content="개발 스택, 디자인 툴 어쩌구" />
       <DoubleForm
         title="수상 및 기타"
         contentdate="수상날짜"
@@ -51,7 +52,10 @@ export default async function ResumeEditor(id: string) {
         contents="활동명"
         count={2}
       />
-      <ResumeInputForm title="외국어" content="외국어 자격증을 보유한 경우" />
+      <ResumeInputWideForm
+        title="외국어"
+        content="외국어 자격증을 보유한 경우"
+      />
       <SaveButton />
     </main>
   );

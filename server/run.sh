@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./gradlew bootRun
+./mvnw spring-boot:run

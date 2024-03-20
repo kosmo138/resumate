@@ -4,29 +4,30 @@ import { ResumeBody } from "@/types/resume";
 import { notFound } from "next/navigation";
 import HeadingText from "@/components/heading-text";
 import ResumeForm from "@/components/resume/resumeform";
-import HeadingText from "@/components/heading-text";
 import SaveButton from "@/components/resume/button";
-import { ResumeForm } from "@/components/resume/resume-form";
+import { ResumeInputForm } from "@/components/resume/resume-form";
 import { DoubleForm } from "@/components/resume/double-form";
 import { ResumeTextarea } from "@/components/resume/resume-textarea";
 
 export default async function ResumeEditor(id: string) {
   /* GET 요청에 대한 응답이 없으면 404 오류 페이지를 표시합니다 */
-  const response = await fetch(`${baseUrl}/api/resume/${id}`)
+  /*const response = await fetch(`${baseUrl}/api/resume/${id}`)
     .then((res) => res.json())
     .catch(() => notFound());
   const resumeBody: ResumeBody = response.parse();
+  */
   return (
     <main className="container flex flex-col items-center py-8">
       <HeadingText subtext="자기소개서 생성에 필요한 최소의 정보를 입력해 주세요.">
         이력서
       </HeadingText>
+      {/*     <ResumeForm resume={resumeBody} /> */}
       <div
         data-orientation="horizontal"
         role="none"
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
-      <ResumeForm title="제목" content="제목을 입력해주세요." />
+      <ResumeInputForm title="제목" content="제목을 입력해주세요." />
       <DoubleForm
         title="경력"
         contentdate="기간"
@@ -42,7 +43,7 @@ export default async function ResumeEditor(id: string) {
         contents="출신 학교를 입력해 주세요."
         count={2}
       />
-      <ResumeForm title="스킬" content="개발 스택, 디자인 툴 어쩌구" />
+      <ResumeInputForm title="스킬" content="개발 스택, 디자인 툴 어쩌구" />
       <DoubleForm
         title="수상 및 기타"
         contentdate="수상날짜"
@@ -50,7 +51,7 @@ export default async function ResumeEditor(id: string) {
         contents="활동명"
         count={2}
       />
-      <ResumeForm title="외국어" content="외국어 자격증을 보유한 경우" />
+      <ResumeInputForm title="외국어" content="외국어 자격증을 보유한 경우" />
       <SaveButton />
     </main>
   );

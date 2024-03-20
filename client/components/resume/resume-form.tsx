@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 
-export function ResumeForm({
+export function ResumeInputForm({
   title,
   content,
 }: {

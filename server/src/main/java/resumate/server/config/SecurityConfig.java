@@ -1,4 +1,4 @@
-package resumate.server.config;
+/* package resumate.server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,9 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * @see https://docs.spring.io/spring-security/reference/servlet/architecture.html#servlet-security-filters
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -21,4 +18,4 @@ public class SecurityConfig {
             .anyRequest().authenticated());
         return http.build();
     }
-}
+} */

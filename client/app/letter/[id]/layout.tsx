@@ -1,4 +1,6 @@
 import HeadingText from "@/components/heading-text"
+import React from "react"
+import Link from "next/link"
 
 export default function ResumeLayout() {
   return (

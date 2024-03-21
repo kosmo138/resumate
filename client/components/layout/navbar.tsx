@@ -7,13 +7,28 @@ import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
 import Image from "next/image"
-import { LoginDialog } from "@/components/auth/login"
+import  LoginDialog  from "@/components/auth/login"
 import { MemberMenu } from "../auth/membermenu"
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
+  const [loginFlag, setLoginFlag] = useState<boolean>(false)
   /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const loginFlag = true
+  // const loginFlag = false
+  
+  const handleLogin = () => {
+    if (loginFlag) {
+      //로그아웃 API호출
+      setLoginFlag(false);
+    } else {
+      //로그인 API호출
+      setLoginFlag(true);
+    }
+  };
+
+  // const handleLogout = () => {
+  //   setLoginFlag(false);
+  // };
 
   const handleClick = async () => {
     setNavbar(false)
@@ -117,8 +132,8 @@ export default function Navbar() {
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
             {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
-            {loginFlag && <MemberMenu />}
-            {!loginFlag && <LoginDialog />}
+            {loginFlag && <MemberMenu onLogout={handleLogin} />}
+            {!loginFlag && <LoginDialog onLogin={handleLogin} />}
             <ModeToggle />
           </div>
         )}

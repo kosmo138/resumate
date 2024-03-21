@@ -1,12 +1,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- namespace : Java 인터페이스 경로 -->
 <mapper namespace="resumate.server.mybatis.MybatisMapper">
-  <!-- id: 메서드 이름 -->
-  <!-- parameterType: 파라미터의 자료형 -->
-  <!-- resultType: 결과의 자료형 -->
-
   <select id="getCreatedAt" parameterType="java.lang.String" resultType="java.util.Date">
     SELECT created_at FROM member
     WHERE email = #{email} AND password = #{password}

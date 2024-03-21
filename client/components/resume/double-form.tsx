@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function DoubleForm({
   title,
@@ -26,7 +29,7 @@ export function DoubleForm({
       {/* 왼쪽 열 */}
       <div className="col-span-7">
         <div className="mb-5">
-          <label className="mb-1 text-2xl font-bold">{title}</label>
+          <Label className="mb-1 text-2xl font-bold">{title}</Label>
         </div>
         {[...Array(formCount)].map((_, index) => (
           <div key={index} className="flex mt-4 ml-5">

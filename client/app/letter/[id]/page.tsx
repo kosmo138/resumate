@@ -1,3 +1,4 @@
+// import "./letter_page.css"
 import { baseUrl } from "@/config/metadata"
 import { LetterBody } from "@/types/letter"
 import { notFound } from "next/navigation"

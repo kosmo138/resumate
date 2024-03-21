@@ -11,7 +11,11 @@ import { Button } from "@/components/ui/button"
 
 import { FiUser, FiKey, FiXCircle, FiLogOut } from "react-icons/fi";
 
-export function MemberMenu() {
+interface MemberMenuProps{
+  onLogout: ()=> void;
+}
+
+export function MemberMenu({onLogout}:MemberMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +38,7 @@ export function MemberMenu() {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <FiLogOut className="mr-2 h-4 w-4" />
-            <span>로그아웃</span>
+            <span onClick={onLogout}>로그아웃</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

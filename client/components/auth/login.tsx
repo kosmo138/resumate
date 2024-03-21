@@ -10,7 +10,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function LoginDialog() {
+interface LoginDialogProps{
+  onLogin: ()=> void;
+}
+
+function LoginDialog({onLogin}:LoginDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -43,9 +47,11 @@ export function LoginDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">로그인</Button>
+          <Button type="submit" onClick={onLogin}>로그인</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
+
+export default LoginDialog;

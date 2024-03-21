@@ -16,3 +16,9 @@ spring:
 
 mybatis:
   mapper-locations: classpath:*.xml
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+      

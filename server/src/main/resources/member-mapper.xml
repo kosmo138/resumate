@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="resumate.server.mybatis.MemberMapper">
+  <select id="getCreatedAt" parameterType="resumate.server.dto.Member" resultType="java.util.Date">
+    SELECT created_at FROM member
+    WHERE email = #{email} AND password = #{password}
+  </select>
+  <insert id="insertMember" parameterType="resumate.server.dto.Member">
+    INSERT INTO member (email, password) VALUES (#{email}, #{password})
+  </insert>
+  <update id="updateMember" parameterType="resumate.server.dto.Member">
+    UPDATE member SET password = #{password} WHERE email = #{email}
+  </update>
+  <delete id="deleteMember" parameterType="resumate.server.dto.Member">
+    DELETE FROM member WHERE email = #{email} AND password = #{password}
+  </delete>
+</mapper>

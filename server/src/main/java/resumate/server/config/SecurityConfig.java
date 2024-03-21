@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -15,18 +16,26 @@ import org.springframework.security.web.SecurityFilterChain;
  * 
  * @see https://velog.io/@woohobi/Spring-security-csrf란
  * @see https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#disable-csrf
+ * @see https://hou27.tistory.com/entry/Spring-Boot-Spring-Security-적용하기-암호화
  */
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    // 비밀번호 단방향 암호화
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // 경로별 권한 설정
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"))
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/api/resume/*", "/api/letter/*").hasRole("USER")
-                        .requestMatchers("/", "/api/login", "/index.html").permitAll()
+                        .requestMatchers("/api/member", "/api/login").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

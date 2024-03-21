@@ -1,4 +1,3 @@
-"use client";
 import { baseUrl } from "@/config/metadata";
 import { ResumeBody } from "@/types/resume";
 import { notFound } from "next/navigation";

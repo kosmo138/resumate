@@ -33,7 +33,7 @@ export default function LetterSelector() {
       </HeadingText>
       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {letterList.map((letterHead, index) => (
-          <Link href={`/api/letter/${letterHead.id}`} key={index}>
+          <Link href={`/letter/${letterHead.id}`} key={index}>
             <LetterCard letterHead={letterHead} />
           </Link>
         ))}

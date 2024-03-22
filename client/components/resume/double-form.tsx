@@ -25,12 +25,14 @@ export function DoubleForm({
   };
 
   return (
+    /* 추가버튼 디자인을 위해 세로로 2분할 하는 그리드 생성 */
     <div className="grid grid-cols-10 w-full my-3">
       {/* 왼쪽 열 */}
       <div className="col-span-7">
         <div className="mb-5">
           <Label className="mb-1 text-2xl font-bold">{title}</Label>
         </div>
+        {/* 항목 추가 함수 */}
         {[...Array(formCount)].map((_, index) => (
           <div key={index} className="flex mt-4 ml-5">
             <div className="my-3 w-full">

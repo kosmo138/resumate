@@ -12,11 +12,13 @@ import {
 import React, { useState } from "react";
 
 export default function SaveButton() {
+  //dialog 상태 관리
   const [isOpen, setIsOpen] = useState(false);
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
 
+  // dialog 이벤트 핸들러
   const handleClick = () => {
     alert("저장 버튼이 클릭되었습니다.");
   };
@@ -30,7 +32,7 @@ export default function SaveButton() {
               취소
             </Button>
           </DialogTrigger>
-
+          {/* dialog 열렸을시 내용 */}
           {isOpen && (
             <DialogContent>
               <DialogClose onClick={closeDialog} />

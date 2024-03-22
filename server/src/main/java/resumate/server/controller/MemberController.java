@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import resumate.server.service.MemberService;
+import resumate.server.config.JsonBuilder;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,22 +27,19 @@ public class MemberController {
      * @see https://ahndding.tistory.com/9
      */
     private final MemberService memberService;
+    private final JsonBuilder jsonBuilder;
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> checkCreatedAt(@RequestBody Map<String, String> request) {
+    public ResponseEntity<String> loginHandler(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
 
-        if (email == null || password == null) {
-            return ResponseEntity.badRequest().body("{\"message\": \"Email and password are required.\"}");
-        }
-
-        String createdAt = memberService.getCreatedAt(email, password);
-
-        if (createdAt != null) {
-            return ResponseEntity.ok().body("{\"createdAt\": \"" + createdAt + "\"}");
+        if (memberService.checkAuth(email, password)) {
+            String responseJson = jsonBuilder.put("status", "success").put("email", email).build();
+            return ResponseEntity.ok().body(responseJson);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Authentication failed\"}");
+            String responseJson = jsonBuilder.put("status", "fail").build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         }
     }
 
@@ -50,13 +48,17 @@ public class MemberController {
         String email = request.get("email");
         String password = request.get("password");
 
-        if (email == null || password == null) {
-            return ResponseEntity.badRequest().body("{\"message\": \"Email and password are required.\"}");
+        if (!memberService.checkNull(email, password)) {
+            String responseJson = jsonBuilder.put("status", "fail").put("message", "Email and password are required.")
+                    .build();
+            return ResponseEntity.badRequest().body(responseJson);
+        } else if (memberService.checkMemberPass(email, password) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("{\"message\": \"Member already exists: " + email + "\"}");
+        } else {
+            memberService.insertMember(email, password);
+            return ResponseEntity.ok().body("{\"message\": \"Member created: " + email + "\"}");
         }
-
-        memberService.insertMember(email, password);
-
-        return ResponseEntity.ok().body("{\"message\": \"Member created: " + email + "\"}");
     }
 
     @PatchMapping(value = "/member", consumes = "application/json", produces = "application/json")
@@ -65,8 +67,8 @@ public class MemberController {
         String password = request.get("password");
         String password2 = request.get("password2");
 
-        if (email == null || password == null || password2 == null) {
-            return ResponseEntity.badRequest().body("{\"message\": \"Password Cannot be empty.\"}");
+        if (checkAuth(email, password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Authentication failed\"}");
         }
         String message = memberService.updateMember(email, password, password2);
         if (message == null) {

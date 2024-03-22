@@ -2,23 +2,18 @@ package resumate.server.service;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import resumate.server.dto.Member;
 import resumate.server.mybatis.MemberMapper;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    /* 인터페이스는 생성자가 없으므로 Autowired를 통한 의존성 주입을 하지 않는다. */
+    private final BCryptPasswordEncoder passwordEncoder;
     private final MemberMapper memberMapper;
-
-    public MemberService(MemberMapper memberMapper) {
-        this.memberMapper = memberMapper;
-    }
 
     public String getCreatedAt(String email, String password) {
         Member member = new Member();

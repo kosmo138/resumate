@@ -1,29 +1,34 @@
 "use client"
+
 import { useState } from "react"
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { ResumeHead } from "@/types/resume"
 
-export default function ResumeCopyCard({
-  title,
-  updatedAt,
-}: {
-  title?: string
-  updatedAt?: string
-}) {
-  const [resumeList, setResumeList] = useState<ResumeHead[]>([
-    // 기존 이력서 리스트 데이터
-  ])
-
-  const handleCloneResume = () => {
-    // 현재 클릭한 이력서의 정보를 가져와서 새로운 이력서 생성
-    const clickedResume = {
-      id: resumeList.length + 1,
-      title: `복제된 이력서 - ${title}`,
-      updatedAt: new Date().toISOString(),
-    }
-
-    // 이력서 리스트에 새로운 이력서 추가
-    setResumeList([...resumeList, clickedResume])
+export default function CardComponent({ ResumecardList }) {
+  const [cards, setCards] = useState(ResumecardList)
+  let card = ResumecardList
+  const setCard2 = (card2: object) => {
+    card = card2
   }
-  return handleCloneResume
+
+  const handleCloneCard = (id) => {
+    const cardToClone = cards.find((card) => card.id === id) // 누른 버튼에 대응하는 카드를 찾습니다.
+    if (cardToClone) {
+      const clonedCard = { ...cardToClone, id: cards.length + 1 } // 새로운 id를 부여하여 복제된 카드를 생성합니다.
+      setCards([...cards, clonedCard]) // 복제된 카드를 기존 카드 리스트에 추가합니다.
+    }
+  }
+
+  return (
+    <div>
+      {cards.map((Resumecard) => (
+        <div key={card.id}>
+          <h3>{card.title}</h3>
+          <p>{card.content}</p>
+          <button onClick={() => handleCloneCard(card.id)}>
+            복제하기
+          </button>{" "}
+          {/* 버튼 클릭 시 handleCloneCard 함수 호출 */}
+        </div>
+      ))}
+    </div>
+  )
 }

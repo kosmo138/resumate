@@ -41,6 +41,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Form } from "@/components/ui/form";
 
 export default function Test() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,6 +58,13 @@ export default function Test() {
 
   const handleChange = (event: any) => {
     setValue(event.target.value);
+  };
+  // useForm 훅을 사용하여 폼 초기화
+  const methods = useForm();
+
+  // 제출 핸들러
+  const onSubmit = (data) => {
+    console.log("입력된 정보:", data); // 입력된 정보를 콘솔에 출력
   };
 
   return (
@@ -171,7 +179,7 @@ export default function Test() {
         <Label htmlFor="example-input" className="text-primary">
           Name:
         </Label>
-        <input id="example-input" type="text" className="input" />
+        <Input id="example-input" type="text" className="input" />
       </div>
       <div>
         <Textarea
@@ -180,6 +188,12 @@ export default function Test() {
           rows={4}
           className="textarea"
         />
+      </div>
+      <div>
+        <Form>
+          <Input type="text" name="firstName"></Input>
+          <Input type="text" name="lastName"></Input>
+        </Form>
       </div>
     </div>
   );

@@ -1,50 +1,19 @@
 # 사람인 API 요청 예제 코드
 
-```java
-package kr.co.saramin.oapi;
+URL url = new URL(urlStr);
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+// URL 연결 (웹페이지 URL 연결.)
 
-/**
- * 사람인 채용공고 API 샘플
- */
-public class Sample {
+conn = (HttpURLConnection)url.openConnection();
 
-    public static void main(String[] args) {
-        String accessKey = "accessKey"; // 발급받은 accessKey";
+// 요청 방식 선택 (GET, POST)
 
-        try {
-            String text = URLEncoder.encode("", "UTF-8");
-            String apiURL = "https://oapi.saramin.co.kr/job-search?access-key="+accessKey+"&keyword="+ text;
+conn.setRequestMethod("GET");
 
-            URL url = new URL(apiURL);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("Accept", "application/json");
+// 서버 Response Data를 JSON 형식의 타입으로 요청.
 
-            int responseCode = con.getResponseCode();
-            BufferedReader br;
+conn.setRequestProperty("Accept", "application/json");
 
-            if(responseCode==200) { // 정상 호출
-                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            } else {  // 에러 발생
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-            }
+int responseCode = conn.getResponseCode();
 
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            br.close();
-            System.out.println(response.toString());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-}
-```
+//사람인 API 요청 헤더 예제

@@ -11,16 +11,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import resumate.server.service.MemberService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberController {
+    /**
+     * RequiredArgsConstructor
+     * 초기화되지 않은 final 필드에 대한 생성자를 Lombok이 생성하여 의존성 주입
+     * Autowired를 이용한 필드 의존성 주입보다 생성자 주입이 권장됨
+     * 
+     * @see https://ahndding.tistory.com/9
+     */
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> checkCreatedAt(@RequestBody Map<String, String> request) {
@@ -64,7 +69,7 @@ public class MemberController {
             return ResponseEntity.badRequest().body("{\"message\": \"Password Cannot be empty.\"}");
         }
         String message = memberService.updateMember(email, password, password2);
-        if(message == null) {
+        if (message == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Authentication failed\"}");
         }
         return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");

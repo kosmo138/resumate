@@ -1,9 +1,8 @@
+"use client"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import ResumeButton from "./resumebutton"
 import Link from "next/link"
-import handleCloneResume from "./copyresume"
-import ResumeCopyCard from "./copyresume"
-import { format } from "date-fns"
+import ResumeButton from "./resumebutton"
+import Image from "next/image"
 
 import {
   DropdownMenu,
@@ -20,58 +19,44 @@ export default function ResumeCard({
   updatedAt?: string
 }) {
   // 클릭 이벤트 처리 함수
-  const onClick = () => {
+  const handleClick = () => {
     // 클릭 시 할 일을 여기에 작성
-    console.log("버튼이 클릭되었습니다.")
+    alert("버튼이 클릭되었습니다.")
   }
 
   return (
     <Card>
-      <div className="md-0 flex">
-        <CardContent>
-          <div className="mt-10 text-left text-lg font-bold ">
-            <h3>{title}</h3>
+      <CardContent>
+        <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <input type="text" id="ResumeTitle" name="title" />
+          {title}
+        </div>
+      </CardContent>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <div className="icons-end">
+            <Image src="/set.svg" alt="바퀴" width={30} height={30} />
           </div>
-        </CardContent>
-        <div className=" flex justify-end ">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className=" margin-left: auto flex justify-end">
-                <img src="/set.svg" alt="바퀴" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <div className="font-bold">
-                <Link href={`/edit-title`} passHref>
-                  <DropdownMenuItem>제목변경</DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem onClick={handleCloneResume}>
-                  복제하기
-                </DropdownMenuItem>
+        </DropdownMenuTrigger>
 
-                <Link href={`download`} passHref>
-                  <DropdownMenuItem>다운로드</DropdownMenuItem>
-                </Link>
-                <div className="text-red-500">
-                  <Link href={`/delete`} passHref>
-                    <DropdownMenuItem>삭제</DropdownMenuItem>
-                  </Link>
-                </div>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-      <CardFooter>
-        <div className="flex items-end justify-end p-1">
-          <p>{updatedAt}</p>
-
-          <Link href="/letter">
-            <div className="flex items-end justify-end pr-2">
-              <ResumeButton />
+        <DropdownMenuContent>
+          <div className="font-bold">
+            <DropdownMenuItem>제목변경</DropdownMenuItem>
+            <DropdownMenuItem>복제하기</DropdownMenuItem>
+            <DropdownMenuItem>다운로드</DropdownMenuItem>
+            <div className="text-red-500">
+              <DropdownMenuItem>삭제</DropdownMenuItem>
             </div>
-          </Link>
-        </div>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <CardFooter>
+        <p>{updatedAt}</p>
+        <Link href="/letter">
+          <ResumeButton />
+        </Link>
       </CardFooter>
     </Card>
   )

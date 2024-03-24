@@ -21,8 +21,8 @@ import resumate.server.config.JsonBuilder;
 public class MemberController {
     /**
      * RequiredArgsConstructor
-     * 초기화되지 않은 final 필드에 대한 생성자를 Lombok이 생성하여 의존성 주입
-     * Autowired를 이용한 필드 의존성 주입보다 생성자 주입이 권장됨
+     * - 초기화되지 않은 final 필드에 대한 생성자를 Lombok이 생성하여 의존성 주입
+     * - Autowired를 이용한 필드 의존성 주입보다 생성자 주입이 권장됨
      * 
      * @see https://ahndding.tistory.com/9
      */
@@ -34,11 +34,18 @@ public class MemberController {
         String email = request.get("email");
         String password = request.get("password");
 
-        if (memberService.checkAuth(email, password)) {
-            String responseJson = jsonBuilder.put("status", "success").put("email", email).build();
+        if (memberService.checkMemberPass(email, password)) {
+            String responseJson = jsonBuilder
+                    .put("status", "success")
+                    .put("message", "로그인에 성공했습니다.")
+                    .put("email", email)
+                    .build();
             return ResponseEntity.ok().body(responseJson);
         } else {
-            String responseJson = jsonBuilder.put("status", "fail").build();
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "이메일과 비밀번호를 확인해주세요.")
+                    .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         }
     }
@@ -48,16 +55,18 @@ public class MemberController {
         String email = request.get("email");
         String password = request.get("password");
 
-        if (!memberService.checkNull(email, password)) {
-            String responseJson = jsonBuilder.put("status", "fail").put("message", "Email and password are required.")
+        if (memberService.insertMember(email, password)) {
+            String responseJson = jsonBuilder
+                    .put("status", "success")
+                    .put("message", "계정이 생성되었습니다.")
                     .build();
-            return ResponseEntity.badRequest().body(responseJson);
-        } else if (memberService.checkMemberPass(email, password) != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"message\": \"Member already exists: " + email + "\"}");
+            return ResponseEntity.ok().body(responseJson);
         } else {
-            memberService.insertMember(email, password);
-            return ResponseEntity.ok().body("{\"message\": \"Member created: " + email + "\"}");
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "이메일과 비밀번호를 확인해주세요.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
         }
     }
 
@@ -67,14 +76,19 @@ public class MemberController {
         String password = request.get("password");
         String password2 = request.get("password2");
 
-        if (checkAuth(email, password)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Authentication failed\"}");
+        if (memberService.updateMember(email, password, password2)) {
+            String responseJson = jsonBuilder
+                    .put("status", "success")
+                    .put("message", "비밀번호가 변경되었습니다.")
+                    .build();
+            return ResponseEntity.ok().body(responseJson);
+        } else {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "비밀번호를 확인해 주세요.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
         }
-        String message = memberService.updateMember(email, password, password2);
-        if (message == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Authentication failed\"}");
-        }
-        return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");
     }
 
     @DeleteMapping(value = "/member", consumes = "application/json", produces = "application/json")
@@ -82,12 +96,19 @@ public class MemberController {
         String email = request.get("email");
         String password = request.get("password");
 
-        if (password == null) {
-            return ResponseEntity.badRequest().body("{\"message\": \"Password is required.\"}");
+        if (memberService.deleteMember(email, password)) {
+            String responseJson = jsonBuilder
+                    .put("status", "success")
+                    .put("message", "계정이 삭제되었습니다.")
+                    .put("email", email)
+                    .build();
+            return ResponseEntity.ok().body(responseJson);
+        } else {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "이메일과 비밀번호를 확인해주세요.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         }
-
-        memberService.deleteMember(email, password);
-
-        return ResponseEntity.ok().body("{\"message\": \"Member deleted: " + email + "\"}");
     }
 }

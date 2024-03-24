@@ -1,9 +1,14 @@
 package resumate.server.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-@Data
+@RequiredArgsConstructor
+@Getter
+@Setter
 public class Member {
     private String email;
     private String password;
+    private String password2;
 }

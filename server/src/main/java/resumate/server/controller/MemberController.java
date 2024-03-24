@@ -1,7 +1,5 @@
 package resumate.server.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import resumate.server.service.MemberService;
 import resumate.server.config.JsonBuilder;
+import resumate.server.dto.Member;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +30,9 @@ public class MemberController {
     private final JsonBuilder jsonBuilder;
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> loginHandler(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
+    public ResponseEntity<String> loginHandler(@RequestBody Member member, HttpSession session) {
+        String email = member.getEmail();
+        String password = member.getPassword();
 
         if (memberService.checkMemberPass(email, password)) {
             String responseJson = jsonBuilder
@@ -51,9 +51,9 @@ public class MemberController {
     }
 
     @PostMapping(value = "/member", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> insertMember(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
+    public ResponseEntity<String> insertMember(@RequestBody Member member) {
+        String email = member.getEmail();
+        String password = member.getPassword();
 
         if (memberService.insertMember(email, password)) {
             String responseJson = jsonBuilder
@@ -71,10 +71,10 @@ public class MemberController {
     }
 
     @PatchMapping(value = "/member", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> updateMember(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
-        String password2 = request.get("password2");
+    public ResponseEntity<String> updateMember(@RequestBody Member member) {
+        String email = member.getEmail();
+        String password = member.getPassword();
+        String password2 = member.getPassword2();
 
         if (memberService.updateMember(email, password, password2)) {
             String responseJson = jsonBuilder
@@ -92,9 +92,9 @@ public class MemberController {
     }
 
     @DeleteMapping(value = "/member", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> deleteMember(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String password = request.get("password");
+    public ResponseEntity<String> deleteMember(@RequestBody Member member) {
+        String email = member.getEmail();
+        String password = member.getPassword();
 
         if (memberService.deleteMember(email, password)) {
             String responseJson = jsonBuilder

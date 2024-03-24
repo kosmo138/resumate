@@ -1,15 +1,17 @@
 package resumate.server.config;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JsonBuilder {
-    private HashMap<String, Object> jsonObject;
+    private Map<String, Object> jsonObject;
 
+    // LinkedHashMap을 사용하여 데이터의 삽입 순서를 보장
     public JsonBuilder() {
-        jsonObject = new HashMap<>();
+        jsonObject = new LinkedHashMap<>();
     }
 
     public JsonBuilder put(String key, Object value) {
@@ -32,6 +34,8 @@ public class JsonBuilder {
         }
         builder.delete(builder.length() - 2, builder.length());
         builder.append("}");
-        return builder.toString();
+        final String str = builder.toString();
+        jsonObject.clear();
+        return str;
     }
 }

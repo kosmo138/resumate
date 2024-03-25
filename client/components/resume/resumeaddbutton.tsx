@@ -37,7 +37,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
     <>
       <Card>
         <CardContent>
-          <div className="text-center text-lg font-bold">
+          <div className="mb-8 mt-8 text-center text-lg font-bold">
             <button onClick={handleClick}>
               <img src="/add.svg" alt="add" />
             </button>

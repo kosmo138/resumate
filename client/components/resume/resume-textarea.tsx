@@ -2,9 +2,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 export function ResumeTextarea({ content }: { content: string }) {
   return (
-    <Textarea
-      placeholder={content}
-      className="my-5 ml-10 h-40 text-left pt-7"
-    />
+    <div className="justify-start w-full my-3">
+      <Textarea placeholder={content} className="pt-7 my-5 ml-10 h-40" />
+    </div>
   );
 }

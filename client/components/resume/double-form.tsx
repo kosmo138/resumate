@@ -35,16 +35,10 @@ export function DoubleForm({
         {/* 항목 추가 함수 */}
         {[...Array(formCount)].map((_, index) => (
           <div key={index} className="flex mt-4 ml-5">
-            <div className="my-3 w-full">
-              <div className="flex items-center">
-                <span className="mr-5 flex-shrink-0">{contentdate}</span>
-                <Input
-                  type="text"
-                  placeholder={period}
-                  className="w-1/4 mr-5"
-                />
-                <Input type="text" placeholder={contents} className="w-full" />
-              </div>
+            <div className="flex items-center my-3 w-full">
+              <span className="mr-5 flex-shrink-0">{contentdate}</span>
+              <Input type="text" placeholder={period} className="w-1/4 mr-5" />
+              <Input type="text" placeholder={contents} className="w-full" />
             </div>
           </div>
         ))}
@@ -60,3 +54,5 @@ export function DoubleForm({
     </div>
   );
 }
+
+export default DoubleForm;

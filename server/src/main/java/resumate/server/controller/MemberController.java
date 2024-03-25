@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,16 +41,16 @@ public class MemberController {
         if (memberService.checkMemberPass(email, password)) {
             String access_token = jwtConfig.issueAccessToken(email);
 
-            Cookie cookie = new Cookie("access_token", access_token);
+            Cookie cookie = new Cookie("authorization", access_token);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
             String responseJson = jsonBuilder
-            .put("status", "success")
-            .put("message", "로그인에 성공했습니다.")
-            .put("email", email)
-            .build();
+                    .put("status", "success")
+                    .put("message", "로그인에 성공했습니다.")
+                    .put("email", email)
+                    .build();
             return ResponseEntity.ok().body(responseJson);
         } else {
             String responseJson = jsonBuilder
@@ -81,23 +82,35 @@ public class MemberController {
     }
 
     @PatchMapping(value = "/member", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> updateMember(@RequestBody Member member) {
-        String email = member.getEmail();
-        String password = member.getPassword();
-        String password2 = member.getPassword2();
-
-        if (memberService.updateMember(email, password, password2)) {
-            String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "비밀번호가 변경되었습니다.")
-                    .build();
-            return ResponseEntity.ok().body(responseJson);
-        } else {
+    public ResponseEntity<String> updateMember(@RequestHeader("authorization") String bearer,
+            @RequestBody Member member) {
+        String token = bearer.substring(7);
+        System.out.println("[Debug] token: " + token);
+        String email = jwtConfig.getEmailFromToken(token);
+        System.out.println("[Debug] email: " + email);
+        if (email == null) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "비밀번호를 확인해 주세요.")
+                    .put("message", "로그인이 필요합니다.")
                     .build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String password = member.getPassword();
+            String password2 = member.getPassword2();
+
+            if (memberService.updateMember(email, password, password2)) {
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "비밀번호가 변경되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            } else {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "비밀번호를 확인해 주세요.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -6,15 +6,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FaComment } from "react-icons/fa";
 
 export function LoginDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="align-middle">로그인</Button>
+        <Button variant="outline" className="align-middle">
+          로그인
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -23,7 +26,7 @@ export function LoginDialog() {
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">
-             이메일
+              이메일
             </Label>
             <Input
               id="email"
@@ -38,14 +41,42 @@ export function LoginDialog() {
             <Input
               id="password"
               placeholder="비밀번호를 입력해 주세요"
+              type="password"
               className="col-span-3"
             />
           </div>
         </div>
-        <DialogFooter>
-          <Button type="submit">로그인</Button>
-        </DialogFooter>
+        <div className="grid gap-4 py-4">
+          <Button className="center" type="submit">
+            로그인
+          </Button>
+        </div>
+        <span className="block text-sm text-muted-foreground sm:text-center">
+          <a target="singin" href="#">
+            회원가입{" "}
+          </a>
+          |
+          <a target="findid" href="#">
+            {" "}
+            ID 찾기{" "}
+          </a>
+          |
+          <a target="findpw" href="#">
+            {" "}
+            패스워드 찾기
+          </a>
+        </span>
+        <div className="grid gap-4 py-4">
+          <Button
+            type="button"
+            style={{ backgroundColor: "#f7e600", color: "black" }}
+            onClick={() => alert("아직 지원하지 않는 기능입니다")}
+          >
+            <FaComment style={{ marginRight: "5px" }} />
+            카카오 로그인
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-/* 로컬에서 root 계정으로 접속 */
+/* root 계정으로 접속 */
 SHOW DATABASES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '{MYSQL_ROOTPW}';
 CREATE DATABASE resumate;
@@ -6,7 +6,10 @@ CREATE USER '{MYSQL_USERNAME}'@'%' IDENTIFIED BY '{MYSQL_PASSWORD}';
 GRANT ALL PRIVILEGES ON resumate.* TO '{MYSQL_USERNAME}'@'%';
 FLUSH PRIVILEGES;
 
-/* 원격에서 kosmo 계정으로 접속 */
+/* kosmo 계정으로 접속 */
+DROP TABLE IF EXISTS member;
+DROP TABLE IF EXISTS resume;
+
 CREATE TABLE member (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(30) NOT NULL UNIQUE,
@@ -20,7 +23,7 @@ CREATE TABLE resume (
     title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (email) REFERENCES member(email)
+    FOREIGN KEY (email) REFERENCES member(email) ON DELETE CASCADE
 );
 
 SHOW TABLES;
@@ -41,3 +44,4 @@ ALTER TABLE resume AUTO_INCREMENT = 1;
 
 DELETE FROM resume WHERE 1 = 1;
 DELETE FROM member WHERE 1 = 1;
+

@@ -69,7 +69,7 @@ public class MemberController {
         if (memberService.insertMember(email, password)) {
             String responseJson = jsonBuilder
                     .put("status", "success")
-                    .put("message", "계정이 생성되었습니다.")
+                    .put("message", "계정이 생성되었습니다. 로그인을 진행해 주세요.")
                     .build();
             return ResponseEntity.ok().body(responseJson);
         } else {

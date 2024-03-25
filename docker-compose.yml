@@ -5,6 +5,8 @@ services:
     image: nginx:latest
     container_name: nginx
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./nginx:/etc/nginx
     ports:

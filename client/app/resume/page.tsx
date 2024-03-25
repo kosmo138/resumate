@@ -41,9 +41,13 @@ export default function ResumeSelector() {
   ]
 
   return (
-    <main className="container flex flex-col items-start py-8 font-bold">
-      <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <main>
+      <div className="ml-10 flex grid-cols-3 font-bold">
+        <HeadingText subtext="수정할 이력서를 선택해 주세요">
+          이력서
+        </HeadingText>
+      </div>
+      <div className="mt-8 grid grid-cols-3 gap-4 p-8 sm:grid-cols-3 lg:grid-cols-3">
         {resumeList.map((resumeHead, index) => (
           <div key={index}>
             <Link href={`/resume/${resumeHead.id}`} passHref>

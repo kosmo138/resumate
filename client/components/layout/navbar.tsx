@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { ModeToggle } from "@/components/mode-toggle"
-import { siteConfig } from "@/config/metadata"
-import { navLinks } from "@/config/navlinks"
-import { settings } from "@/config/settings"
-import Image from "next/image"
-import { LoginDialog } from "@/components/auth/login"
-import { MemberMenu } from "../auth/membermenu"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ModeToggle } from "@/components/mode-toggle";
+import { siteConfig } from "@/config/metadata";
+import { navLinks } from "@/config/navlinks";
+import { settings } from "@/config/settings";
+import Image from "next/image";
+import { LoginDialog } from "@/components/auth/login";
+import { MemberMenu } from "../auth/membermenu";
 
 export default function Navbar() {
-  const [navbar, setNavbar] = useState(false)
+  const [navbar, setNavbar] = useState(false);
   /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const loginFlag = true
+  const loginFlag = false;
 
   const handleClick = async () => {
-    setNavbar(false)
-  }
+    setNavbar(false);
+  };
 
   useEffect(() => {
     if (navbar) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
-  }, [navbar])
+  }, [navbar]);
 
   return (
     <header className="select-none">
@@ -124,5 +124,5 @@ export default function Navbar() {
         )}
       </nav>
     </header>
-  )
+  );
 }

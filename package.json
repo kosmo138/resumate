@@ -1,0 +1,14 @@
+{
+  "name": "resumate",
+  "version": "1.0.0",
+  "description": "아이디어 기획, 일정 관리, 프로토타입 제작\r * dev\r * feat/database\r * feat/prototype\r ### 백소나 [@baeksona](https://github.com/baeksona)\r 웹 스크랩, 자연어 처리\r * feat/web-scrap\r * feat/natural-language\r ### 이동준 [@mogri89](https://github.com/mogri89)\r 이력서 기능\r * feat/resume-1\r ### 이수진 [@WGCAT](https://github.com/WGCAT)\r 자기소개서 기능\r * feat/letter\r ### 이수현 [@SH2G](https://github.com/SH2G)\r 로그인: Email을 이용한 회원가입 + 인증코드 발송\r * feat/login-session\r ### 이준아 [@gliderjun](https://github.com/gliderjun)\r 로그인: 카카오 계정 OAuth\r * feat/login-token\r ### 정유선 [@yousunning](https://github.com/yousunning)\r 이력서 기능\r * feat/resume-2\r ### 황태윤 [@taeyounh](https://github.com/taeyounh)\r 워크넷 채용 정보 연동\r * feat/recruit",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

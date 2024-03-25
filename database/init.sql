@@ -16,16 +16,28 @@ CREATE TABLE member (
 
 CREATE TABLE resume (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    member_id INT NOT NULL,
+    email VARCHAR(30) NOT NULL,
     title VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (member_id) REFERENCES member(id)
+    content TEXT NOT NULL,
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (email) REFERENCES member(email)
 );
 
-INSERT INTO member (email, password) VALUES ('test@test.com', '$$kosmo138$$');
-INSERT INTO resume (member_id, title) VALUES (1, '테스트 이력서 제목');
+SHOW TABLES;
+
+DESCRIBE member;
+DESCRIBE resume;
 
 SELECT * FROM member;
 SELECT * FROM resume;
 
-DESCRIBE member;
+INSERT INTO member (email, password) VALUES ('test@test.com', 'TEST_PASSWORD');
+INSERT INTO resume (email, title, content, modified) VALUES ('1@test.com', '테스트 이력서 제목', '테스트 이력서 내용', NOW());
+
+UPDATE resume SET title = '테스트 이력서 제목 - 수정', content = '테스트 이력서 내용 - 수정' WHERE id = 1;
+
+ALTER TABLE member AUTO_INCREMENT = 1;
+ALTER TABLE resume AUTO_INCREMENT = 1;
+
+DELETE FROM resume WHERE 1 = 1;
+DELETE FROM member WHERE 1 = 1;

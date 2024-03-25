@@ -85,9 +85,7 @@ public class MemberController {
     public ResponseEntity<String> updateMember(@RequestHeader("authorization") String bearer,
             @RequestBody Member member) {
         String token = bearer.substring(7);
-        System.out.println("[Debug] token: " + token);
         String email = jwtConfig.getEmailFromToken(token);
-        System.out.println("[Debug] email: " + email);
         if (email == null) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
@@ -115,23 +113,33 @@ public class MemberController {
     }
 
     @DeleteMapping(value = "/member", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> deleteMember(@RequestBody Member member) {
-        String email = member.getEmail();
-        String password = member.getPassword();
+    public ResponseEntity<String> deleteMember(@RequestHeader("authorization") String bearer,
+            @RequestBody Member member) {
+        String token = bearer.substring(7);
+        String email = jwtConfig.getEmailFromToken(token);
 
-        if (memberService.deleteMember(email, password)) {
-            String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "계정이 삭제되었습니다.")
-                    .put("email", email)
-                    .build();
-            return ResponseEntity.ok().body(responseJson);
-        } else {
+        if (email == null) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "이메일과 비밀번호를 확인해주세요.")
+                    .put("message", "로그인이 필요합니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String password = member.getPassword();
+            if (memberService.deleteMember(email, password)) {
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "계정이 삭제되었습니다.")
+                        .put("email", email)
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            } else {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "이메일과 비밀번호를 확인해주세요.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            }
         }
     }
 }

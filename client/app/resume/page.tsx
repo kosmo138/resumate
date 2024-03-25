@@ -4,9 +4,16 @@ import ResumeCard from "@/components/resume/resumecard"
 import React from "react"
 import { ResumeHead } from "@/types/resume"
 import Link from "next/link"
+import { baseUrl } from "@/config/metadata"
 
 // 이력서 편집 페이지에서 저장할 시에 이력서 목록페이지 가져오기.
 export default function ResumeSelector() {
+  /* GET 요청에 대한 응답이 없으면 404 오류 페이지를 표시합니다 */
+  /*const response = await fetch(`${baseUrl}/api/resume/${id}`)
+    .then((res) => res.json())
+    .catch(() => notFound());
+  const resumeBody: ResumeBody = response.parse();
+  */
   const resumeList: Array<ResumeHead> = [
     {
       id: 1,
@@ -22,21 +29,6 @@ export default function ResumeSelector() {
       id: 3,
       title: "세 번째 이력서 제목이 길면 어떻게 되는지 알고 싶은데",
       updatedAt: "2024-03-03",
-    },
-    {
-      id: 4,
-      title: "네 번째 이력서",
-      updatedAt: "2024-03-04",
-    },
-    {
-      id: 5,
-      title: "다섯 번째 이력서",
-      updatedAt: "2024-03-05",
-    },
-    {
-      id: 6,
-      title: "여섯 번째 이력서",
-      updatedAt: "2024-03-06",
     },
   ]
 

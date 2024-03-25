@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사람인 API 데모</title>
+  <style>
+    /* CSS 코드 작성 */
+  </style>
+</head>
+<body>
+  <h1>사람인 API 데모</h1>
+  <input type="text" id="query" placeholder="검색어를 입력하세요.">
+  <button onclick="search()">검색</button>
+  <div id="result"></div>
+
+  <script>
+    const search = async () => {
+      const query = document.getElementById('query').value;
+      const response = await fetch('/jobs?query=' + query);
+      const data = await response.json();
+
+      // data를 이용하여 화면에 출력할 내용을 작성
+    };
+  </script>
+</body>
+</html>

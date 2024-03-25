@@ -10,17 +10,26 @@ import org.springframework.context.annotation.Configuration;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Configuration
 public class JwtConfig {
-    @Value("${jwt.secret}")
-    private String secret;
-
-    // https://stackoverflow.com/questions/55102937/how-to-create-a-spring-security-key-for-signing-a-jwt-token
-    byte[] keyBytes = Decoders.BASE64.decode(this.secret);
-    private final SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
+    /**
+     * Value annotation 이후 null 문제 해결
+     * (1) application.yml의 jwt.secret 속성 일치 확인
+     * (2) JwtConfig가 Spring Bean으로 정상 등록됨
+     * (3) static 변수 아님
+     * (4) new JwtConfig()으로 인스턴스화하지 않음
+     * -> 생성자를 통한 의존성 주입으로 인스턴스화 시점에 secretKey 초기화
+     * 
+     * @see https://velog.io/@tidavid1/Spring에서-Value의-값은-언제-반영될까
+     */
+    
+    private SecretKey secretKey;
+    
+    public JwtConfig(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public String issueAccessToken(String email) {
         Date now = new Date();
@@ -40,7 +49,18 @@ public class JwtConfig {
             Claims claims = jwtParserBuilder.build().parseSignedClaims(access_token).getPayload();
             return claims.getSubject();
         } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
             return null;
+        }
+    }
+
+    public boolean checkExpiration(String access_token) {
+        try {
+            JwtParserBuilder jwtParserBuilder = Jwts.parser().verifyWith(secretKey);
+            Claims claims = jwtParserBuilder.build().parseSignedClaims(access_token).getPayload();
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            return false;
         }
     }
 }

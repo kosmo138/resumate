@@ -21,4 +21,6 @@ server:
   error:
     whitelabel:
       enabled: false
-      
+
+jwt:
+  secret: ${JWT_SECRET}

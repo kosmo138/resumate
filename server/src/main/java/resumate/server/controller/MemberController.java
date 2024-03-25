@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import resumate.server.service.MemberService;
 import resumate.server.config.JsonBuilder;
+import resumate.server.config.JwtConfig;
 import resumate.server.dto.Member;
+import resumate.server.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,18 +30,26 @@ public class MemberController {
      */
     private final MemberService memberService;
     private final JsonBuilder jsonBuilder;
+    private final JwtConfig jwtConfig;
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> loginHandler(@RequestBody Member member, HttpSession session) {
+    public ResponseEntity<String> loginHandler(@RequestBody Member member, HttpServletResponse response) {
         String email = member.getEmail();
         String password = member.getPassword();
 
         if (memberService.checkMemberPass(email, password)) {
+            String access_token = jwtConfig.issueAccessToken(email);
+
+            Cookie cookie = new Cookie("access_token", access_token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+
             String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "로그인에 성공했습니다.")
-                    .put("email", email)
-                    .build();
+            .put("status", "success")
+            .put("message", "로그인에 성공했습니다.")
+            .put("email", email)
+            .build();
             return ResponseEntity.ok().body(responseJson);
         } else {
             String responseJson = jsonBuilder

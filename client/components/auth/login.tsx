@@ -67,14 +67,9 @@ export function LoginDialog() {
           </a>
         </span>
         <div className="grid gap-4 py-4">
-          <Button
-            type="button"
-            style={{ backgroundColor: "#f7e600", color: "black" }}
-            onClick={() => alert("아직 지원하지 않는 기능입니다")}
-          >
-            <FaComment style={{ marginRight: "5px" }} />
-            카카오 로그인
-          </Button>
+          <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=81fb547326f915ccdfff93033c19647a&redirect_uri=http://localhost:3000/auth/callback">
+            <img width="400px" src="\kakaologin.png" />
+          </a>
         </div>
       </DialogContent>
     </Dialog>

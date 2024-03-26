@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -86,7 +85,7 @@ public class MemberService {
     }
 
     // 컨트롤러: 회원가입
-    public ResponseEntity<String> insertMember(@RequestBody Member member) {
+    public ResponseEntity<String> insertMember(Member member) {
         String email = member.getEmail();
         String password = member.getPassword();
 

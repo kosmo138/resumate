@@ -14,7 +14,7 @@ export type ResumeContents = {
     contentDate: string;
     period: string;
     contents: string;
-    count: 2;
+    count: number;
   };
   skill: {
     title: string;

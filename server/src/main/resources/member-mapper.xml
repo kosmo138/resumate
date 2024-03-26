@@ -2,10 +2,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="resumate.server.mybatis.MemberMapper">
-  <select id="selectMemberCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+  <select id="selectMemberCount" parameterType="String" resultType="_int">
     SELECT COUNT(1) FROM member WHERE email = #{email}
   </select>
-  <select id="selectMemberPass" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="selectMemberPass" parameterType="String" resultType="String">
     SELECT password FROM member WHERE email = #{email}
   </select>
   <insert id="insertMember" parameterType="resumate.server.dto.Member">
@@ -14,7 +14,7 @@
   <update id="updateMember" parameterType="resumate.server.dto.Member">
     UPDATE member SET password = #{password} WHERE email = #{email}
   </update>
-  <delete id="deleteMember" parameterType="java.lang.String">
+  <delete id="deleteMember" parameterType="String">
     DELETE FROM member WHERE email = #{email}
   </delete>
 </mapper>

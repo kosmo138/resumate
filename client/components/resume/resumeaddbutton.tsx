@@ -27,10 +27,14 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
       {
         id: resumeList.length + 1,
         title: `새로운 이력서 ${resumeList.length + 1}`,
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString().split("T")[0],
+        // . split("T")[0], 문자열을 특정 구분자를 기준으로 나누고, 그결과를 배열로 반환하는 javascript의 문자열 메서드인 split()을 사용하는 것
+        // 여기서 "T"는 구분자로 사용되며, 문자열을 "T"를 기준으로 분할 합니다.
+        // 그리고 '[0]'은 분할된 결과 배열에서 첫 번째 요소를 선택하는 것을 의미합니다.
       },
     ]
     setResumeList(newResumeList)
+    console.log("새이력서 추가")
   }
 
   return (

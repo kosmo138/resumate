@@ -1,0 +1,20 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="resumate.server.mybatis.ResumeMapper">
+  <select id="selectResumeHead" parameterType="String" resultType="List">
+    SELECT title, content, modified FROM resume WHERE email = #{email}
+  </select>
+  <select id="selectResumeBody" parameterType="_int" resultType="resumate.server.dto.Resume">
+    SELECT title, content FROM resume WHERE id = #{id}
+  </select>
+  <insert id="insertResume" parameterType="resumate.server.dto.Resume">
+    INSERT INTO resume (email, title, content) VALUES (#{email}, #{title}, #{content})
+  </insert>
+  <update id="updateResume" parameterType="resumate.server.dto.Resume">
+    UPDATE resume SET title = #{title}, content = #{content}, modified = NOW() WHERE id = #{id}
+  </update>
+  <delete id="deleteResume" parameterType="_int">
+    DELETE FROM resume WHERE id = #{id}
+  </delete>
+</mapper>

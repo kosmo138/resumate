@@ -45,3 +45,5 @@ ALTER TABLE resume AUTO_INCREMENT = 1;
 DELETE FROM resume WHERE 1 = 1;
 DELETE FROM member WHERE 1 = 1;
 
+INSERT INTO resume (email, title, content) VALUES ("01@test.com", "test resume 01", "{}");
+UPDATE resume SET title = "test 02 resume", content = '{"message":"hello"}', modified = NOW() WHERE id = 1;

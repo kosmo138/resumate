@@ -73,10 +73,10 @@ export default async function LetterEditor(id: string) {
       </div>
       <div className="ml-20 w-full">
         <div>
-          <Button className="mr-2">삭제</Button>
+          <Button className="mr-2 bg-white text-black border-black">삭제</Button>
           <Button>추가</Button>
         </div>
-          <Button>생성하기</Button>
+          <Button className="text-black border-black bg-white">생성하기</Button>
       </div>  
 
     </main>

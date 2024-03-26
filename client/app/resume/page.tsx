@@ -31,7 +31,11 @@ export default function ResumeSelector() {
       updatedAt: "2024-03-03",
     },
   ]
-
+  const handleResumeCardClick = () => {
+    // 클릭 시 할 일을 여기에 작성
+    alert("버튼이 클릭되었습니다.")
+  }
+  //
   return (
     <main className="container flex flex-col items-center py-8">
       <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>

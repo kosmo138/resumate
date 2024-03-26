@@ -8,6 +8,9 @@
   <select id="selectResumeBody" parameterType="_int" resultType="resumate.server.dto.Resume">
     SELECT title, content FROM resume WHERE id = #{id}
   </select>
+  <select id="selectResumeId" parameterType="String" resultType="_int[]">
+    SELECT id FROM resume WHERE email = #{email}
+  </select>
   <insert id="insertResume" parameterType="resumate.server.dto.Resume">
     INSERT INTO resume (email, title, content) VALUES (#{email}, #{title}, #{content})
   </insert>

@@ -20,6 +20,17 @@ public class ResumeService {
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
+    // 이메일에 따른 이력서 ID 접근 권한 조회
+    public boolean isResumeOwner(String email, int id) {
+        int[] resumeIdList = resumeMapper.selectResumeId(email);
+        for (int resumeId : resumeIdList) {
+            if (resumeId == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // 컨트롤러: 이력서 목록 조회
     public ResponseEntity<String> selectResumeHead(String bearer) {
         String token = bearer.substring(7);
@@ -42,10 +53,11 @@ public class ResumeService {
     public ResponseEntity<String> selectResumeBody(String bearer, int id) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
-        if (email == null) {
+        int[] resumeIdList = resumeMapper.selectResumeId(email);
+        if (!isResumeOwner(email, id)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "로그인이 필요합니다.")
+                    .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
@@ -61,10 +73,10 @@ public class ResumeService {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
-        if (email == null) {
+        if (!isResumeOwner(email, id)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "로그인이 필요합니다.")
+                    .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
@@ -82,10 +94,10 @@ public class ResumeService {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
-        if (email == null) {
+        if (!isResumeOwner(email, id)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "로그인이 필요합니다.")
+                    .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
@@ -104,10 +116,10 @@ public class ResumeService {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
-        if (email == null) {
+        if (!isResumeOwner(email, id)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "로그인이 필요합니다.")
+                    .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {

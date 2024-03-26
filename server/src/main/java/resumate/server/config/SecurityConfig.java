@@ -40,8 +40,7 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"))
                 .sessionManagement((session) -> session.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/resume/*", "/api/letter/*").hasRole("USER")
-                        .requestMatchers("/api/member", "/api/login").permitAll()
+                        .requestMatchers("/api/member", "/api/login", "/api/resume/*", "/api/letter/*").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

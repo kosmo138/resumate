@@ -8,7 +8,7 @@ import resumate.server.dto.Resume;
 @Mapper
 public interface ResumeMapper {
     List<Resume> selectResumeHead(String email);
-    Resume selectResumeBody(int id);
+    String selectResumeBody(int id);
     int[] selectResumeId(String email);
     void insertResume(Resume resume);
     void updateResume(Resume resume);

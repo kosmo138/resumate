@@ -3,16 +3,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
-import { CardInput } from "@/components/cardinput"
 import React from "react"
-
+import ResumePage from "./resumedownload"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from "react"
 
 export default function ResumeCard({
   title,
@@ -21,32 +19,29 @@ export default function ResumeCard({
   title?: string
   updatedAt?: string
 }) {
-  // 새로운 제목을 상태로 관리합니다.
-  const [newTitle, setNewTitle] = useState(title)
-  // 제목을 변경하는 이벤트 핸들러 함수입니다.
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 새로운 제목을 입력한 값을 상태로 업데이트합니다.
-    console.log("새로운 제목을 입력한 값을 상태로 업데이트")
-    setNewTitle(e.target.value + "1")
-  }
+  // // 클릭 이벤트 처리 함수
+  // const handleClick = () => {
+  //   // 클릭 시 할 일을 여기에 작성
+  //   alert("버튼이 클릭되었습니다.")
+  // }
+
   // // DropdownMenuItem를 클릭했을 때 호출되는 함수입니다.
-  const handleTitleChangeClick = () => {
-    console.log(`${title} 제목변경`)
+  const changeClick = () => {
+    window.location.href = "`/resume/${resumeHead.id}`"
   }
+
   const resumeCopyClick = () => {
     // 새로운 제목 입력을 받는 모달 또는 인풋을 표시하고, 제목 변경 이벤트 핸들러 함수를 호출합니다.
     // 이 부분에 모달 또는 인풋을 표시하는 로직을 추가해야 합니다.
-    console.log(`${title} 복제`)
+    console.log(`title복제`)
   }
   const download = () => {
-    // 새로운 제목 입력을 받는 모달 또는 인풋을 표시하고, 제목 변경 이벤트 핸들러 함수를 호출합니다.
-    // 이 부분에 모달 또는 인풋을 표시하는 로직을 추가해야 합니다.
-    console.log(`${title} 다운로드`)
+    console.log(`title다운로드`)
   }
   const deleteClick = () => {
     // 새로운 제목 입력을 받는 모달 또는 인풋을 표시하고, 제목 변경 이벤트 핸들러 함수를 호출합니다.
     // 이 부분에 모달 또는 인풋을 표시하는 로직을 추가해야 합니다.
-    console.log(`${title} 삭제`)
+    console.log(`title삭제`)
   }
   return (
     <Card>
@@ -61,18 +56,13 @@ export default function ResumeCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <div className="font-bold">
-                    <DropdownMenuItem
-                      onClick={handleTitleChangeClick}
-                      onChange={handleTitleChange}
-                    >
-                      제목변경
+                    <DropdownMenuItem>
+                      <button onClick={changeClick}>수정하기</button>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={resumeCopyClick}>
                       복제하기
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={download}>
-                      다운로드
-                    </DropdownMenuItem>
+                    <ResumePage />
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제
@@ -85,33 +75,14 @@ export default function ResumeCard({
           </div>
 
           {/* div 2 */}
-          <div className="font-bold">
-            {/* <Input
-              type="text"
-              id="ResumeTitle"
-              name="title"
-              value={title}
-              placeholder="제목을 수정해주세요"
-            /> */}
-
-            <CardInput
-              value={newTitle} // 새로운 제목 상태를 value로 설정
-              onChange={(e) => setNewTitle(e.target.value)} // 입력 값이 변경될 때마다 이벤트 핸들러를 호출하여 새로운 제목을 업데이트
-              type="text" // 입력 필드의 타입
-              placeholder="제목을 수정해주세요" // 입력 필드에 보여질 placeholder 텍스트
-              onKeyDown={(e) => {
-                //Enter키가 눌렸을 때
-                if (e.key === "Enter") {
-                  //여기에 저장 동작을 추가
-                  console.log("Enter.Status OK")
-                }
-              }}
-            />
+          <div className="mt-3 flex grid h-20 w-full text-lg font-bold">
+            {title}
           </div>
+
           {/* div 3 */}
-          <div className="ml-0">{updatedAt}</div>
+          <div>{updatedAt}</div>
           {/* div 4 */}
-          <div className="mt-5 flex justify-end">
+          <div className="flex justify-end">
             <Link href="/letter">
               <ResumeButton />
             </Link>

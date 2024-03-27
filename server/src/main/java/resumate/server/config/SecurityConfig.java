@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session.disable())
                 .formLogin((form) -> form.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/member", "/api/login", "/api/resume/**", "/api/letter/**")
+                        .requestMatchers("/api/member", "/api/login", "/api/resume/**", "/api/letter/**", "/api/qna/**")
                         .permitAll()
                         .anyRequest().authenticated());
         return http.build();

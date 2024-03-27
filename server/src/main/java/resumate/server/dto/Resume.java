@@ -1,7 +1,5 @@
 package resumate.server.dto;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,5 +12,5 @@ public class Resume {
     private String email;
     private String title;
     private String content;
-    private Date modified;
+    private int modified;
 }

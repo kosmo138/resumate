@@ -42,6 +42,9 @@ UPDATE resume SET title = '테스트 이력서 제목 - 수정', content = '테�
 ALTER TABLE member AUTO_INCREMENT = 1;
 ALTER TABLE resume AUTO_INCREMENT = 1;
 
+ALTER TABLE member DROP COLUMN created_at;
+ALTER TABLE resume MODIFY COLUMN modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 DELETE FROM resume WHERE 1 = 1;
 DELETE FROM member WHERE 1 = 1;
 

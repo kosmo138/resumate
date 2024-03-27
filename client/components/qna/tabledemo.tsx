@@ -48,7 +48,7 @@ const invoices = [
   },
   {
     invoice: "007",
-    paymentStatus: "Unpad",
+    paymentStatus: "Unpaid",
     totalAmount: "$300.00",
     paymentMethod: "Credit Card",
   },

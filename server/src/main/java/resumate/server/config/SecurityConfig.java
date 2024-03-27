@@ -37,10 +37,12 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic((basic) -> basic.disable())
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/*"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/api/**"))
                 .sessionManagement((session) -> session.disable())
+                .formLogin((form) -> form.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/member", "/api/login", "/api/resume/*", "/api/letter/*").permitAll()
+                        .requestMatchers("/api/member", "/api/login", "/api/resume/**", "/api/letter/**")
+                        .permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

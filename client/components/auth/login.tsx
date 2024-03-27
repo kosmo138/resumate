@@ -66,9 +66,9 @@ export function LoginDialog() {
             패스워드 찾기
           </a>
         </span>
-        <div className="grid gap-4 py-4">
-          <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=81fb547326f915ccdfff93033c19647a&redirect_uri=http://localhost:3000/auth/callback">
-            <img width="400px" src="\kakaologin.png" />
+        <div className="w-283 h-15 item-center">
+          <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=81fb547326f915ccdfff93033c19647a&redirect_uri=http://localhost:3000/oauth/">
+            <img src="kakao-login.png" />
           </a>
         </div>
       </DialogContent>

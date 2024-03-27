@@ -10,7 +10,11 @@ interface AwardData {
   content: string;
 }
 
-export function ResumeAward({ onInputAward }: { onInputAward: any }) {
+export function ResumeAward({
+  onInputChange,
+}: {
+  onInputChange: (value: any) => void;
+}) {
   const [formValues, setFormValues] = useState<AwardData[]>([
     { date: "", content: "" },
   ]);
@@ -20,7 +24,7 @@ export function ResumeAward({ onInputAward }: { onInputAward: any }) {
     setFormValues([...formValues, { date: "", content: "" }]);
   };
 
-  // 특정 인덱스의 데이터 변경 핸들러
+  // 인덱스별 데이터 변경 핸들러
   const handleChangeData = (
     index: number,
     key: keyof AwardData,
@@ -29,7 +33,7 @@ export function ResumeAward({ onInputAward }: { onInputAward: any }) {
     const updatedFormValues = [...formValues];
     updatedFormValues[index][key] = value;
     setFormValues(updatedFormValues);
-    onInputAward(updatedFormValues);
+    onInputChange(updatedFormValues);
   };
 
   return (
@@ -54,9 +58,13 @@ export function ResumeAward({ onInputAward }: { onInputAward: any }) {
                 placeholder={resumeContents.award.period}
                 className="w-1/4 mr-5"
                 value={formValue.date}
-                onChange={(e) =>
-                  handleChangeData(index, "date", e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // 입력된 값이 숫자와 . - ~로만 이루어져 있는지 확인
+                  if (/^[\d~\-. ]*$/.test(value)) {
+                    handleChangeData(index, "date", value);
+                  }
+                }}
               />
               <Input
                 type="text"

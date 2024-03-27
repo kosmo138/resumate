@@ -20,6 +20,13 @@ public class ResumeService {
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
+    // 요청 헤더의 Bearer 확인하여 로그인 여부 확인
+    public boolean isLoggedin(String bearer) {
+        String token = bearer.substring(7);
+        String email = jwtConfig.getEmailFromToken(token);
+        return email != null;
+    }
+
     // 이메일에 따른 이력서 ID 접근 권한 조회
     public boolean isResumeOwner(String email, int id) {
         int[] resumeIdList = resumeMapper.selectResumeId(email);
@@ -53,7 +60,6 @@ public class ResumeService {
     public ResponseEntity<String> selectResumeBody(String bearer, int id) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
-        int[] resumeIdList = resumeMapper.selectResumeId(email);
         if (!isResumeOwner(email, id)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
@@ -94,7 +100,7 @@ public class ResumeService {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
-        if (!isResumeOwner(email, id)) {
+        if (!isLoggedin(bearer)) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
                     .put("message", "권한이 없습니다.")

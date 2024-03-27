@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import org.springframework.context.annotation.Configuration;
 
+// 1차원의 JSON 문자열을 생성하는 클래스, Builder 패턴 적용
 @Configuration
 public class JsonBuilder {
     private Map<String, Object> jsonObject;
@@ -14,6 +15,7 @@ public class JsonBuilder {
         jsonObject = new LinkedHashMap<>();
     }
 
+    // key-value 쌍을 추가
     public JsonBuilder put(String key, Object value) {
         this.jsonObject.put(key, value);
         return this;

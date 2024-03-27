@@ -41,7 +41,9 @@ export default function ResumeCancleButton() {
                 취소
               </Button>
               <Link href="/resume">
-                <Button>확인</Button>
+                <Button variant="default" className="w-full">
+                  확인
+                </Button>
               </Link>
             </DialogFooter>
           </DialogContent>

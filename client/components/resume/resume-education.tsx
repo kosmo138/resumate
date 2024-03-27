@@ -11,9 +11,9 @@ interface EducationData {
 }
 
 export function ResumeEducation({
-  onInputEducation,
+  onInputChange,
 }: {
-  onInputEducation: any;
+  onInputChange: (value: any) => void;
 }) {
   const [formValues, setFormValues] = useState<EducationData[]>([
     { date: "", content: "" },
@@ -24,7 +24,7 @@ export function ResumeEducation({
     setFormValues([...formValues, { date: "", content: "" }]);
   };
 
-  // 특정 인덱스의 데이터 변경 핸들러
+  // 인덱스별 데이터 변경 핸들러
   const handleChangeData = (
     index: number,
     key: keyof EducationData,
@@ -33,7 +33,7 @@ export function ResumeEducation({
     const updatedFormValues = [...formValues];
     updatedFormValues[index][key] = value;
     setFormValues(updatedFormValues);
-    onInputEducation(updatedFormValues);
+    onInputChange(updatedFormValues);
   };
 
   return (
@@ -58,9 +58,13 @@ export function ResumeEducation({
                 placeholder={resumeContents.education.period}
                 className="w-1/4 mr-5"
                 value={formValue.date}
-                onChange={(e) =>
-                  handleChangeData(index, "date", e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // 입력된 값이 숫자와 . - ~로만 이루어져 있는지 확인
+                  if (/^[\d~\-. ]*$/.test(value)) {
+                    handleChangeData(index, "date", value);
+                  }
+                }}
               />
               <Input
                 type="text"

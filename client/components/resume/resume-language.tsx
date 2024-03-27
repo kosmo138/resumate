@@ -5,13 +5,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 
-export function ResumeLanguage({ onInputLanguage }: { onInputLanguage: any }) {
+export function ResumeLanguage({
+  onInputChange,
+}: {
+  onInputChange: (value: string) => void;
+}) {
   const [inputValue, setInputValue] = useState("");
   const handleChange = (e: any) => {
     const value = e.target.value;
     setInputValue(value);
     // 입력 값 부모 컴포넌트로 전달
-    onInputLanguage(value);
+    onInputChange(value);
   };
 
   return (

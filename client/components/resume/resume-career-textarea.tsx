@@ -5,16 +5,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { resumeContents } from "@/config/resume-id-contents";
 
 export function ResumeCareerTextarea({
-  onInputCareerText,
+  onInputChange,
 }: {
-  onInputCareerText: any;
+  onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
   const handleChange = (e: any) => {
     const value = e.target.value;
     setInputValue(value);
     // 입력 값 부모 컴포넌트로 전달
-    onInputCareerText(value);
+    onInputChange(value);
   };
 
   return (

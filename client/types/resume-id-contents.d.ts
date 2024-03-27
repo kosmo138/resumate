@@ -6,7 +6,6 @@ export type ResumeContents = {
     contentDate: string;
     period: string;
     contents: string;
-    count: number;
   };
   textareaContent: string;
   education: {
@@ -14,7 +13,6 @@ export type ResumeContents = {
     contentDate: string;
     period: string;
     contents: string;
-    count: number;
   };
   skill: {
     title: string;
@@ -25,7 +23,6 @@ export type ResumeContents = {
     contentDate: string;
     period: string;
     contents: string;
-    count: number;
   };
   language: {
     title: string;

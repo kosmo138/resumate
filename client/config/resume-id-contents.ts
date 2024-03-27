@@ -11,7 +11,6 @@ export const resumeContents: ResumeContents = {
     period: "YYYY-MM ~ YYYY-MM",
     contents:
       "본인의 업무 경험을 기반으로 핵심역량과 업무 스킬을 간단히 작성해주세요.",
-    count: 3,
   },
   // 경력란 textarea props
   textareaContent:
@@ -26,7 +25,6 @@ export const resumeContents: ResumeContents = {
     contentDate: "기간",
     period: "YYYY-MM ~ YYYY-MM",
     contents: "출신 학교를 입력해 주세요.",
-    count: 2,
   },
   // 스킬란 props
   skill: {
@@ -41,7 +39,6 @@ export const resumeContents: ResumeContents = {
     contentDate: "수상날짜",
     period: "YYYY-MM",
     contents: "활동명",
-    count: 2,
   },
   // 외국어란 props
   language: {

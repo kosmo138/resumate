@@ -24,17 +24,20 @@ public class JwtConfig {
      * 
      * @see https://velog.io/@tidavid1/Spring에서-Value의-값은-언제-반영될까
      */
-    
+
     private SecretKey secretKey;
-    
+
     public JwtConfig(@Value("${jwt.secret}") String secret) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String issueAccessToken(String email) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + 1000 * 60 * 60 * 6); // 6시간
-        // https://javadoc.io/doc/io.jsonwebtoken/jjwt-api/latest/io/jsonwebtoken/JwtBuilder.html
+        // 토큰의 수명: 6시간
+        Date expirationDate = new Date(now.getTime() + 1000 * 60 * 60 * 6);
+        /**
+         * @see https://javadoc.io/doc/io.jsonwebtoken/jjwt-api/latest/io/jsonwebtoken/JwtBuilder.html
+         */
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(now)

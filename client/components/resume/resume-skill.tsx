@@ -5,13 +5,17 @@ import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 import React, { useState } from "react";
 
-export function ResumeSkill({ onInputSkill }: { onInputSkill: any }) {
+export function ResumeSkill({
+  onInputChange,
+}: {
+  onInputChange: (value: string) => void;
+}) {
   const [inputValue, setInputValue] = useState("");
   const handleChange = (e: any) => {
     const value = e.target.value;
     setInputValue(value);
     // 입력 값 부모 컴포넌트로 전달
-    onInputSkill(value);
+    onInputChange(value);
   };
 
   return (

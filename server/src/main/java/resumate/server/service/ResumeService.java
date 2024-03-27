@@ -3,6 +3,8 @@ package resumate.server.service;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,20 @@ public class ResumeService {
     private final ResumeMapper resumeMapper;
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
+
+    // 테스트용 JSON: 토큰에서 email을 추출하여 JSON 응답
+    public ResponseEntity<String> testJson(String bearer) {
+        String responseJson = jsonBuilder
+                .put("status", "success")
+                .put("email", jwtConfig.getEmailFromToken(bearer.substring(7)))
+                .build();
+        return ResponseEntity.ok().body(responseJson);
+    }
+
+    public String getTitleFromJson(String json) {
+        final JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        return jsonObject.get("title").getAsString();
+    }
 
     // 요청 헤더의 Bearer 확인하여 로그인 여부 확인
     public boolean isLoggedin(String bearer) {
@@ -67,15 +83,13 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            Resume resume = resumeMapper.selectResumeBody(id);
-            Gson gson = new Gson();
-            String responseJson = gson.toJson(resume);
-            return ResponseEntity.ok().body(responseJson);
+            String resume = resumeMapper.selectResumeBody(id);
+            return ResponseEntity.ok().body(resume);
         }
     }
 
     // 컨트롤러: 이력서 수정
-    public ResponseEntity<String> updateResume(String bearer, Resume resume, int id) {
+    public ResponseEntity<String> updateResume(String bearer, String resume, int id) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
@@ -86,7 +100,14 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            resumeMapper.updateResume(resume);
+            final JsonObject jsonObject = JsonParser.parseString(email).getAsJsonObject();
+            final String title = jsonObject.get("title").getAsString();
+
+            Resume newResume = new Resume();
+            newResume.setEmail(email);
+            newResume.setTitle(title);
+            newResume.setContent(resume);
+            resumeMapper.updateResume(newResume);
             String responseJson = jsonBuilder
                     .put("status", "success")
                     .put("message", "이력서가 수정되었습니다.")
@@ -96,7 +117,7 @@ public class ResumeService {
     }
 
     // 컨트롤러: 이력서 추가
-    public ResponseEntity<String> insertResume(String bearer, Resume resume) {
+    public ResponseEntity<String> insertResume(String bearer, String resume) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
 
@@ -107,8 +128,11 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            resume.setEmail(email);
-            resumeMapper.insertResume(resume);
+            Resume newResume = new Resume();
+            newResume.setEmail(email);
+            newResume.setTitle(getTitleFromJson(resume));
+            newResume.setContent(resume);
+            resumeMapper.insertResume(newResume);
             String responseJson = jsonBuilder
                     .put("status", "success")
                     .put("message", "이력서가 추가되었습니다.")

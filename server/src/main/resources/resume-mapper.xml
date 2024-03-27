@@ -3,10 +3,12 @@
 
 <mapper namespace="resumate.server.mybatis.ResumeMapper">
   <select id="selectResumeHead" parameterType="String" resultType="List">
-    SELECT title, content, modified FROM resume WHERE email = #{email}
+    SELECT id, title, modified FROM resume
+    WHERE email = #{email}
+    ORDER BY modified DESC
   </select>
-  <select id="selectResumeBody" parameterType="_int" resultType="resumate.server.dto.Resume">
-    SELECT title, content FROM resume WHERE id = #{id}
+  <select id="selectResumeBody" parameterType="_int" resultType="String">
+    SELECT content FROM resume WHERE id = #{id}
   </select>
   <select id="selectResumeId" parameterType="String" resultType="_int[]">
     SELECT id FROM resume WHERE email = #{email}

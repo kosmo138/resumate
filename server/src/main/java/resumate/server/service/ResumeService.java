@@ -22,15 +22,6 @@ public class ResumeService {
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
-    // 테스트용 JSON: 토큰에서 email을 추출하여 JSON 응답
-    public ResponseEntity<String> testJson(String bearer) {
-        String responseJson = jsonBuilder
-                .put("status", "success")
-                .put("email", jwtConfig.getEmailFromToken(bearer.substring(7)))
-                .build();
-        return ResponseEntity.ok().body(responseJson);
-    }
-
     public String getTitleFromJson(String json) {
         final JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         return jsonObject.get("title").getAsString();
@@ -45,7 +36,7 @@ public class ResumeService {
 
     // 이메일에 따른 이력서 ID 접근 권한 조회
     public boolean isResumeOwner(String email, int id) {
-        int[] resumeIdList = resumeMapper.selectResumeId(email);
+        List<Integer> resumeIdList = resumeMapper.selectResumeId(email);
         for (int resumeId : resumeIdList) {
             if (resumeId == id) {
                 return true;
@@ -99,14 +90,18 @@ public class ResumeService {
                     .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else if (resume == null || getTitleFromJson(resume).length() == 0) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "제목을 입력해주세요.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
         } else {
-            final JsonObject jsonObject = JsonParser.parseString(email).getAsJsonObject();
-            final String title = jsonObject.get("title").getAsString();
-
             Resume newResume = new Resume();
             newResume.setEmail(email);
-            newResume.setTitle(title);
+            newResume.setTitle(getTitleFromJson(resume));
             newResume.setContent(resume);
+            newResume.setId(id);
             resumeMapper.updateResume(newResume);
             String responseJson = jsonBuilder
                     .put("status", "success")
@@ -127,6 +122,12 @@ public class ResumeService {
                     .put("message", "권한이 없습니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else if (resume == null || getTitleFromJson(resume).length() == 0) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "제목을 입력해주세요.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
         } else {
             Resume newResume = new Resume();
             newResume.setEmail(email);

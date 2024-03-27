@@ -2,15 +2,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="resumate.server.mybatis.ResumeMapper">
-  <select id="selectResumeHead" parameterType="String" resultType="List">
-    SELECT id, title, modified FROM resume
+  <resultMap id="resumeHeadMap" type="resumate.server.dto.Resume">
+    <id property="id" column="id"/>
+    <result property="title" column="title"/>
+    <result property="modified" column="modified"/>
+  </resultMap>
+  <select id="selectResumeHead" parameterType="String" resultMap="resumeHeadMap">
+    SELECT id, title, UNIX_TIMESTAMP(modified) AS modified FROM resume
     WHERE email = #{email}
     ORDER BY modified DESC
   </select>
   <select id="selectResumeBody" parameterType="_int" resultType="String">
     SELECT content FROM resume WHERE id = #{id}
   </select>
-  <select id="selectResumeId" parameterType="String" resultType="_int[]">
+  <select id="selectResumeId" parameterType="String" resultType="Integer">
     SELECT id FROM resume WHERE email = #{email}
   </select>
   <insert id="insertResume" parameterType="resumate.server.dto.Resume">

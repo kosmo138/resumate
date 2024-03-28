@@ -27,9 +27,8 @@ export default function ResumeCard({
 
   // // DropdownMenuItem를 클릭했을 때 호출되는 함수입니다.
   const changeClick = () => {
-    window.location.href = "`/resume/${resumeHead.id}`"
+    window.location.href = "/resume/{resumeHead.id}"
   }
-
   const resumeCopyClick = () => {
     // 새로운 제목 입력을 받는 모달 또는 인풋을 표시하고, 제목 변경 이벤트 핸들러 함수를 호출합니다.
     // 이 부분에 모달 또는 인풋을 표시하는 로직을 추가해야 합니다.
@@ -56,9 +55,9 @@ export default function ResumeCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <div className="font-bold">
-                    <DropdownMenuItem>
-                      <button onClick={changeClick}>수정하기</button>
-                    </DropdownMenuItem>
+                    {/* <DropdownMenuItem onClick={changeClick}>
+                      수정하기
+                    </DropdownMenuItem> */}
                     <DropdownMenuItem onClick={resumeCopyClick}>
                       복제하기
                     </DropdownMenuItem>
@@ -83,7 +82,7 @@ export default function ResumeCard({
           <div>{updatedAt}</div>
           {/* div 4 */}
           <div className="flex justify-end">
-            <Link href="/letter">
+            <Link href="/letter/edit/${resumeHead.id}">
               <ResumeButton />
             </Link>
           </div>

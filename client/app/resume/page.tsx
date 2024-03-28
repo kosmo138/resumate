@@ -37,12 +37,13 @@ export default function ResumeSelector() {
       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {resumeList.map((resumeHead, index) => (
           <div key={index}>
-            {/* <Link href={`/resume/${resumeHead.id}`} passHref> */}
-            <ResumeCard
-              key={index}
-              title={resumeHead.title}
-              updatedAt={resumeHead.updatedAt}
-            />
+            <Link href={`/resume/${resumeHead.id}`} passHref>
+              <ResumeCard
+                key={index}
+                title={resumeHead.title}
+                updatedAt={resumeHead.updatedAt}
+              />
+            </Link>
           </div>
         ))}
         <ResumeAddButton />

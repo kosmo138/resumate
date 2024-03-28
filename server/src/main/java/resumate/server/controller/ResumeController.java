@@ -1,5 +1,6 @@
 package resumate.server.controller;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,9 @@ public class ResumeController {
     private final ResumeService resumeService;
 
     @GetMapping("/test")
-    public ResponseEntity<String> test(@RequestHeader("authorization") String bearer) {
+    public ResponseEntity<String> getResumeTest(@RequestHeader("authorization") String bearer) {
         return ResponseEntity.ok().body(bearer);
-    }
+    } 
 
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<String> getResume(@RequestHeader("authorization") String bearer) {

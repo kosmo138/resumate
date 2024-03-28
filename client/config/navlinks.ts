@@ -8,7 +8,7 @@ export const navLinks = [
     path: "/letter",
   },
   {
-    route: "채용정보",
-    path: "/recruit",
+    route: "Q&A",
+    path: "/qna",
   },
 ]

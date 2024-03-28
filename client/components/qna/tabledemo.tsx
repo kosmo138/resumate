@@ -11,59 +11,59 @@ import {
  
 const invoices = [
   {
-    invoice: "001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    invoice: "1",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "이력서를 작성하는 방법을 알려주세요.",
   },
   {
-    invoice: "002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
+    invoice: "2",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "자기소개서를 작성하는 방법을 알려주세요.",
   },
   {
-    invoice: "003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
+    invoice: "3",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "이력서, 자기소개서를 파일로 저장하는 방법을 알려주세요.", 
   },
   {
-    invoice: "004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
+    invoice: "4",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "회원탈퇴 방법에 대하여 알려주세요.",
   },
   {
-    invoice: "005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
+    invoice: "5",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "이력서, 자기소개서 작성 꿀팁",
   },
   {
-    invoice: "006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
+    invoice: "6",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "AI에게 질문 할 때 효과적인 질문을 할 수 있는 방법.",
   },
   {
-    invoice: "007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    invoice: "7",
+    paymentStatus: "Q&A",
+    totalAmount: "관리자",
+    paymentMethod: "이력서, 자기소개서 수정 방법.",
   },
 ]
  
 export default function TableDemo() {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>세상에서 이력서를 가장 쉽게 작성하는 방법 Resumate.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead className="w-[100px]">No</TableHead>
+          <TableHead>카테고리</TableHead>
+          <TableHead>제목</TableHead>
+          <TableHead className="text-right">답변자</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

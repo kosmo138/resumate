@@ -19,6 +19,24 @@ export default function ResumeEditor(id: string) {
     .catch(() => notFound());
   const resumeBody: ResumeBody = response.parse();
   */
+  const resumeLoadData = {
+    title: "제목입니다만?",
+    careerData: [
+      { date: "2019-08 ~ 2020-10", content: "경력" },
+      { date: "2019-08 ~ 2020-10", content: "경력2" },
+    ],
+    careerText: "경력 세부내용",
+    education: [
+      { date: "2019-08 ~ 2020-10", content: "학력" },
+      { date: "2019-08 ~ 2020-10", content: "학력2" },
+    ],
+    skill: "스킬",
+    award: [
+      { date: "2019-08 ~ 2020-10", content: "수상" },
+      { date: "2019-08 ~ 2020-10", content: "수상2" },
+    ],
+    language: "외국어",
+  };
 
   const [formData, setFormData] = useState({
     title: "",
@@ -39,6 +57,33 @@ export default function ResumeEditor(id: string) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(JSON.stringify(formData));
+    // try {
+    //   bearerToken 설정부분
+    //   const bearerToken = "token";
+
+    //   fetch(`http://localhost/api/resume/${id}`, {
+    //     method: "PATCH",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${bearerToken}`,
+    //     },
+    //     body: JSON.stringify(formData),
+    //   })
+    //     .then((response) => {
+    //       if (!response.ok) {
+    //         throw new Error("이력서 데이터 전송 실패!");
+    //       }
+    //       return response.json();
+    //     })
+    //     .then((responseData) => {
+    //       console.log(responseData);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error:", error);
+    //     });
+    // } catch (error) {
+    //   console.error("Error:", error);
+    // }
   };
 
   return (
@@ -53,6 +98,7 @@ export default function ResumeEditor(id: string) {
       ></div>
       <form className="w-full" onSubmit={handleSubmit}>
         <ResumeTitle
+          titleData={resumeLoadData.title}
           onInputChange={(value) => handleInputChange("title", value)}
         />
         <ResumeCareer

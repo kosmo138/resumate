@@ -2,13 +2,13 @@
 ## 프로젝트 참여자 명단 및 역할, 작업 브랜치
 ### 김수영 [@suyons](https://github.com/suyons)
 아이디어 기획, 일정 관리, 프로토타입 제작
+* main
 * dev
 * feat/database
 * feat/prototype
 ### 백소나 [@baeksona](https://github.com/baeksona)
 웹 스크랩, 자연어 처리
 * feat/web-scrap
-* feat/natural-language
 ### 이동준 [@mogri89](https://github.com/mogri89)
 이력서 기능
 * feat/resume-1

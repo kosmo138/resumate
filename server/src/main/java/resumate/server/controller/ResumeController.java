@@ -21,6 +21,11 @@ import resumate.server.service.ResumeService;
 public class ResumeController {
     private final ResumeService resumeService;
 
+    @GetMapping("/test")
+    public ResponseEntity<String> getResumeTest(@RequestHeader("authorization") String bearer) {
+        return ResponseEntity.ok().body(bearer);
+    } 
+
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<String> getResume(@RequestHeader("authorization") String bearer) {
         return resumeService.selectResumeHead(bearer);

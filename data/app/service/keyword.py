@@ -1,6 +1,6 @@
 import json
-from core.models import Keyword
-from core.database import session
+from app.core.models import Keyword
+from app.core.database import session
 
 def insert_keyword(company, keyword_list):
     keyword_json = json.dumps(keyword_list)

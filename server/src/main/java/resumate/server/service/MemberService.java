@@ -32,17 +32,29 @@ public class MemberService {
     // true = 통과, 문제가 없는 상황
     // false = 실패, 문제가 있는 상황
 
-    // 이메일, 비밀번호 null 체크
+    /*
+     * 입력 유효성 검사
+     * 입력: 이메일, 비밀번호
+     * 출력: 이메일, 비밀번호가 null이 아니고 비어있지 않은지 확인
+     */
     public boolean checkNull(String email, String password) {
-        return email != null && password != null;
+        return email != null && password != null && !email.isEmpty() && !password.isEmpty();
     }
 
-    // 이메일 중복 확인
+    /*
+     * 이메일 중복 확인
+     * 입력: 이메일
+     * 출력: 이메일이 중복되지 않았는지 확인
+     */
     public boolean checkMemberMail(String email) {
         return memberMapper.selectMemberCount(email) == 0;
     }
 
-    // 이메일, 비밀번호 검증
+    /*
+     * 이메일, 비밀번호 검증
+     * 입력: 이메일, 비밀번호
+     * 출력: 이메일과 비밀번호 일치 여부
+     */
     public boolean checkMemberPass(String email, String password) {
         if (!checkNull(email, password)) {
             return false;
@@ -51,7 +63,11 @@ public class MemberService {
         return passwordEncoder.matches(password, encodedPass);
     }
 
-    // 토큰 생성 및 쿠키 저장
+    /*
+     * JWT 토큰을 쿠키에 저장
+     * 입력: 이메일
+     * 출력: 쿠키에 JWT 토큰 저장
+     */
     void tokenInCookie(String email, HttpServletResponse response) {
         String access_token = jwtConfig.issueAccessToken(email);
 
@@ -61,7 +77,11 @@ public class MemberService {
         response.addCookie(cookie);
     }
 
-    // 컨트롤러: 로그인
+    /*
+     * 로그인
+     * 입력: 이메일, 비밀번호
+     * 출력: 성공 -> 성공 메시지 + JWT를 쿠키에 저장 / 실패 -> 실패 메시지
+     */
     public ResponseEntity<String> loginHandler(Member member, HttpServletResponse response) {
         String email = member.getEmail();
         String password = member.getPassword();
@@ -84,7 +104,11 @@ public class MemberService {
         }
     }
 
-    // 컨트롤러: 회원가입
+    /*
+     * 회원가입
+     * 입력: 이메일, 비밀번호
+     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
+     */
     public ResponseEntity<String> insertMember(Member member) {
         String email = member.getEmail();
         String password = member.getPassword();
@@ -109,7 +133,11 @@ public class MemberService {
         }
     }
 
-    // 컨트롤러: 비밀번호 변경
+    /*
+     * 비밀번호 변경
+     * 입력: JWT, 기존 비밀번호, 신규 비밀번호
+     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
+     */
     public ResponseEntity<String> updateMember(String bearer, Member member) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);
@@ -143,7 +171,11 @@ public class MemberService {
         }
     }
 
-    // 컨트롤러: 회원 탈퇴
+    /*
+     * 회원탈퇴
+     * 입력: JWT, 비밀번호
+     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
+     */
     public ResponseEntity<String> deleteMember(String bearer, Member member) {
         String token = bearer.substring(7);
         String email = jwtConfig.getEmailFromToken(token);

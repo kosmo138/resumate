@@ -1,6 +1,5 @@
-import Image from "next/image"
 import HeadingText from "@/components/heading-text"
-import { featureCards } from "@/config/contents"
+import { featureCards } from "@/config/landing-content"
 import { Card, CardDescription, CardTitle } from "@/components/ui/card"
 import { Icons } from "@/components/icons"
 

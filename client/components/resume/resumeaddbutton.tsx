@@ -4,6 +4,7 @@ import { ResumeHead } from "@/types/resume"
 import ResumeCard from "./resumecard"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function ResumeAddButton({ addButton }: { addButton?: string }) {
   const [resumeList, setResumeList] = useState<ResumeHead[]>([])
@@ -43,7 +44,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
         <CardContent>
           <div className="mb-10 mt-8 text-center text-lg font-bold">
             <button onClick={handleClick}>
-              <img src="/add.svg" alt="add" />
+              <Image src="/add.svg" width={120} height={120} alt="add" />
             </button>
             <h3>새로 만들기</h3>
           </div>

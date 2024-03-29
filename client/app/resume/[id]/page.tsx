@@ -25,7 +25,7 @@ export default function ResumeEditor(id: string) {
       { date: "2019-08 ~ 2020-10", content: "경력" },
       { date: "2019-08 ~ 2020-10", content: "경력2" },
     ],
-    careerText: "경력 세부내용",
+    careerText: "",
     education: [
       { date: "2019-08 ~ 2020-10", content: "학력" },
       { date: "2019-08 ~ 2020-10", content: "학력2" },
@@ -39,13 +39,13 @@ export default function ResumeEditor(id: string) {
   };
 
   const [formData, setFormData] = useState({
-    title: "",
+    title: resumeLoadData.title,
     careerData: [{ date: "", content: "" }],
-    careerText: "",
+    careerText: resumeLoadData.careerText,
     education: [{ date: "", content: "" }],
-    skill: "",
+    skill: resumeLoadData.skill,
     award: [{ date: "", content: "" }],
-    language: "",
+    language: resumeLoadData.language,
   });
 
   // 자식 컴포넌트에서 전달된 값 처리
@@ -57,6 +57,21 @@ export default function ResumeEditor(id: string) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(JSON.stringify(formData));
+    // 공백을 포함하지 않은 데이터만 필터링
+    // const filteredFormData = {
+    //   ...formData,
+    //   careerData: formData.careerData.filter(
+    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
+    //   ),
+    //   education: formData.education.filter(
+    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
+    //   ),
+    //   award: formData.award.filter(
+    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
+    //   ),
+    // };
+    // console.log(JSON.stringify(filteredFormData));
+
     // try {
     //   bearerToken 설정부분
     //   const bearerToken = "token";
@@ -105,18 +120,21 @@ export default function ResumeEditor(id: string) {
           onInputChange={(value) => handleInputChange("careerData", value)}
         />
         <ResumeCareerTextarea
+          careerTextData={resumeLoadData.careerText}
           onInputChange={(value) => handleInputChange("careerText", value)}
         />
         <ResumeEducation
           onInputChange={(value) => handleInputChange("education", value)}
         />
         <ResumeSkill
+          skillData={resumeLoadData.skill}
           onInputChange={(value) => handleInputChange("skill", value)}
         />
         <ResumeAward
           onInputChange={(value) => handleInputChange("award", value)}
         />
         <ResumeLanguage
+          languageData={resumeLoadData.language}
           onInputChange={(value) => handleInputChange("language", value)}
         />
         <div className="flex justify-center items-center gap-4 mt-10">

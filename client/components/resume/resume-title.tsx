@@ -14,12 +14,12 @@ export function ResumeTitle({
 }) {
   const [inputValue, setInputValue] = useState("");
 
-  // ResumeTitle 컴포넌트가 로드될 때 titleData를 초기 값으로 설정
+  // 컴포넌트가 로드될 때 titleData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(titleData);
+    setInputValue(titleData || "");
   }, [titleData]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
     // 입력 값 부모 컴포넌트로 전달
@@ -35,7 +35,7 @@ export function ResumeTitle({
         type="text"
         placeholder={inputValue ? "" : resumeContents.titleContent}
         className="w-3/5 border-none"
-        value={inputValue !== "" ? inputValue : titleData}
+        value={inputValue}
         onChange={handleChange}
       />
     </div>

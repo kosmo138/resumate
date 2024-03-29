@@ -3,84 +3,69 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
-import requests
-from konlpy.tag import Hannanum
+from konlpy.tag import Kkma
 from gensim.models import Word2Vec
 import pandas as pd
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException
-
+from urllib.request import urlopen
+import ssl
+import requests
+from bs4 import BeautifulSoup
+from konlpy.tag import Kkma
 
 class GoogleSearchScraper:
     def __init__(self, chrome_options):
         self.chrome_options = chrome_options
-    
+
     def get_first_search_result_url(self, query):
-        # Chrome 옵션을 설정하여 WebDriver 초기화
+        print("크롬 웹 드라이버를 실행합니다...")
         driver = webdriver.Chrome(options=self.chrome_options)
+        print("구글 검색 페이지에 접근합니다...")
         driver.get(f"https://www.google.com/search?q={query}" + " 인재상")
-        
         try:
-            print("검색 결과 페이지에서 첫 번째 항목의 URL을 가져오는 중...")
+            print("첫 번째 항목의 URL을 가져오는 중...")
             first_title = WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "h3.LC20lb.MBeuO.DKV0Md"))
             )
             url = first_title.find_element(By.XPATH, "./parent::a").get_attribute("href")
-            print("첫 번째 항목 URL을 성공적으로 가져왔습니다.")
-        except Exception as e:
-            print("Error occurred while getting the first search result URL:", e)
-            url = None
+            print("첫 번째 검색 결과 URL을 성공적으로 가져왔습니다.")
+            print("첫 번째 검색 결과 URL:", url)
+            return url
+        except TimeoutException:
+            print("첫 번째 검색 결과 URL을 가져오는 동안 시간이 초과되었습니다.")
+            return None
         finally:
             driver.quit()
-        
-        return url
+
+
 
 
 class TextAnalyzer:
     def __init__(self):
-        self.hannanum = Hannanum()
+        self.kkma = Kkma()
 
     def extract_nouns_from_html(self, url):
-        print("명사 추출 중...")
-        print("사이트 주소:", url)  # 사이트 주소 출력
         try:
-            # SSL 인증서의 유효성을 확인하여 요청
-            response = requests.get(url, verify=True)
-            response.raise_for_status()  # HTTP 오류를 발생시키지 않는다면, 이 코드는 아무런 효과가 없다.
-        except requests.exceptions.SSLError as e:
-            print("SSL 인증서 유효성 확인에 실패했습니다:", e)
-            return None
-        except requests.exceptions.RequestException as e:
-            print("요청에 실패했습니다:", e)
-            return None
-
-        if response.status_code != 200:
-            print("HTML 가져오기에 실패했습니다. 상태 코드:", response.status_code)
-            return None
-
-        response.encoding = response.apparent_encoding
-        html = response.text
-
-        try:
-            soup = BeautifulSoup(html, "html.parser")
-            # 텍스트 추출
+            print("URL에서 HTML 내용을 가져옵니다...")
+            # SSL 인증서 확인 과정을 무시하고 데이터를 가져옵니다.
+            response = urlopen(url)
+            # html = response.read().decode('utf-8')
+            html = response.read()
+            html_decoded = html.decode('cp949', 'ignore')
+            print("HTML 내용을 성공적으로 가져왔습니다.")
+            print("HTML을 파싱합니다...")
+            soup = BeautifulSoup(html_decoded, "html.parser")
             text = soup.get_text()
-        except Exception as e:
-            print("HTML 파싱에 실패했습니다:", e)
-            return None
-
-        try:
-            # 일정 시간동안 명사 추출 시도
-            nouns = WebDriverWait(self.hannanum.nouns, timeout=10).until(
-                lambda driver: self.hannanum.nouns(text)
-            )
-            print("명사 추출 완료.")
+            print("HTML을 성공적으로 파싱했습니다.")
+            print("명사를 추출합니다...")
+            nouns = self.kkma.nouns(text)
+            print("명사를 성공적으로 추출했습니다.")
             return nouns
-        except TimeoutException:
-            print("명사 추출에 실패하였습니다: 시간 초과")
+        except Exception as e:
+            print(f"명사를 추출하는 데 실패했습니다: {e}")
             return None
 
-    
+
 
 class KeywordExtractor:
     def __init__(self, model_path):
@@ -114,7 +99,9 @@ def main():
     query = input("검색어를 입력하세요: ")
 
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
+    chrome_options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+    )
     chrome_options.add_argument("headless")
 
     scraper = GoogleSearchScraper(chrome_options)
@@ -132,7 +119,9 @@ def main():
                 related_keywords = extractor.extract_related_keywords(nouns, target_words)
 
                 print("인재상에 해당하는 키워드:", len(related_keywords), "개")
-                df = pd.DataFrame({"인재상에 해당하는 키워드(중복제거)": list(related_keywords)})
+                df = pd.DataFrame(
+                    {"인재상에 해당하는 키워드(중복제거)": list(related_keywords)}
+                )
                 print(df)
             else:
                 print("Word2Vec 모델을 로드하지 못했습니다. 모델 경로를 확인하세요.")

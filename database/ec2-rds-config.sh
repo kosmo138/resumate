@@ -2,22 +2,12 @@
 
 # EC2에서 포트 포워딩 설정 -> TCP 3306 요청을 RDS MySQL 데이터베이스로 전달합니다
 
-# 참고 문서
-# https://hons.io/how-to-ufw-port-forward/
-
-apt install mysql-client-core-8.0
-
-# MySQL 클라이언트 설치 이후 버전 확인
-mysql -V
-# mysql  Ver 8.0.36-0ubuntu0.22.04.1 for Linux on x86_64 ((Ubuntu))
-
-mysql -u root -h {MYSQL_ENDPOINT} -p
-# Enter password: {MYSQL_PASSWORD}
+# 참고 문서: https://hons.io/how-to-ufw-port-forward/
 
 # UFW 3306 포트 포워딩 설정
 sudo -s
 ufw allow 3306
-ufw route allow proto tcp from any to {RDS_INSTANCE_IP} port 3306
+ufw route allow proto tcp from any to {RDS_ENDPOINT} port 3306
 ufw status
 
 # 시작
@@ -101,6 +91,6 @@ iptables -t nat -L -v
 
 reboot
 
-# 이후 로컬 PC에서 RDS에서 구동되는 MySQL에 접속
-mysql -h {MYSQL_ENDPOINT} -D resumate -u kosmo -p
+# 이후 로컬 PC에서 EC2 Public IPv4 주소를 입력하여 RDS에서 실행 중인 MySQL에 접속
+mysql -h {MYSQL_ENDPOINT} -D {MYSQL_DBNAME} -u {MYSQL_USERNAME} -p
 # Enter password: {MYSQL_PASSWORD}

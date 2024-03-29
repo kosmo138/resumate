@@ -3,15 +3,23 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export function ResumeSkill({
+  skillData,
   onInputChange,
 }: {
+  skillData: string;
   onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
-  const handleChange = (e: any) => {
+
+  // 컴포넌트가 로드될 때 skillData를 초기 값으로 설정
+  useEffect(() => {
+    setInputValue(skillData);
+  }, [skillData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setInputValue(value);
     // 입력 값 부모 컴포넌트로 전달
@@ -26,7 +34,7 @@ export function ResumeSkill({
         </Label>
       </div>
       <Textarea
-        placeholder={resumeContents.skill.content}
+        placeholder={inputValue ? "" : resumeContents.skill.content}
         className="pt-12 my-5 ml-10 h-40"
         value={inputValue}
         onChange={handleChange}

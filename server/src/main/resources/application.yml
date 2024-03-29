@@ -3,6 +3,10 @@ spring:
     import: classpath:env.properties
   application:
     name: server
+  config:
+    import: classpath:env.properties
+  application:
+    name: server
   devtools:
     livereload:
       enabled: true

@@ -48,7 +48,7 @@ public class JwtConfig {
                 .compact();
     }
 
-    /* 
+    /*
      * 입력: JWT 토큰
      * 출력: 로그인 이메일 주소
      */
@@ -63,6 +63,10 @@ public class JwtConfig {
         }
     }
 
+    /*
+     * 입력: JWT 토큰
+     * 출력: 토큰 만료 여부 (true: 통과 / false: 만료)
+     */
     public boolean checkExpiration(String access_token) {
         try {
             JwtParserBuilder jwtParserBuilder = Jwts.parser().verifyWith(secretKey);

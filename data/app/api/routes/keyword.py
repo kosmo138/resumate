@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.service.keyword import select_keyword
+from app.service.keyword import thread_scrape_keyword
 import urllib.parse
 
 router = APIRouter()
@@ -11,4 +11,4 @@ def null_company_error():
 @router.get("/{company}")
 def get_keyword(company: str):
     company = urllib.parse.unquote(company)
-    return select_keyword(company)
+    return thread_scrape_keyword(company)

@@ -15,7 +15,6 @@ public class JsonBuilder {
         jsonObject = new LinkedHashMap<>();
     }
 
-    // key-value 쌍을 추가
     public JsonBuilder put(String key, Object value) {
         this.jsonObject.put(key, value);
         return this;

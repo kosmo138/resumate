@@ -19,3 +19,8 @@ def update_keyword(company, keyword_list):
 def delete_keyword(company):
     session.query(Keyword).filter(Keyword.company == company).delete()
     session.commit()
+
+def insertkeyword_bycompany(company):
+    keyword_list = ['A', 'B', 'C']
+    # 회사 이름 입력하면 인재상 키워드 뽑아 주는 로직
+    insert_keyword(company, keyword_list)

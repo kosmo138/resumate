@@ -8,6 +8,7 @@ from konlpy.tag import Hannanum
 from gensim.models import Word2Vec
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import TimeoutException
 
 
 class GoogleSearchScraper:
@@ -44,7 +45,7 @@ class TextAnalyzer:
         print("사이트 주소:", url)  # 사이트 주소 출력
         try:
             # SSL 인증서의 유효성을 확인하여 요청
-            response = requests.get(url, verify=False)
+            response = requests.get(url, verify=True)
             response.raise_for_status()  # HTTP 오류를 발생시키지 않는다면, 이 코드는 아무런 효과가 없다.
         except requests.exceptions.SSLError as e:
             print("SSL 인증서 유효성 확인에 실패했습니다:", e)
@@ -68,10 +69,16 @@ class TextAnalyzer:
             print("HTML 파싱에 실패했습니다:", e)
             return None
 
-        # HTML에서 추출한 텍스트를 형태소 분석기로 분석
-        nouns = self.hannanum.nouns(text)
-        print("명사 추출 완료.")
-        return nouns
+        try:
+            # 일정 시간동안 명사 추출 시도
+            nouns = WebDriverWait(self.hannanum.nouns, timeout=10).until(
+                lambda driver: self.hannanum.nouns(text)
+            )
+            print("명사 추출 완료.")
+            return nouns
+        except TimeoutException:
+            print("명사 추출에 실패하였습니다: 시간 초과")
+            return None
 
     
 

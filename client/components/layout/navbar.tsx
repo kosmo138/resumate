@@ -26,8 +26,7 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "auto";
     }
-    console.log("[Debug] jwt: ", jwt);
-  }, [navbar, jwt]);
+  }, [navbar]);
 
   return (
     <header className="select-none">

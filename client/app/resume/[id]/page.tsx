@@ -19,11 +19,14 @@ export default function ResumeEditor(id: string) {
     .catch(() => notFound());
   const resumeBody: ResumeBody = response.parse();
   */
-  const resumeLoadData = {
-    title: "제목입니다만?",
+
+  // 더미 데이터
+  const initialData = {
+    title: "",
     careerData: [
       { date: "2019-08 ~ 2020-10", content: "경력" },
-      { date: "2019-08 ~ 2020-10", content: "경력2" },
+      { date: "", content: "" },
+      { date: "", content: "" },
     ],
     careerText: "",
     education: [
@@ -39,13 +42,13 @@ export default function ResumeEditor(id: string) {
   };
 
   const [formData, setFormData] = useState({
-    title: resumeLoadData.title,
-    careerData: [{ date: "", content: "" }],
-    careerText: resumeLoadData.careerText,
-    education: [{ date: "", content: "" }],
-    skill: resumeLoadData.skill,
-    award: [{ date: "", content: "" }],
-    language: resumeLoadData.language,
+    title: initialData.title,
+    careerData: initialData.careerData,
+    careerText: initialData.careerText,
+    education: initialData.education,
+    skill: initialData.skill,
+    award: initialData.award,
+    language: initialData.language,
   });
 
   // 자식 컴포넌트에서 전달된 값 처리
@@ -56,21 +59,24 @@ export default function ResumeEditor(id: string) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(JSON.stringify(formData));
+    // console.log(JSON.stringify(formData));
     // 공백을 포함하지 않은 데이터만 필터링
-    // const filteredFormData = {
-    //   ...formData,
-    //   careerData: formData.careerData.filter(
-    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
-    //   ),
-    //   education: formData.education.filter(
-    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
-    //   ),
-    //   award: formData.award.filter(
-    //     (value) => value.date.trim() !== "" && value.content.trim() !== ""
-    //   ),
-    // };
-    // console.log(JSON.stringify(filteredFormData));
+    const filteredFormData = {
+      ...formData,
+      careerData: formData.careerData.filter(
+        (value, index) =>
+          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
+      ),
+      education: formData.education.filter(
+        (value, index) =>
+          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
+      ),
+      award: formData.award.filter(
+        (value, index) =>
+          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
+      ),
+    };
+    console.log(JSON.stringify(filteredFormData));
 
     // try {
     //   bearerToken 설정부분
@@ -113,28 +119,31 @@ export default function ResumeEditor(id: string) {
       ></div>
       <form className="w-full" onSubmit={handleSubmit}>
         <ResumeTitle
-          titleData={resumeLoadData.title}
+          initialTitle={formData.title}
           onInputChange={(value) => handleInputChange("title", value)}
         />
         <ResumeCareer
+          initialCareerData={formData.careerData}
           onInputChange={(value) => handleInputChange("careerData", value)}
         />
         <ResumeCareerTextarea
-          careerTextData={resumeLoadData.careerText}
+          initialCareerText={formData.careerText}
           onInputChange={(value) => handleInputChange("careerText", value)}
         />
         <ResumeEducation
+          initialEducation={formData.education}
           onInputChange={(value) => handleInputChange("education", value)}
         />
         <ResumeSkill
-          skillData={resumeLoadData.skill}
+          initialSkill={formData.skill}
           onInputChange={(value) => handleInputChange("skill", value)}
         />
         <ResumeAward
+          initialAward={formData.award}
           onInputChange={(value) => handleInputChange("award", value)}
         />
         <ResumeLanguage
-          languageData={resumeLoadData.language}
+          initialLanguage={formData.language}
           onInputChange={(value) => handleInputChange("language", value)}
         />
         <div className="flex justify-center items-center gap-4 mt-10">

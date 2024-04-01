@@ -6,18 +6,18 @@ import { resumeContents } from "@/config/resume-id-contents";
 import React, { useState, useEffect } from "react";
 
 export function ResumeSkill({
-  skillData,
+  initialSkill,
   onInputChange,
 }: {
-  skillData: string;
+  initialSkill: string;
   onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
 
   // 컴포넌트가 로드될 때 skillData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(skillData);
-  }, [skillData]);
+    setInputValue(initialSkill);
+  }, [initialSkill]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

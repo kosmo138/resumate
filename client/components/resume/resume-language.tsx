@@ -6,18 +6,18 @@ import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 
 export function ResumeLanguage({
-  languageData,
+  initialLanguage,
   onInputChange,
 }: {
-  languageData: string;
+  initialLanguage: string;
   onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
 
   // 컴포넌트가 로드될 때 skillData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(languageData);
-  }, [languageData]);
+    setInputValue(initialLanguage);
+  }, [initialLanguage]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

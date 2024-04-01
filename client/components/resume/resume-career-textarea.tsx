@@ -5,18 +5,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { resumeContents } from "@/config/resume-id-contents";
 
 export function ResumeCareerTextarea({
-  careerTextData,
+  initialCareerText,
   onInputChange,
 }: {
-  careerTextData: string;
+  initialCareerText: string;
   onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
 
   // 컴포넌트가 로드될 때 careerTextData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(careerTextData);
-  }, [careerTextData]);
+    setInputValue(initialCareerText);
+  }, [initialCareerText]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

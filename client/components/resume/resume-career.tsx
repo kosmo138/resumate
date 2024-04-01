@@ -1,23 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 
-interface EducationData {
+interface CareerData {
   date: string;
   content: string;
 }
 
 export function ResumeCareer({
+  initialCareerData,
   onInputChange,
 }: {
+  initialCareerData: CareerData[];
   onInputChange: (value: any) => void;
 }) {
-  const [formValues, setFormValues] = useState<EducationData[]>([
-    { date: "", content: "" },
-  ]);
+  const [formValues, setFormValues] = useState<CareerData[]>([]);
+
+  // 부모로부터 전달된 initialCareerData가 변경될 때 formValues 업데이트
+  useEffect(() => {
+    setFormValues(initialCareerData);
+  }, [initialCareerData]);
 
   // 추가 버튼 클릭 시 호출되는 함수
   const handleAddForm = () => {
@@ -27,7 +32,7 @@ export function ResumeCareer({
   // 인덱스별 데이터 변경 핸들러
   const handleChangeData = (
     index: number,
-    key: keyof EducationData,
+    key: keyof CareerData,
     value: string
   ) => {
     const updatedFormValues = [...formValues];

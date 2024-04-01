@@ -1,11 +1,9 @@
-"use client"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
 import React from "react"
-import ResumePDF from "./resumedownload"
-
+import ResumePage from "./resumedownload"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,13 +12,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export default function ResumeCard({
+  id,
   key,
   title,
-  updatedAt,
+  modified,
 }: {
+  id?: number
   key?: number
   title?: string
-  updatedAt?: string
+  modified?: string
 }) {
   // // 클릭 이벤트 처리 함수
   // const handleClick = () => {
@@ -49,7 +49,7 @@ export default function ResumeCard({
     fetch(url, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "resume/json",
       },
     })
       .then((response) => {
@@ -81,7 +81,10 @@ export default function ResumeCard({
                     <DropdownMenuItem onClick={resumeCopyClick}>
                       복제하기
                     </DropdownMenuItem>
-                    <ResumePDF />
+
+                    <ResumePage />
+                    {/* 동적 경로로 다운로드 파일을 만들고 싶다. */}
+
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제
@@ -95,11 +98,13 @@ export default function ResumeCard({
 
           {/* div 2 */}
           <div className="mt-3 flex grid h-20 w-full text-lg font-bold">
-            {title}
+            <Link href={`/resume/${id}`} passHref>
+              {title}
+            </Link>
           </div>
 
           {/* div 3 */}
-          <div>{updatedAt}</div>
+          <div>{modified}</div>
           {/* div 4 */}
           <div className="flex justify-end">
             <Link href="/letter/edit/${resumeHead.id}">

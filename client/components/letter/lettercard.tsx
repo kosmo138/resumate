@@ -8,7 +8,7 @@ export default function LetterCard({ letterHead }: { letterHead: LetterHead }) {
         <h3>{letterHead.title}</h3>
       </CardContent>
       <CardFooter>
-        <p>{letterHead.updatedAt}</p>
+        <p>{letterHead.modified}</p>
       </CardFooter>
     </Card>
   )

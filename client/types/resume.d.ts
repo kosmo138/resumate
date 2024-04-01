@@ -1,13 +1,13 @@
 type ResumeHead = {
   id: number
   title: string
-  updatedAt: string
+  modified: string
 }
 
 export type ResumeBody = {
   id?: number
   title?: string
-  updatedAt?: string
+  modified?: string
   career?: object
   education?: object
   skills?: string

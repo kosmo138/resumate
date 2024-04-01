@@ -5,10 +5,10 @@ import { ResumeHead } from "@/types/resume"
 
 export default function ResumeCopyCard({
   title,
-  updatedAt,
+  modified,
 }: {
   title?: string
-  updatedAt?: string
+  modified?: string
 }) {
   const [resumeList, setResumeList] = useState<ResumeHead[]>([
     // 기존 이력서 리스트 데이터
@@ -19,7 +19,7 @@ export default function ResumeCopyCard({
     const clickedResume = {
       id: resumeList.length + 1,
       title: `복제된 이력서 - ${title}`,
-      updatedAt: new Date().toISOString(),
+      modified: new Date().toISOString(),
     }
 
     // 이력서 리스트에 새로운 이력서 추가

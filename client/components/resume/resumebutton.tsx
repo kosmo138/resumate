@@ -38,11 +38,7 @@ export default function ResumeButton() {
   }
 
   return (
-    <Button
-      onClick={handleClick}
-      variant="outline"
-      className="ml-10 h-10 px-3 py-2"
-    >
+    <Button onClick={handleClick} className="ml-10 h-10 px-3 py-2">
       자기소개서 작성
     </Button>
   )

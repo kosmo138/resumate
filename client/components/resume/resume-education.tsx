@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
@@ -11,13 +11,18 @@ interface EducationData {
 }
 
 export function ResumeEducation({
+  initialEducation,
   onInputChange,
 }: {
+  initialEducation: EducationData[];
   onInputChange: (value: any) => void;
 }) {
-  const [formValues, setFormValues] = useState<EducationData[]>([
-    { date: "", content: "" },
-  ]);
+  const [formValues, setFormValues] = useState<EducationData[]>([]);
+
+  // 부모로부터 전달된 initialEducation가 변경될 때 formValues 업데이트
+  useEffect(() => {
+    setFormValues(initialEducation);
+  }, [initialEducation]);
 
   // 추가 버튼 클릭 시 호출되는 함수
   const handleAddForm = () => {

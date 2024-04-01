@@ -6,18 +6,18 @@ import { resumeContents } from "@/config/resume-id-contents";
 import { useState, useEffect } from "react";
 
 export function ResumeTitle({
-  titleData,
+  initialTitle,
   onInputChange,
 }: {
-  titleData: string;
+  initialTitle: string;
   onInputChange: (value: string) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
 
   // 컴포넌트가 로드될 때 titleData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(titleData || "");
-  }, [titleData]);
+    setInputValue(initialTitle);
+  }, [initialTitle]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
@@ -11,13 +11,18 @@ interface AwardData {
 }
 
 export function ResumeAward({
+  initialAward,
   onInputChange,
 }: {
+  initialAward: AwardData[];
   onInputChange: (value: any) => void;
 }) {
-  const [formValues, setFormValues] = useState<AwardData[]>([
-    { date: "", content: "" },
-  ]);
+  const [formValues, setFormValues] = useState<AwardData[]>([]);
+
+  // 부모로부터 전달된 initialEducation가 변경될 때 formValues 업데이트
+  useEffect(() => {
+    setFormValues(initialAward);
+  }, [initialAward]);
 
   // 추가 버튼 클릭 시 호출되는 함수
   const handleAddForm = () => {

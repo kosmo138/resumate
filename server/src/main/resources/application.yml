@@ -1,6 +1,32 @@
 spring:
+  config:
+    import: classpath:env.properties
+  application:
+    name: server
   devtools:
     livereload:
       enabled: true
     restart:
       enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+mybatis:
+  mapper-locations: classpath:*.xml
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+jwt:
+  secret: ${JWT_SECRET}

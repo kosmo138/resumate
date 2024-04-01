@@ -1,19 +1,27 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { LoginDialog } from "@/components/auth/logindialog"
 import { ModeToggle } from "@/components/mode-toggle"
 import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
+<<<<<<< HEAD
 import Image from "next/image"
 import  LoginDialog  from "@/components/auth/login"
 import { MemberMenu } from "../auth/membermenu"
+=======
+import { MemberMenu } from "@/components/auth/membermenu"
+import { useAuth } from "@/components/auth/authcontext"
+>>>>>>> origin/feat/prototype
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
   const [loginFlag, setLoginFlag] = useState<boolean>(false)
   /* true: 드롭다운 메뉴, false: 로그인 버튼 */
+<<<<<<< HEAD
   // const loginFlag = false
   
   const handleLogin = () => {
@@ -29,6 +37,9 @@ export default function Navbar() {
   // const handleLogout = () => {
   //   setLoginFlag(false);
   // };
+=======
+  const { email } = useAuth()
+>>>>>>> origin/feat/prototype
 
   const handleClick = async () => {
     setNavbar(false)
@@ -132,8 +143,13 @@ export default function Navbar() {
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
             {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
+<<<<<<< HEAD
             {loginFlag && <MemberMenu onLogout={handleLogin} />}
             {!loginFlag && <LoginDialog onLogin={handleLogin} />}
+=======
+            {email && <MemberMenu />}
+            {!email && <LoginDialog />}
+>>>>>>> origin/feat/prototype
             <ModeToggle />
           </div>
         )}

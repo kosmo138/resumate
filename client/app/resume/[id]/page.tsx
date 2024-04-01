@@ -32,9 +32,9 @@ export default function ResumeEditor(id: string) {
     })
     .then((resumeData) => {
       const initialData = {
-        title: resumeData.title || "", // title이 없을 경우 빈 문자열로 초기화
-        careerData: resumeData.careerData || [], // careerData가 없을 경우 빈 배열로 초기화
-        careerText: resumeData.careerText || "", // careerText가 없을 경우 빈 문자열로 초기화
+        title: resumeData.title || "",
+        careerData: resumeData.careerData || [],
+        careerText: resumeData.careerText || "",
         education: resumeData.education || [], // education이 없을 경우 빈 배열로 초기화
         skill: resumeData.skill || "", // skill이 없을 경우 빈 문자열로 초기화
         award: resumeData.award || [], // award가 없을 경우 빈 배열로 초기화

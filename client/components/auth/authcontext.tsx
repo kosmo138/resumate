@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const jwt = Cookies.get("authorization")
-    console.log("[Debug] jwt: ", jwt)
     if (jwt) {
       login(jwt)
     }

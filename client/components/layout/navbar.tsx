@@ -9,12 +9,12 @@ import { siteConfig } from "@/config/metadata";
 import { navLinks } from "@/config/navlinks";
 import { settings } from "@/config/settings";
 import { MemberMenu } from "@/components/auth/membermenu";
-import { useAuth } from "@/components/auth/authcontext";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false);
   /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const { email } = useAuth();
+  const jwt = Cookies.get("authorization");
 
   const handleClick = async () => {
     setNavbar(false);
@@ -26,7 +26,8 @@ export default function Navbar() {
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [navbar]);
+    console.log("[Debug] jwt: ", jwt);
+  }, [navbar, jwt]);
 
   return (
     <header className="select-none">
@@ -118,8 +119,8 @@ export default function Navbar() {
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
             {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
-            {email && <MemberMenu />}
-            {!email && <LoginDialog />}
+            {jwt && <MemberMenu />}
+            {!jwt && <LoginDialog />}
             <ModeToggle />
           </div>
         )}

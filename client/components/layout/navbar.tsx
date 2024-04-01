@@ -1,19 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { LoginDialog } from "@/components/auth/logindialog"
 import { ModeToggle } from "@/components/mode-toggle"
 import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
-import Image from "next/image"
-import { LoginDialog } from "@/components/auth/login"
-import { MemberMenu } from "../auth/membermenu"
+import { MemberMenu } from "@/components/auth/membermenu"
+import { useAuth } from "@/components/auth/authcontext"
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
   /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const loginFlag = false
+  const { email } = useAuth()
 
   const handleClick = async () => {
     setNavbar(false)
@@ -35,7 +36,7 @@ export default function Navbar() {
             <Link
               href="/"
               onClick={handleClick}
-              className="text-primary flex flex-row items-center gap-2 duration-200 lg:hover:scale-[1.10]"
+              className="flex flex-row items-center gap-2 text-primary duration-200 lg:hover:scale-[1.10]"
             >
               <Image
                 src="/logo.svg"
@@ -52,7 +53,7 @@ export default function Navbar() {
              */}
             <div className="flex gap-1 md:hidden">
               <button
-                className="text-primary focus:border-primary rounded-md p-2 outline-none focus:border"
+                className="rounded-md p-2 text-primary outline-none focus:border focus:border-primary"
                 aria-label="Hamburger Menu"
                 onClick={() => setNavbar(!navbar)}
               >
@@ -93,13 +94,13 @@ export default function Navbar() {
         <div>
           {/* 모바일: 햄버거 메뉴 클릭 시 메뉴 표시 */}
           <div
-            className={`bg-background absolute left-0 right-0 z-10 m-auto justify-self-center rounded-md border p-4 md:static md:mt-0 md:block md:border-none md:p-0 ${
+            className={`absolute left-0 right-0 z-10 m-auto justify-self-center rounded-md border bg-background p-4 md:static md:mt-0 md:block md:border-none md:p-0 ${
               navbar ? "block" : "hidden"
             }`}
             style={{ width: "100%", maxWidth: "20rem" }}
           >
             {/* navLinks = 이력서, 자소서, 채용정보 */}
-            <ul className="text-primary flex flex-col items-center space-y-4 opacity-60 md:flex-row md:space-x-6 md:space-y-0">
+            <ul className="flex flex-col items-center space-y-4 text-primary opacity-60 md:flex-row md:space-x-6 md:space-y-0">
               {navLinks.map((link) => (
                 <li key={link.route}>
                   <Link
@@ -117,8 +118,8 @@ export default function Navbar() {
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
             {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
-            {loginFlag && <MemberMenu />}
-            {!loginFlag && <LoginDialog />}
+            {email && <MemberMenu />}
+            {!email && <LoginDialog />}
             <ModeToggle />
           </div>
         )}

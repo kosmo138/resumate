@@ -3,7 +3,6 @@
 import Cookies from "js-cookie"
 import { createContext, useContext, useState, useEffect } from "react"
 
-
 interface AuthContextType {
   loggedin: boolean | null | undefined
   login: (jwt: string) => void
@@ -19,6 +18,11 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedin, setLoggedin] = useState<boolean>(false)
 
+  const logout = () => {
+    setLoggedin(false)
+    Cookies.remove("authorization", { path: "" })
+  }
+
   const login = (jwt: string) => {
     const payload_str: string = jwt.split(".")[1]
     const decodedPayload: string = Buffer.from(payload_str, "base64").toString(
@@ -28,14 +32,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (payload_obj.exp > Date.now() / 1000) {
       setLoggedin(true)
     } else {
-      setLoggedin(false)
-      Cookies.remove("authorization", { path: "" })
+      logout()
     }
-  }
-
-  const logout = () => {
-    setLoggedin(false)
-    Cookies.remove("authorization", { path: "" })
   }
 
   useEffect(() => {

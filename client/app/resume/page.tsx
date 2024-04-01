@@ -4,53 +4,33 @@ import HeadingText from "@/components/heading-text"
 import ResumeAddButton from "@/components/resume/resumeaddbutton"
 import ResumeCard from "@/components/resume/resumecard"
 import { ResumeHead } from "@/types/resume"
-import Link from "next/link"
+import Cookies from "js-cookie"
 
-export default function ResumeSelector() {
-  const [resumeList, setResumeList] = useState<ResumeHead[]>([])
+export default function ResumeSelector(id: string) {
+  const [resumeList, setResumeList] = useState<Array<ResumeHead>>([])
 
   useEffect(() => {
-    const fetchResumeList = async (token: string): Promise<ResumeHead[]> => {
+    const fetchResumeList = async () => {
       try {
-        const url = "http://localhost/api/resume/"
-        const response = await fetch(url, {
+        const response = await fetch("/api/resume", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("authorization")}`,
           },
         })
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok")
-        }
-
-        const resumeList: ResumeHead[] = await response.json()
-        resumeList.forEach((resume) => {
-          resume.updatedAt = convertDateFormat(resume.updatedAt)
-        })
-        return resumeList
+        const data = await response.json()
+        setResumeList(data)
       } catch (error) {
-        console.error("Error fetching resume list:", error)
-        return []
+        console.error(error)
       }
     }
 
-    const exampleToken: string = "your_token_here"
-
-    fetchResumeList(exampleToken)
-      .then((fetchedResumeList) => {
-        setResumeList(fetchedResumeList)
-      })
-      .catch((error) => {
-        console.error("Error fetching resume list:", error)
-      })
+    fetchResumeList()
   }, [])
 
-  const convertDateFormat = (dateString: string): string => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-CA")
-  }
+  const apiUrl = `http://localhost/api/resume/${id}`
+  const jwt = Cookies.get("authorization")
 
   return (
     <main className="container flex flex-col items-center py-8">
@@ -59,16 +39,83 @@ export default function ResumeSelector() {
         <ResumeAddButton />
         {resumeList.map((resumeHead, index) => (
           <div key={index}>
-            <Link href={`/resume/${resumeHead.id}`} passHref>
-              <ResumeCard
-                key={index}
-                title={resumeHead.title}
-                updatedAt={resumeHead.updatedAt}
-              />
-            </Link>
+            <ResumeCard
+              key={index}
+              id={resumeHead.id}
+              title={resumeHead.title}
+              modified={resumeHead.modified}
+            />
           </div>
         ))}
       </div>
     </main>
   )
 }
+
+/* 
+fetch(apiUrl, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt}`,
+  },
+})
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch resume data")
+    }
+    return response.json()
+  })
+  .then((resumeData) => {
+    const initialData = {
+      title: resumeData.title,
+      careerData: resumeData.careerData,
+      careerText: resumeData.careerText,
+      education: resumeData.education, // education이 없을 경우 빈 배열로 초기화
+      skill: resumeData.skill, // skill이 없을 경우 빈 문자열로 초기화
+      award: resumeData.award, // award가 없을 경우 빈 배열로 초기화
+      language: resumeData.language, // language가 없을 경우 빈 문자열로 초기화
+    }
+    console.log(resumeData)
+  })
+  .catch((error) => {
+    console.error("Error:", error)
+  })
+useEffect(() => {
+  const fetchResumeList = async (token: string): Promise<ResumeHead[]> => {
+    try {
+      const url = "http://localhost/api/resume/"
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      if (!response.ok) {
+        throw new Error("Network response was not ok")
+      }
+      const resumeList: ResumeHead[] = await response.json()
+      resumeList.forEach((resume) => {
+        resume.modified = convertDateFormat(resume.modified)
+      })
+      return resumeList
+    } catch (error) {
+      console.error("Error fetching resume list:", error)
+      return []
+    }
+  }
+  const exampleToken: string = "your_token_here"
+  fetchResumeList(exampleToken)
+    .then((fetchedResumeList) => {
+      setResumeList(fetchedResumeList)
+    })
+    .catch((error) => {
+      console.error("Error fetching resume list:", error)
+    })
+}, [])
+const convertDateFormat = (dateString: string): string => {
+  const date = new Date(dateString)
+  return date.toLocaleDateString("en-CA")
+}
+*/

@@ -5,7 +5,7 @@ export default function LetterForm({ letter }: { letter: LetterBody }) {
     <>
       <ul>
         <li>제목: {letter.title}</li>
-        <li>수정일: {letter.updatedAt}</li>
+        <li>수정일: {letter.modified}</li>
       </ul>
     </>
   )

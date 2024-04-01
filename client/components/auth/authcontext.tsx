@@ -3,22 +3,21 @@
 import Cookies from "js-cookie"
 import { createContext, useContext, useState, useEffect } from "react"
 
-type email = string | null
 
 interface AuthContextType {
-  email: email
+  loggedin: boolean | null | undefined
   login: (jwt: string) => void
   logout: () => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  email: null,
+  loggedin: false,
   login: () => {},
   logout: () => {},
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [email, setEmail] = useState<email>(null)
+  const [loggedin, setLoggedin] = useState<boolean>(false)
 
   const login = (jwt: string) => {
     const payload_str: string = jwt.split(".")[1]
@@ -26,11 +25,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       "utf-8"
     )
     const payload_obj = JSON.parse(decodedPayload)
-    setEmail(payload_obj.sub)
+    if (payload_obj.exp > Date.now() / 1000) {
+      setLoggedin(true)
+    } else {
+      setLoggedin(false)
+      Cookies.remove("authorization", { path: "" })
+    }
   }
 
   const logout = () => {
-    setEmail(null)
+    setLoggedin(false)
     Cookies.remove("authorization", { path: "" })
   }
 
@@ -42,7 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [login])
 
   return (
-    <AuthContext.Provider value={{ email, login, logout }}>
+    <AuthContext.Provider value={{ loggedin, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

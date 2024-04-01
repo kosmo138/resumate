@@ -11,16 +11,43 @@ import { ResumeLanguage } from "@/components/resume/resume-language";
 import ResumeCancleButton from "@/components/resume/resume-cancle-button";
 import HeadingText from "@/components/heading-text";
 import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
 
 export default function ResumeEditor(id: string) {
-  /* GET 요청에 대한 응답이 없으면 404 오류 페이지를 표시합니다 */
-  /*const response = await fetch(`${baseUrl}/api/resume/${id}`)
-    .then((res) => res.json())
-    .catch(() => notFound());
-  const resumeBody: ResumeBody = response.parse();
-  */
+  const apiUrl = `http://localhost/api/resume/${id}`;
+  const jwt = Cookies.get("authorization");
+
+  fetch(apiUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch resume data");
+      }
+      return response.json();
+    })
+    .then((resumeData) => {
+      const initialData = {
+        title: resumeData.title || "", // title이 없을 경우 빈 문자열로 초기화
+        careerData: resumeData.careerData || [], // careerData가 없을 경우 빈 배열로 초기화
+        careerText: resumeData.careerText || "", // careerText가 없을 경우 빈 문자열로 초기화
+        education: resumeData.education || [], // education이 없을 경우 빈 배열로 초기화
+        skill: resumeData.skill || "", // skill이 없을 경우 빈 문자열로 초기화
+        award: resumeData.award || [], // award가 없을 경우 빈 배열로 초기화
+        language: resumeData.language || "", // language가 없을 경우 빈 문자열로 초기화
+      };
+      console.log(resumeData);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
   // 더미 데이터
+  /*
   const initialData = {
     title: "",
     careerData: [
@@ -40,6 +67,7 @@ export default function ResumeEditor(id: string) {
     ],
     language: "외국어",
   };
+  */
 
   const [formData, setFormData] = useState({
     title: initialData.title,
@@ -77,6 +105,7 @@ export default function ResumeEditor(id: string) {
       ),
     };
     console.log(JSON.stringify(filteredFormData));
+    console.log(jwt);
 
     // try {
     //   bearerToken 설정부분

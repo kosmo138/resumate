@@ -4,8 +4,8 @@ import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
 import React from "react"
-import ResumePage from "./resumedownload"
-import { ResumeHead } from "@/types/resume"
+import ResumePDF from "./resumedownload"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,7 +81,7 @@ export default function ResumeCard({
                     <DropdownMenuItem onClick={resumeCopyClick}>
                       복제하기
                     </DropdownMenuItem>
-                    <ResumePage />
+                    <ResumePDF />
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제

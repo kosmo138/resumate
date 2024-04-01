@@ -73,7 +73,9 @@ public class ResumeService {
             String responseJson = jsonBuilder
                     .put("status", "fail")
                     .put("message", "로그인이 필요합니다.")
-                    .build();
+                    .build(); 
+                    //복잡한 객체의 생성과정과 표현방법을 분리하여 다양한 구성의 인스턴스를 만드는 생성 패턴.
+                    //예를 들어서 햄버거나 샌드위치를 주문할 때 취향대로 선택적인 속재료를 유연하게 받는다.
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
             String email = getEmailFromBearer(bearer);

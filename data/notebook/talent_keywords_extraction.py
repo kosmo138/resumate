@@ -12,15 +12,19 @@ import ssl
 import requests
 from bs4 import BeautifulSoup
 from konlpy.tag import Kkma
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 class GoogleSearchScraper:
-    def __init__(self, chrome_options):
-        self.chrome_options = chrome_options
+    def __init__(self, options):
+        self.chrome_options = options
 
     def get_first_search_result_url(self, query):
         print("크롬 웹 드라이버를 실행합니다...")
-        driver = webdriver.Chrome(options=self.chrome_options)
+        chrome_driver_path = "chromedriver.exe"  # 직접 설치된 드라이버의 경로로 지정
+
         print("구글 검색 페이지에 접근합니다...")
+        driver = webdriver.Chrome(options=self.chrome_options)  # 수정된 부분
         driver.get(f"https://www.google.com/search?q={query}" + " 인재상")
         try:
             print("첫 번째 항목의 URL을 가져오는 중...")
@@ -36,9 +40,6 @@ class GoogleSearchScraper:
             return None
         finally:
             driver.quit()
-
-
-
 
 class TextAnalyzer:
     def __init__(self):
@@ -65,8 +66,6 @@ class TextAnalyzer:
             print(f"명사를 추출하는 데 실패했습니다: {e}")
             return None
 
-
-
 class KeywordExtractor:
     def __init__(self, model_path):
         self.model_path = model_path
@@ -84,27 +83,26 @@ class KeywordExtractor:
 
     def extract_related_keywords(self, nouns, target_words, threshold=0.6):
         related_keywords = set()
-        for word in target_words:
+        for target_word in target_words:
             for noun in nouns:
                 try:
-                    similarity = self.model.wv.similarity(noun, word)
+                    similarity = self.model.wv.similarity(noun, target_word)
                     if similarity >= threshold:
                         related_keywords.add(noun)
                 except KeyError:
                     pass
         return related_keywords
 
-
 def main():
     query = input("검색어를 입력하세요: ")
 
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+    options = ChromeOptions()
+    options.add_argument(
+        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
     )
-    chrome_options.add_argument("headless")
+    options.add_argument("--headless")
 
-    scraper = GoogleSearchScraper(chrome_options)
+    scraper = GoogleSearchScraper(options)
     first_url = scraper.get_first_search_result_url(query)
 
     if first_url:
@@ -129,7 +127,6 @@ def main():
             print("사이트에서 명사를 추출할 수 없습니다.")
     else:
         print("검색 결과 URL을 가져오지 못했습니다.")
-
 
 if __name__ == "__main__":
     main()

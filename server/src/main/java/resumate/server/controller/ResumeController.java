@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +51,17 @@ public class ResumeController {
     public ResponseEntity<String> postResume(@RequestHeader("authorization") String bearer,
             @RequestBody String resume) {
         return resumeService.insertResume(bearer, resume);
+    }
+
+    /*
+     * PUT /api/resume/1 -> 이력서 복사
+     * 입력: 헤더 JWT, 이력서 ID
+     * 출력: 이력서 복사 성공 메시지
+     */
+    @PutMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<String> putResumeById(@RequestHeader("authorization") String bearer,
+            @PathVariable("id") int id) {
+        return resumeService.cloneResume(bearer, id);
     }
 
     /*

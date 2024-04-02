@@ -14,7 +14,6 @@ import { useAuth } from "@/components/auth/authcontext"
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
-  /* true: 드롭다운 메뉴, false: 로그인 버튼 */
   const { loggedin } = useAuth()
 
   const handleClick = async () => {

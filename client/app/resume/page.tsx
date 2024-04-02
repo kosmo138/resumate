@@ -55,18 +55,16 @@ export default function ResumeSelector(id: string) {
         {isError && <UnauthorizedDialog />}
         {!isError &&
           resumeList.map((resumeHead, index) => (
-            <div key={index}>
-              <ResumeCard
-                key={index}
-                id={resumeHead.id}
-                title={resumeHead.title}
-                modified={
-                  typeof resumeHead.modified === "number"
-                    ? formatDate(resumeHead.modified)
-                    : resumeHead.modified
-                } // 수정된 날짜를 포맷팅하여 전달합니다.
-              />
-            </div>
+            <ResumeCard
+              key={index}
+              id={resumeHead.id}
+              title={resumeHead.title}
+              modified={
+                typeof resumeHead.modified === "number"
+                  ? formatDate(resumeHead.modified)
+                  : resumeHead.modified
+              } // 수정된 날짜를 포맷팅하여 전달합니다.
+            />
           ))}
       </div>
     </main>

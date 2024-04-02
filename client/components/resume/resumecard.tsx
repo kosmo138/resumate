@@ -3,7 +3,6 @@ import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
 import React from "react"
-
 import Cookies from "js-cookie"
 import {
   DropdownMenu,
@@ -71,6 +70,36 @@ export default function ResumeCard({
         console.log("Error:", error)
       })
   }
+
+  const data = {
+    title: "제목을 입력해주세요 ",
+    careerData: [{ date: "", content: "" }],
+    careerText: "",
+    education: [{ date: "", content: "" }],
+    skill: " ",
+    award: [{ date: "", content: "" }],
+    language: " ",
+  }
+  fetch(`/api/resume`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Beare ${Cookies.get("authorization")}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok")
+      }
+      return response.json()
+    })
+    .then((responseData) => {
+      alert(responseData)
+    })
+    .catch((error) => {
+      console.log("Error:", error)
+    })
 
   return (
     <Card>

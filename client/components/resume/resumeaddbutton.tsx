@@ -36,7 +36,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
       setResumeList(newResumeList)
     }
     const data = {
-      title: " ",
+      title: "제목을 입력해주세요 ",
       careerData: [{ date: "", content: "" }],
       careerText: "",
       education: [{ date: "", content: "" }],
@@ -59,7 +59,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
         return response.json()
       })
       .then((responseData) => {
-        console.log(responseData)
+        alert(responseData)
       })
       .catch((error) => {
         console.log("Error:", error)

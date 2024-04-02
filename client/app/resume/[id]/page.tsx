@@ -12,12 +12,15 @@ import ResumeCancleButton from "@/components/resume/resume-cancle-button";
 import HeadingText from "@/components/heading-text";
 import Cookies from "js-cookie";
 import ResumeSubmitButton from "@/components/resume/resume-submit-button";
+import ResumeError from "@/components/resume/resume-error-modal";
 
 export default function ResumeEditor({ params }: { params: { id: string } }) {
   //url 경로
   const apiUrl = `/api/resume/${params.id}`;
   // bearer 토큰 관리(추후 수정 예상)
   const jwt = Cookies.get("authorization");
+  // 브라우저 경로로 권한 없는 이력서 접속 시 뜨는 모달창
+  const [errorPageOpen, setErrorPageOpen] = useState(false);
 
   // fetch로 데이터 가져오기 위한 이력서 초기화
   const initialData = {
@@ -40,7 +43,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     language: initialData.language,
   });
 
-  // rest api에서 등록된 이력서로 화면에 랜더링하기 위한 초기값 설정
+  // rest api로 등록된 이력서로 화면에 랜더링하기 위한 초기값 설정
   useEffect(() => {
     fetch(apiUrl, {
       method: "GET",
@@ -77,6 +80,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
       })
       .catch((error) => {
         console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
+        setErrorPageOpen(true);
       });
   }, [apiUrl]); // 이력서 해당 주소 변경될 때마다 useEffect 재실행
 
@@ -139,6 +143,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         role="none"
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
+
       <form className="w-full" onSubmit={handleSubmit}>
         <ResumeTitle
           initialTitle={formData.title}
@@ -173,6 +178,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
           <ResumeSubmitButton />
         </div>
       </form>
+      <ResumeError error={errorPageOpen} />
     </main>
   );
 }

@@ -67,15 +67,15 @@ ALTER TABLE resume
 MODIFY COLUMN modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
 /* member CRUD */
-INSERT INTO member (email, PASSWORD)
+INSERT INTO member (email, password)
 VALUES ('1@test.com', '1111');
 
-SELECT PASSWORD
+SELECT password
 FROM member
 WHERE email = '1@test.com';
 
 UPDATE member
-SET PASSWORD = '2222'
+SET password = '2222'
 WHERE email = '1@test.com';
 
 DELETE FROM member

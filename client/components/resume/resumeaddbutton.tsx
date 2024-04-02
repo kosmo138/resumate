@@ -34,6 +34,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
         // 그리고 '[0]'은 분할된 결과 배열에서 첫 번째 요소를 선택하는 것을 의미합니다.
       },
     ]
+
     setResumeList(newResumeList)
     console.log("새이력서 추가")
   }

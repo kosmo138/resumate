@@ -3,7 +3,7 @@ import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
 import React from "react"
-import ResumePage from "./resumedownload"
+
 import Cookies from "js-cookie"
 import {
   DropdownMenu,
@@ -21,15 +21,32 @@ export default function ResumeCard({
   title?: string
   modified?: string
 }) {
-  const changeClick = () => {
-    window.location.href = "/resume/{resumeHead.id}"
-  }
   const cloneClick = () => {
-    console.log(`title복제`)
+    // 서버로 클론 요청을 보내는 비동기 함수 호출
+    fetch(`/api/resume/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("authorization")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error("클론에 실패했습니다.")
+      })
+      .then((data) => {
+        alert(data.message)
+        window.location.reload()
+        // 클론 성공 시, 필요한 작업 수행
+      })
+      .catch((error) => {
+        console.error("에러 발생:", error)
+        // 에러 처리
+      })
   }
-  const download = () => {
-    console.log(`title다운로드`)
-  }
+
   const deleteClick = () => {
     // // 클릭 이벤트 처리 함수
     // 이부분에 fetch 함수 써서 삭제 요청
@@ -68,7 +85,9 @@ export default function ResumeCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <div className="font-bold">
-                    <DropdownMenuItem>복제</DropdownMenuItem>
+                    <DropdownMenuItem onClick={cloneClick}>
+                      복제
+                    </DropdownMenuItem>
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제

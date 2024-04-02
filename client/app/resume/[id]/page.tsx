@@ -14,10 +14,12 @@ import Cookies from "js-cookie";
 import ResumeSubmitButton from "@/components/resume/resume-submit-button";
 
 export default function ResumeEditor({ params }: { params: { id: string } }) {
+  //url 경로
   const apiUrl = `/api/resume/${params.id}`;
+  // bearer 토큰 관리(추후 수정 예상)
   const jwt = Cookies.get("authorization");
 
-  // 더미 데이터
+  // fetch로 데이터 가져오기 위한 이력서 초기화
   const initialData = {
     title: "",
     careerData: [{ date: "", content: "" }],
@@ -38,6 +40,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     language: initialData.language,
   });
 
+  // rest api에서 등록된 이력서로 화면에 랜더링하기 위한 초기값 설정
   useEffect(() => {
     fetch(apiUrl, {
       method: "GET",
@@ -75,7 +78,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
       .catch((error) => {
         console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
       });
-  }, [apiUrl]); // apiUrl, jwt가 변경될 때마다 useEffect 재실행
+  }, [apiUrl]); // 이력서 해당 주소 변경될 때마다 useEffect 재실행
 
   // 자식 컴포넌트에서 전달된 값 처리
   const handleInputChange = (key: string, value: string) => {
@@ -85,7 +88,6 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // console.log(JSON.stringify(formData));
     // 공백을 포함하지 않은 데이터만 필터링
     const filteredFormData = {
       ...formData,
@@ -103,9 +105,8 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
       ),
     };
 
+    // 이력서 restAPI 통해 db 전달
     try {
-      //bearerToken 설정부분
-
       fetch(apiUrl, {
         method: "PATCH",
         headers: {

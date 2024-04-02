@@ -1,29 +1,30 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ResumeCareer } from "@/components/resume/resume-career";
-import { ResumeTitle } from "@/components/resume/resume-title";
-import { ResumeCareerTextarea } from "@/components/resume/resume-career-textarea";
-import { ResumeEducation } from "@/components/resume/resume-education";
-import { ResumeSkill } from "@/components/resume/resume-skill";
-import { ResumeAward } from "@/components/resume/resume-award";
-import { ResumeLanguage } from "@/components/resume/resume-language";
+import ResumeCareer from "@/components/resume/resume-career";
+import ResumeTitle from "@/components/resume/resume-title";
+import ResumeCareerTextarea from "@/components/resume/resume-career-textarea";
+import ResumeEducation from "@/components/resume/resume-education";
+import ResumeSkill from "@/components/resume/resume-skill";
+import ResumeAward from "@/components/resume/resume-award";
+import ResumeLanguage from "@/components/resume/resume-language";
 import ResumeCancleButton from "@/components/resume/resume-cancle-button";
 import HeadingText from "@/components/heading-text";
 import Cookies from "js-cookie";
 import ResumeSubmitButton from "@/components/resume/resume-submit-button";
 import ResumeError from "@/components/resume/resume-error-modal";
+import ResumePage from "@/components/resume/resumedownload";
 
 export default function ResumeEditor({ params }: { params: { id: string } }) {
-  //url 경로
+  // url 경로
   const apiUrl = `/api/resume/${params.id}`;
   // bearer 토큰 관리(추후 수정 예상)
   const jwt = Cookies.get("authorization");
   // 브라우저 경로로 권한 없는 이력서 접속 시 뜨는 모달창
   const [errorPageOpen, setErrorPageOpen] = useState(false);
 
-  // fetch로 데이터 가져오기 위한 이력서 초기화
-  const initialData = {
+  // 동적으로 변하는 이력서 데이터를 useState로 관리하기 위해 이력서 폼 초기화
+  const [formData, setFormData] = useState({
     title: "",
     careerData: [{ date: "", content: "" }],
     careerText: "",
@@ -31,16 +32,6 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     skill: "",
     award: [{ date: "", content: "" }],
     language: "",
-  };
-
-  const [formData, setFormData] = useState({
-    title: initialData.title,
-    careerData: initialData.careerData,
-    careerText: initialData.careerText,
-    education: initialData.education,
-    skill: initialData.skill,
-    award: initialData.award,
-    language: initialData.language,
   });
 
   // rest api로 등록된 이력서로 화면에 랜더링하기 위한 초기값 설정
@@ -69,20 +60,21 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
           language,
         } = data;
         setFormData({
-          title: title || initialData.title,
-          careerData: careerData || initialData.careerData,
-          careerText: careerText || initialData.careerText,
-          education: education || initialData.education,
-          skill: skill || initialData.skill,
-          award: award || initialData.award,
-          language: language || initialData.language,
+          title: title,
+          careerData: careerData,
+          careerText: careerText,
+          education: education,
+          skill: skill,
+          award: award,
+          language: language,
         });
       })
       .catch((error) => {
         console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
+        // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
         setErrorPageOpen(true);
       });
-  }, [apiUrl]); // 이력서 해당 주소 변경될 때마다 useEffect 재실행
+  }, [apiUrl]); // 웹 경로 변경될 때마다 useEffect 재실행
 
   // 자식 컴포넌트에서 전달된 값 처리
   const handleInputChange = (key: string, value: string) => {
@@ -92,7 +84,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // 공백을 포함하지 않은 데이터만 필터링
+    // 2열 이후로 공백을 포함하지 않은 데이터만 필터링
     const filteredFormData = {
       ...formData,
       careerData: formData.careerData.filter(
@@ -109,7 +101,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
       ),
     };
 
-    // 이력서 restAPI 통해 db 전달
+    // 이력서를 restAPI 통해 db로 전달
     try {
       fetch(apiUrl, {
         method: "PATCH",
@@ -130,6 +122,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         });
     } catch (error) {
       console.error("Error:", error);
+      alert("이력서 저장에 실패했습니다.");
     }
   };
 
@@ -143,7 +136,6 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         role="none"
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
-
       <form className="w-full" onSubmit={handleSubmit}>
         <ResumeTitle
           initialTitle={formData.title}
@@ -176,6 +168,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         <div className="flex justify-center items-center gap-4 mt-10">
           <ResumeCancleButton />
           <ResumeSubmitButton />
+          <ResumePage />
         </div>
       </form>
       <ResumeError error={errorPageOpen} />

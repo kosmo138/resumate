@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 
-export function ResumeLanguage({
+export default function ResumeLanguage({
   initialLanguage,
   onInputChange,
 }: {
@@ -34,7 +34,7 @@ export function ResumeLanguage({
         </Label>
       </div>
       <Textarea
-        placeholder={inputValue ? "" : resumeContents.language.content}
+        placeholder={resumeContents.language.content}
         className="pt-12 my-5 ml-10 h-40"
         value={inputValue}
         onChange={handleChange}

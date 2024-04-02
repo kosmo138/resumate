@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 import React, { useState, useEffect } from "react";
 
-export function ResumeSkill({
+export default function ResumeSkill({
   initialSkill,
   onInputChange,
 }: {
@@ -34,7 +34,7 @@ export function ResumeSkill({
         </Label>
       </div>
       <Textarea
-        placeholder={inputValue ? "" : resumeContents.skill.content}
+        placeholder={resumeContents.skill.content}
         className="pt-12 my-5 ml-10 h-40"
         value={inputValue}
         onChange={handleChange}

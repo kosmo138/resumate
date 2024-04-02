@@ -10,7 +10,7 @@ interface EducationData {
   content: string;
 }
 
-export function ResumeEducation({
+export default function ResumeEducation({
   initialEducation,
   onInputChange,
 }: {
@@ -95,5 +95,3 @@ export function ResumeEducation({
     </div>
   );
 }
-
-export default ResumeEducation;

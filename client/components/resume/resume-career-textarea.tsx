@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { resumeContents } from "@/config/resume-id-contents";
 
-export function ResumeCareerTextarea({
+export default function ResumeCareerTextarea({
   initialCareerText,
   onInputChange,
 }: {
@@ -28,7 +28,7 @@ export function ResumeCareerTextarea({
   return (
     <div className="justify-start w-full my-3">
       <Textarea
-        placeholder={inputValue ? "" : resumeContents.textareaContent}
+        placeholder={resumeContents.textareaContent}
         className="pt-7 my-5 ml-10 h-40"
         value={inputValue}
         onChange={handleChange}

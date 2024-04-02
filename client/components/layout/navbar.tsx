@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { LoginDialog } from "@/components/auth/logindialog"
+import { RegisterDialog } from "@/components/auth/registerdialog"
 import { ModeToggle } from "@/components/mode-toggle"
 import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
@@ -119,7 +120,12 @@ export default function Navbar() {
           <div className="hidden space-x-4 md:block">
             {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
             {loggedin && <MemberMenu />}
-            {!loggedin && <LoginDialog />}
+            {!loggedin && (
+              <>
+                <LoginDialog />
+                <RegisterDialog />
+              </>
+            )}
             <ModeToggle />
           </div>
         )}

@@ -1,4 +1,9 @@
-uvicorn
+beautifulsoup4
 fastapi
-sqlalchemy
+gensim
+konlpy
 mysqlclient
+requests
+selenium
+sqlalchemy
+uvicorn

@@ -117,7 +117,6 @@ export default function Navbar() {
         </div>
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
-            {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
             {loggedin && <MemberMenu />}
             {!loggedin && (
               <>

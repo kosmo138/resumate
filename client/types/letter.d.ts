@@ -8,7 +8,7 @@ export type LetterBody = {
   resume_id?: number
   title?: string
   company?: string
-  role?: string
+  job?: string
   content?: LetterContent[]
 }
 

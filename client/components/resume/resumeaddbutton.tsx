@@ -5,6 +5,7 @@ import ResumeCard from "./resumecard"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import Image from "next/image"
+import Cookies from "js-cookie"
 
 export default function ResumeAddButton({ addButton }: { addButton?: string }) {
   const [resumeList, setResumeList] = useState<ResumeHead[]>([])
@@ -23,20 +24,46 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
   }, [resumeList])
 
   const handleClick = () => {
-    const newResumeList = [
-      ...resumeList,
-      {
-        id: resumeList.length + 1,
-        title: `새로운 이력서 ${resumeList.length + 1}`,
-        modified: new Date().toISOString().split("T")[0],
-        // . split("T")[0], 문자열을 특정 구분자를 기준으로 나누고, 그결과를 배열로 반환하는 javascript의 문자열 메서드인 split()을 사용하는 것
-        // 여기서 "T"는 구분자로 사용되며, 문자열을 "T"를 기준으로 분할 합니다.
-        // 그리고 '[0]'은 분할된 결과 배열에서 첫 번째 요소를 선택하는 것을 의미합니다.
+    {
+      const newResumeList = [
+        ...resumeList,
+        {
+          id: resumeList.length + 1,
+          title: `새로운 이력서 ${resumeList.length + 1}`,
+          modified: new Date().toISOString().split("T")[0],
+        },
+      ]
+      setResumeList(newResumeList)
+    }
+    const data = {
+      title: " ",
+      careerData: [{ date: "", content: "" }],
+      careerText: "",
+      education: [{ date: "", content: "" }],
+      skill: " ",
+      award: [{ date: "", content: "" }],
+      language: " ",
+    }
+    fetch(`/api/resume`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Beare ${Cookies.get("authorization")}`,
       },
-    ]
-
-    setResumeList(newResumeList)
-    console.log("새이력서 추가")
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok")
+        }
+        return response.json()
+      })
+      .then((responseData) => {
+        console.log(responseData)
+      })
+      .catch((error) => {
+        console.log("Error:", error)
+      })
   }
 
   return (

@@ -73,9 +73,7 @@ public class ResumeService {
             String responseJson = jsonBuilder
                     .put("status", "fail")
                     .put("message", "로그인이 필요합니다.")
-                    .build(); 
-                    //복잡한 객체의 생성과정과 표현방법을 분리하여 다양한 구성의 인스턴스를 만드는 생성 패턴.
-                    //예를 들어서 햄버거나 샌드위치를 주문할 때 취향대로 선택적인 속재료를 유연하게 받는다.
+                    .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
             String email = getEmailFromBearer(bearer);
@@ -200,6 +198,43 @@ public class ResumeService {
                 String responseJson = jsonBuilder
                         .put("status", "success")
                         .put("message", "이력서가 추가되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            }
+        }
+    }
+
+    /*
+     * 이력서 복제
+     * 입력: Bearer 토큰, 이력서 ID
+     * 출력: 성공 -> 이력서 복제 성공 메시지 / 실패 -> 권한 없음 메시지
+     */
+    public ResponseEntity<String> cloneResume(String bearer, int id) {
+        if (bearer == null || bearer.isEmpty()) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "로그인이 필요합니다.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String email = getEmailFromBearer(bearer);
+
+            if (!isResumeOwner(email, id)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else {
+                String resumeBody = resumeMapper.selectResumeBody(id);
+                Resume resume = new Resume();
+                resume.setEmail(email);
+                resume.setTitle(getTitleFromJson(resumeBody));
+                resume.setContent(resumeBody);
+                resumeMapper.insertResume(resume);
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "이력서가 복제되었습니다.")
                         .build();
                 return ResponseEntity.ok().body(responseJson);
             }

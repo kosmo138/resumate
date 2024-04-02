@@ -4,6 +4,7 @@ import ResumeButton from "./resumebutton"
 import Image from "next/image"
 import React from "react"
 import ResumePage from "./resumedownload"
+import Cookies from "js-cookie"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,28 +14,17 @@ import {
 
 export default function ResumeCard({
   id,
-  key,
   title,
   modified,
 }: {
   id?: number
-  key?: number
   title?: string
   modified?: string
 }) {
-  // // 클릭 이벤트 처리 함수
-  // const handleClick = () => {
-  //   // 클릭 시 할 일을 여기에 작성
-  //   alert("버튼이 클릭되었습니다.")
-  // }
-
-  // // DropdownMenuItem를 클릭했을 때 호출되는 함수입니다.
   const changeClick = () => {
     window.location.href = "/resume/{resumeHead.id}"
   }
-  const resumeCopyClick = () => {
-    // 새로운 제목 입력을 받는 모달 또는 인풋을 표시하고, 제목 변경 이벤트 핸들러 함수를 호출합니다.
-    // 이 부분에 모달 또는 인풋을 표시하는 로직을 추가해야 합니다.
+  const cloneClick = () => {
     console.log(`title복제`)
   }
   const download = () => {
@@ -43,25 +33,28 @@ export default function ResumeCard({
   const deleteClick = () => {
     // // 클릭 이벤트 처리 함수
     // 이부분에 fetch 함수 써서 삭제 요청
-    const url = `http://localhost/api/resume/${key}`
+    const url = `/api/resume/${id}`
 
     //DELETE 요청 보내기
     fetch(url, {
       method: "DELETE",
       headers: {
-        "Content-Type": "resume/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("authorization")}`,
       },
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok")
+        } else {
+          location.reload()
         }
-        console.log(`ID가 "${key}"인 데이터를 삭제 했습니다.`)
       })
       .catch((error) => {
-        console.log("DELETE 요청이 실패하였습니다.", error)
+        console.log("Error:", error)
       })
   }
+
   return (
     <Card>
       <CardContent>
@@ -75,16 +68,7 @@ export default function ResumeCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <div className="font-bold">
-                    {/* <DropdownMenuItem onClick={changeClick}>
-                      수정하기
-                    </DropdownMenuItem> */}
-                    <DropdownMenuItem onClick={resumeCopyClick}>
-                      복제하기
-                    </DropdownMenuItem>
-
-                    <ResumePage />
-                    {/* 동적 경로로 다운로드 파일을 만들고 싶다. */}
-
+                    <DropdownMenuItem>복제</DropdownMenuItem>
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제

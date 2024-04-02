@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { resumeContents } from "@/config/resume-id-contents";
 import { useState, useEffect } from "react";
 
-export function ResumeTitle({
+export default function ResumeTitle({
   initialTitle,
   onInputChange,
 }: {
@@ -16,7 +16,12 @@ export function ResumeTitle({
 
   // 컴포넌트가 로드될 때 titleData를 초기 값으로 설정
   useEffect(() => {
-    setInputValue(initialTitle);
+    // 문서 초기생성시 title값이 " "이기 때문에 placeholder를 보여주기 위해 조건문 작성
+    if (initialTitle === " ") {
+      setInputValue("");
+    } else {
+      setInputValue(initialTitle);
+    }
   }, [initialTitle]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +38,7 @@ export function ResumeTitle({
       </Label>
       <Input
         type="text"
-        placeholder={inputValue ? "" : resumeContents.titleContent}
+        placeholder={resumeContents.titleContent}
         className="w-3/5 border-none"
         value={inputValue}
         onChange={handleChange}

@@ -10,7 +10,7 @@ interface CareerData {
   content: string;
 }
 
-export function ResumeCareer({
+export default function ResumeCareer({
   initialCareerData,
   onInputChange,
 }: {
@@ -93,5 +93,3 @@ export function ResumeCareer({
     </div>
   );
 }
-
-export default ResumeCareer;

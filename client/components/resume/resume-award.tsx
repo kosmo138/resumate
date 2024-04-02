@@ -10,7 +10,7 @@ interface AwardData {
   content: string;
 }
 
-export function ResumeAward({
+export default function ResumeAward({
   initialAward,
   onInputChange,
 }: {
@@ -95,5 +95,3 @@ export function ResumeAward({
     </div>
   );
 }
-
-export default ResumeAward;

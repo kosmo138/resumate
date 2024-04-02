@@ -37,7 +37,7 @@ export default function LetterSelector() {
             <LetterCard key={letter.id} letterHead={letter} />
           ))}
         {!Array.isArray(letterHead) && (
-          <div className="text-2xl font-bold">자기소개서가 없습니다.</div>
+          <div className="text-2xl font-bold">로딩 중입니다...</div>
         )}
       </div>
     </main>

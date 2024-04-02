@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import React from "react"
+import { useState } from "react"
 
 export function LoginDialog() {
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     fetch("/api/login", {

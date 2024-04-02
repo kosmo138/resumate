@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     setLoggedin(false)
     Cookies.remove("authorization", { path: "" })
+    window.location.href = "/"
   }
 
   const login = (jwt: string) => {

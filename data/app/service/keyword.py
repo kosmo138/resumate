@@ -3,9 +3,20 @@ import threading
 from fastapi import HTTPException
 from app.core.models import Keyword
 from app.core.database import session
+from app.service.keyword_scrap import scrap_keyword
 
 
 # 회사명 및 인재상 키워드 CRUD on MySQL
+
+
+# keyword_scrap.py에서 키워드 결과를 받아 insert하는 함수
+def insert_keyword_csv(results):
+    for result in results:
+        company = result["company"]
+        keywords = result["keywords"]
+        insert_keyword(company, keywords)
+
+
 def insert_keyword(company, keyword_list):
     keyword_json = json.dumps(keyword_list)
     new_keyword = Keyword(company=company, keyword=keyword_json)
@@ -34,15 +45,9 @@ def delete_keyword(company):
 def search_keyword(company):
     try:
         keyword_list = select_keyword(company)
+        print(f"[Debug] keyword_list: {keyword_list}")
         if keyword_list == None:
-            print("Scraping keyword for company: ", company)
-            # driver = webdriver.Chrome()
-            # driver.get("https://www.google.com")
-            # driver.find_element_by_name("q").send_keys("site:company.com")
-            # driver.find_element_by_name("btnK").click()
-            # keyword_list = driver.find_elements_by_css_selector("div.srg div.g h3")
-            # keyword_list = [keyword.text for keyword in keyword_list]
-            # insert_keyword(company, keyword_list)
+            keyword_list = scrap_keyword(company)
         return json.dumps(keyword_list)
     except Exception as e:
         print(e)
@@ -52,11 +57,13 @@ def search_keyword(company):
 
 
 # 인재상 검색 함수를 병렬로 처리하면서 15초 이상 걸리면 408 Request Timeout 에러를 반환
-def thread_scrape_keyword(company):
-    thread = threading.Thread(target=search_keyword, args=(company,))
-    thread.start()
-    thread.join(timeout=15)
+def thread_search_keyword(company):
+    threads = []
+    for i in range(5):
+        thread = threading.Thread(target=search_keyword, args=(company,))
+        thread.start()
+        threads.append(thread)
+    for i in range(5):
+        threads[i].join(timeout=15)
     if thread.is_alive():
         raise HTTPException(status_code=408, detail="Request Timeout")
-    else:
-        return thread.result

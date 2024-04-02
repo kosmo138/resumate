@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import html2canvas from "html2canvas" // https://seill.tistory.com/1285
 import jsPDF from "jspdf" //    라이브러리 설치 필요 : yarn add html2canvas jspdf / npm install html2canvas jspdf
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
 export default function ResumePage() {

@@ -6,13 +6,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 
 export default function UnauthorizedDialog() {
   return (
-    <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
+    <Dialog open={true}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>오류</DialogTitle>

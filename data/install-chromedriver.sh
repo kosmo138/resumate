@@ -4,7 +4,7 @@
 
 # 실행 방법
 # docker ps -a
-# docker exec -it <container_id> /bin/bash
+# docker exec -it data /bin/bash
 # sh /data/install-chromedriver.sh
 
 # Install Chrome and Chromedriver

@@ -9,7 +9,7 @@ from app.service.keywordextractor import KeywordExtractor
 
 # 회사명 및 인재상 키워드 CRUD on MySQL
 def insert_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     new_keyword = Keyword(company=company, keyword=keyword_json)
     session.add(new_keyword)
     session.commit()
@@ -24,7 +24,7 @@ def select_keyword(company):
 
 
 def update_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     session.query(Keyword).filter(Keyword.company == company).update(
         {Keyword.keyword: keyword_json}
     )

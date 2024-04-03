@@ -4,7 +4,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 import requests
 from bs4 import BeautifulSoup
-from konlpy.tag import Kkma
 
 
 class TextScraper:

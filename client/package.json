@@ -1,5 +1,5 @@
 {
-  "name": "next-shadcn-landing",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,8 +27,8 @@
     "next": "14.0.1",
     "next-themes": "^0.2.1",
     "postcss": "8.4.31",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",
     "react-icons": "^4.11.0",
     "shadcn-ui": "^0.8.0",

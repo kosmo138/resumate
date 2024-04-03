@@ -1,8 +1,5 @@
-import Link from "next/link"
 import Image from "next/image"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { heroHeader } from "@/config/contents"
+import { heroHeader } from "@/config/landing-content"
 
 export default function HeroHeader() {
   return (
@@ -16,13 +13,6 @@ export default function HeroHeader() {
             {heroHeader.subheader}
           </h2>
         </div>
-        <Link
-          href="https://github.com/redpangilinan/next-shadcn-landing"
-          target="_blank"
-          className={`w-[10rem] ${cn(buttonVariants({ size: "lg" }))}`}
-        >
-          Get started
-        </Link>
       </div>
       {heroHeader.image !== "" ? (
         <div className="flex flex-1 justify-center lg:justify-end">

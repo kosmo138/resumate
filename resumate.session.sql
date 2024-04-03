@@ -5,8 +5,8 @@ CREATE TABLE companies(
   related_words JSON
 );
 
-DROP TABLE companies;
-COMMIT;
+-- DROP TABLE companies;
+-- COMMIT;
 
 CREATE TABLE keyword (
     id SMALLINT AUTO_INCREMENT PRIMARY KEY,
@@ -19,5 +19,5 @@ INSERT INTO keyword (company, keyword) VALUES('LG전자', '["노력", "꾸준함
 
 SELECT * FROM keyword;
 
-DELETE FROM keyword;
+-- DELETE FROM keyword;
 

@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS member;
 
 DROP TABLE IF EXISTS resume;
 
+DROP TABLE IF EXISTS letter;
+
 /* 테이블 생성 */
 CREATE TABLE member (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,6 +34,19 @@ CREATE TABLE resume (
     FOREIGN KEY (email) REFERENCES member(email) ON DELETE CASCADE
 );
 
+CREATE TABLE letter (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(30) NOT NULL,
+    resume_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    company VARCHAR(100) NOT NULL,
+    job VARCHAR(100) NOT NULL,
+    content JSON NOT NULL,
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (email) REFERENCES member(email) ON DELETE CASCADE,
+    FOREIGN KEY (resume_id) REFERENCES resume(id) ON DELETE CASCADE
+);
+
 /* 테이블 조회 */
 SHOW TABLES;
 
@@ -39,10 +54,14 @@ DESCRIBE member;
 
 DESCRIBE resume;
 
+DESCRIBE letter;
+
 /* 테이블 설정 변경 */
 ALTER TABLE member AUTO_INCREMENT = 1;
 
 ALTER TABLE resume AUTO_INCREMENT = 1;
+
+ALTER TABLE letter AUTO_INCREMENT = 1;
 
 ALTER TABLE resume
 MODIFY COLUMN modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
@@ -76,7 +95,6 @@ SELECT id,
     UNIX_TIMESTAMP(modified) AS modified
 FROM resume
 WHERE email = #{email} ORDER BY modified DESC
-
 UPDATE resume
 SET title = 'test resume 02',
     content = '{"message":"hello"}',
@@ -84,4 +102,33 @@ SET title = 'test resume 02',
 WHERE id = 1;
 
 DELETE FROM resume
+WHERE id = 1;
+
+/* letter CRUD */
+INSERT INTO letter (email, resume_id, title, company, job, content)
+VALUES (
+        '1@test.com',
+        1,
+        'test letter 01',
+        'test company',
+        'test job',
+        '{"category": "지원동기", "content": "지원동기 내용입니다."}'
+    );
+    
+SELECT id,
+    title,
+    UNIX_TIMESTAMP(modified) AS modified
+FROM letter
+WHERE email = '1@test.com'
+ORDER BY modified DESC;
+
+UPDATE letter
+SET title = 'test letter 02',
+    company = 'test company 02',
+    job = 'test job 02',
+    content = '{"category": "지원동기", "content": "수정된 지원동기 내용입니다."}',
+    modified = NOW()
+WHERE id = 1;
+
+DELETE FROM letter
 WHERE id = 1;

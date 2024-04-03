@@ -1,20 +1,23 @@
 type LetterHead = {
-    id: number
-    title: string
-    updatedAt: string
+  id: number
+  title: string
+  modified: string
 }
 
 export type LetterBody = {
-    id?: number
-    title?: string
-    updatedAt?: string
-    section1?: object
-    section2?: object
-    section3?: object
-    section4?: object
-    section5?: object
-    section6?: object
-    section7?: object
-    section8?: object
-    section9?: object
+  resume_id?: number
+  title?: string
+  company?: string
+  job?: string
+  content?: LetterContent[]
+}
+
+export type LetterContent = {
+  category: string
+  text: string
+}
+
+export type Selector = {
+  value: string | undefined
+  onValueChange: (value: string) => void
 }

@@ -2,8 +2,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import ResumeButton from "./resumebutton"
 import Image from "next/image"
-import React from "react"
+import React, { useEffect } from "react"
 import Cookies from "js-cookie"
+import { useState } from "react"
+import { ResumeHead } from "@/types/resume"
+import CloneDialog from "../auth/clone-dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +23,11 @@ export default function ResumeCard({
   title?: string
   modified?: string
 }) {
-  const cloneClick = () => {
-    // 서버로 클론 요청을 보내는 비동기 함수 호출
+  const [isCloneOpen, setCloneOpen] = useState<boolean>(false)
+  const [resumeData, setResumeData] = useState<any[]>([])
+  const url = `/api/resume/${id}`
+
+  const handleCloneClick = () => {
     fetch(`/api/resume/${id}`, {
       method: "PUT",
       headers: {
@@ -36,21 +42,17 @@ export default function ResumeCard({
         throw new Error("클론에 실패했습니다.")
       })
       .then((data) => {
-        alert(data.message)
-        window.location.reload()
-        // 클론 성공 시, 필요한 작업 수행
+        console.log("성공적")
+        location.reload()
       })
       .catch((error) => {
         console.error("에러 발생:", error)
         // 에러 처리
       })
   }
-
   const deleteClick = () => {
     // // 클릭 이벤트 처리 함수
     // 이부분에 fetch 함수 써서 삭제 요청
-    const url = `/api/resume/${id}`
-
     //DELETE 요청 보내기
     fetch(url, {
       method: "DELETE",
@@ -71,35 +73,31 @@ export default function ResumeCard({
       })
   }
 
-  const data = {
-    title: "제목을 입력해주세요 ",
-    careerData: [{ date: "", content: "" }],
-    careerText: "",
-    education: [{ date: "", content: "" }],
-    skill: " ",
-    award: [{ date: "", content: "" }],
-    language: " ",
-  }
-  fetch(`/api/resume`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Beare ${Cookies.get("authorization")}`,
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok")
-      }
-      return response.json()
-    })
-    .then((responseData) => {
-      alert(responseData)
-    })
-    .catch((error) => {
-      console.log("Error:", error)
-    })
+  // const fetchResumeGetData = () => {
+  //   // 이력서 데이터 가져오기
+  //   fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${Cookies.get("authorization")}`,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok")
+  //       }
+  //       return response.json()
+  //     })
+  //     .then((responseData) => {
+  //       setResumeData(responseData) // 데이터 설정
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error:", error)
+  //     })
+  // }
+  // useEffect(() => {
+  //   // 이력서 데이터 가져오기
+  //   fetchResumeGetData()
+  // }, []) // 컴포넌트가 마운트될 때 한 번만 실행
 
   return (
     <Card>
@@ -114,9 +112,11 @@ export default function ResumeCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <div className="font-bold">
-                    <DropdownMenuItem onClick={cloneClick}>
+                    <DropdownMenuItem onClick={handleCloneClick}>
                       복제
                     </DropdownMenuItem>
+                    {isCloneOpen && <CloneDialog />}
+
                     <div className="text-red-500">
                       <DropdownMenuItem onClick={deleteClick}>
                         삭제

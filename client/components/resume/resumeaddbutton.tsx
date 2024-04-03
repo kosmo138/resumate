@@ -10,7 +10,7 @@ import Cookies from "js-cookie"
 export default function ResumeAddButton({ addButton }: { addButton?: string }) {
   const [resumeList, setResumeList] = useState<ResumeHead[]>([])
 
-  // 페이지 로드 시 로컬 스토리지에서 데이터 가져오기
+  //페이지 로드 시 로컬 스토리지에서 데이터 가져오기
   useEffect(() => {
     const storedResumeList = localStorage.getItem("resumeList")
     if (storedResumeList) {
@@ -23,7 +23,7 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
     localStorage.setItem("resumeList", JSON.stringify(resumeList))
   }, [resumeList])
 
-  const handleClick = () => {
+  const handleButtonClick = () => {
     {
       const newResumeList = [
         ...resumeList,
@@ -35,43 +35,42 @@ export default function ResumeAddButton({ addButton }: { addButton?: string }) {
       ]
       setResumeList(newResumeList)
     }
-    const data = {
-      title: "제목을 입력해주세요 ",
+    const Resumedata = {
+      title: "제목을 입력해주세요",
       careerData: [{ date: "", content: "" }],
       careerText: "",
       education: [{ date: "", content: "" }],
-      skill: " ",
+      skill: "",
       award: [{ date: "", content: "" }],
-      language: " ",
+      language: "",
     }
+
     fetch(`/api/resume`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Beare ${Cookies.get("authorization")}`,
+        Authorization: `Bearer ${Cookies.get("authorization")}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(Resumedata),
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok")
         }
-        return response.json()
+        //fetchGet()
       })
-      .then((responseData) => {
-        alert(responseData)
-      })
+      // 새 이력서의 ID를 가져옵니다.
       .catch((error) => {
-        console.log("Error:", error)
+        console.log("POST 에러:", error)
       })
   }
-
   return (
     <>
+      {/* TODO: POST 요청 보내고 GET 요청 해서 가져온 데이터를 page.tsx의 resumeList 상태에 반영하는 함수 */}
       <Card>
         <CardContent>
           <div className="mb-10 mt-8 text-center text-lg font-bold">
-            <button onClick={handleClick}>
+            <button onClick={handleButtonClick}>
               <Image src="/add.svg" width={120} height={120} alt="add" />
             </button>
             <h3>새로 만들기</h3>

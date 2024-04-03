@@ -10,22 +10,22 @@ class KeywordExtractor:
 
     def extract_nouns(self, text):
         try:
-            print("명사를 추출하는 중...")
+            print("[Debug] 명사를 추출하는 중...")
             nouns = self.kkma.nouns(text)
-            print("명사를 성공적으로 추출했습니다.")
+            print("[Debug] 명사를 성공적으로 추출했습니다.")
             return nouns
         except Exception as e:
-            print("Error occurred while extracting nouns:", e)
+            print("[Debug] Error occurred while extracting nouns:", e)
             return None
 
     def load_word2vec_model(self):
         try:
-            print("Word2Vec 모델을 로드하는 중...")
+            print("[Debug] Word2Vec 모델을 로드하는 중...")
             model = Word2Vec.load(self.model_path)
-            print("Word2Vec 모델을 성공적으로 로드했습니다.")
+            print("[Debug] Word2Vec 모델을 성공적으로 로드했습니다.")
             return model
         except Exception as e:
-            print("Error occurred while loading Word2Vec model:", e)
+            print("[Debug] Error occurred while loading Word2Vec model:", e)
             return None
 
     def extract_related_keywords(self, nouns, threshold=0.6):

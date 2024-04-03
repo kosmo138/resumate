@@ -98,5 +98,5 @@ export default async function LetterEditor(id: string) {
       </div>  
 
     </main>
-  )
+  );
 }

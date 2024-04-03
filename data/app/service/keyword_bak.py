@@ -9,7 +9,7 @@ from app.service.keyword_scrap import scrap_keyword
 # 회사명 및 인재상 키워드 CRUD on MySQL
 
 
-# keyword_scrap.py에서 키워드 결과를 받아 insert하는 함수
+# keyword_csv.py에서 키워드 결과를 받아 insert하는 함수
 def insert_keyword_csv(results):
     for result in results:
         company = result["company"]

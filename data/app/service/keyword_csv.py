@@ -1,11 +1,11 @@
 import csv
-from app.service.keyword_class import (
+from keyword_class import (
     GoogleSearchScraper,
     KeywordExtractor,
     TextAnalyzer,
 )
 import json
-from keyword import insert_keyword_results
+from app.service.keyword_bak import insert_keyword_results
 
 
 def extract_keywords(csv_file_path):

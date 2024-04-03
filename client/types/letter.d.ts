@@ -1,13 +1,13 @@
 type LetterHead = {
     id: number
     title: string
-    updatedAt: string
+    modified: string
 }
 
 export type LetterBody = {
     id?: number
     title?: string
-    updatedAt?: string
+    modified?: string
     section1?: object
     section2?: object
     section3?: object

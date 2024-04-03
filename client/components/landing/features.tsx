@@ -6,7 +6,7 @@ export default function Features() {
   return (
     <section className="container space-y-8 py-12 lg:py-20" id="features">
       {features.header || features.subheader ? (
-        <HeadingText subtext={features.subheader} className="text-center">
+        <HeadingText subtext={features.subheader}>
           {features.header}
         </HeadingText>
       ) : null}

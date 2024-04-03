@@ -1,4 +1,5 @@
-import React from "react"
+"use client"
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,7 +10,7 @@ import {
 
 export default function CloneDialog() {
   return (
-    <Dialog open={true}>
+    <Dialog open={false}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>복제</DialogTitle>
@@ -19,7 +20,7 @@ export default function CloneDialog() {
           <div className="grid grid-cols-4 items-center gap-4">
             <Button
               className="col-start-4"
-              onClick={() => (window.location.href = "/")}
+              onClick={() => (window.location.href = "/api/resume")}
             >
               확인
             </Button>

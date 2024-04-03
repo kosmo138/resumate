@@ -7,6 +7,7 @@ import { ResumeHead } from "@/types/resume"
 import Cookies from "js-cookie"
 import UnauthorizedDialog from "@/components/auth/unauthorized-dialog"
 
+import "@/components/auth/clone-dialog"
 export default function ResumeSelector(id: string) {
   const [resumeList, setResumeList] = useState<Array<ResumeHead>>([])
   const [isError, setIsError] = useState<boolean>(false)
@@ -35,6 +36,29 @@ export default function ResumeSelector(id: string) {
     fetchResumeList()
   }, [])
 
+  const fetchGet = () => {
+    fetch(`/api/resume`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("authorization")}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok")
+        }
+        return response.json()
+      })
+      .then((data) => {
+        setResumeList(data)
+      })
+      // 새 이력서의 ID를 가져옵니다.
+      .catch((error) => {
+        console.log("POST 에러:", error)
+      })
+  }
+
   const apiUrl = `http://localhost/api/resume/${id}`
   const jwt = Cookies.get("authorization")
 
@@ -55,16 +79,19 @@ export default function ResumeSelector(id: string) {
         {isError && <UnauthorizedDialog />}
         {!isError &&
           resumeList.map((resumeHead, index) => (
-            <ResumeCard
-              key={index}
-              id={resumeHead.id}
-              title={resumeHead.title}
-              modified={
-                typeof resumeHead.modified === "number"
-                  ? formatDate(resumeHead.modified)
-                  : resumeHead.modified
-              } // 수정된 날짜를 포맷팅하여 전달합니다.
-            />
+            // 아이디 생성값
+            <div key={index}>
+              <ResumeCard
+                key={index}
+                id={resumeHead.id}
+                title={resumeHead.title}
+                modified={
+                  typeof resumeHead.modified === "number"
+                    ? formatDate(resumeHead.modified)
+                    : resumeHead.modified
+                } // 수정된 날짜를 포맷팅하여 전달합니다.
+              />
+            </div>
           ))}
       </div>
     </main>

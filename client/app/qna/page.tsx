@@ -10,7 +10,7 @@ export default function RecruitMenu() {
         Q&A
       </HeadingText>
       <section className="mt-6">
-        <div className="flex flex-row space-x-4 align-middle text-lg">
+        <div className="flex flex-row space-x-4 text-lg">
           <label htmlFor="title" className="pt-1 font-bold">
             제목
           </label>

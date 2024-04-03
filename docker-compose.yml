@@ -5,6 +5,8 @@ services:
     image: nginx:latest
     container_name: nginx
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./nginx:/etc/nginx
     ports:
@@ -41,3 +43,5 @@ services:
     volumes:
       - ./client:/client
     command: sh -c "chmod +x run.sh && sh run.sh"
+    environment:
+      - WATCHPACK_POLLING=true

@@ -1,29 +1,87 @@
-/* 로컬에서 root 계정으로 접속 */
+/* root 계정으로 접속 */
 SHOW DATABASES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY '{MYSQL_ROOTPW}';
+
+ALTER USER 'root' undefined IDENTIFIED BY '{MYSQL_ROOTPW}';
+
 CREATE DATABASE resumate;
-CREATE USER '{MYSQL_USERNAME}'@'%' IDENTIFIED BY '{MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON resumate.* TO '{MYSQL_USERNAME}'@'%';
+
+CREATE USER '{MYSQL_USERNAME}' undefined IDENTIFIED BY '{MYSQL_password}';
+
+GRANT ALL PRIVILEGES ON resumate.* TO '{MYSQL_USERNAME}' undefined;
+
 FLUSH PRIVILEGES;
 
-/* 원격에서 kosmo 계정으로 접속 */
+/* kosmo 계정으로 접속 */
+DROP TABLE IF EXISTS member;
+
+DROP TABLE IF EXISTS resume;
+
+/* 테이블 생성 */
 CREATE TABLE member (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE resume (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    member_id INT NOT NULL,
+    email VARCHAR(30) NOT NULL,
     title VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (member_id) REFERENCES member(id)
+    content TEXT NOT NULL,
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (email) REFERENCES member(email) ON DELETE CASCADE
 );
 
-INSERT INTO member (email, password) VALUES ('test@test.com', '$$kosmo138$$');
-INSERT INTO resume (member_id, title) VALUES (1, '테스트 이력서 제목');
+/* 테이블 조회 */
+SHOW TABLES;
 
-SELECT * FROM member;
-SELECT * FROM resume;
+DESCRIBE member;
+
+DESCRIBE resume;
+
+/* 테이블 설정 변경 */
+ALTER TABLE member AUTO_INCREMENT = 1;
+
+ALTER TABLE resume AUTO_INCREMENT = 1;
+
+ALTER TABLE resume
+MODIFY COLUMN modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+/* member CRUD */
+INSERT INTO member (email, password)
+VALUES ('1@test.com', '1111');
+
+SELECT password
+FROM member
+WHERE email = '1@test.com';
+
+UPDATE member
+SET password = '2222'
+WHERE email = '1@test.com';
+
+DELETE FROM member
+WHERE email = '1@test.com';
+
+/* resume CRUD */
+INSERT INTO resume (email, title, content, modified)
+VALUES (
+        '01@test.com',
+        'test resume 01',
+        '{"title": "test 01 resume", "content": "hello"}',
+        NOW()
+    );
+
+SELECT id,
+    title,
+    UNIX_TIMESTAMP(modified) AS modified
+FROM resume
+WHERE email = #{email} ORDER BY modified DESC
+
+UPDATE resume
+SET title = 'test resume 02',
+    content = '{"message":"hello"}',
+    modified = NOW()
+WHERE id = 1;
+
+DELETE FROM resume
+WHERE id = 1;

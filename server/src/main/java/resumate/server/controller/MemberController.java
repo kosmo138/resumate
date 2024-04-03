@@ -2,11 +2,13 @@ package resumate.server.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +30,16 @@ public class MemberController {
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> postLogin(@RequestBody Member member, HttpServletResponse response) {
         return memberService.loginHandler(member, response);
+    }
+
+    /**
+     * GET /api/kakaoauth -> 카카오 로그인
+     * @param code 카카오 인가 코드
+     * @return POST 요청의 응답으로 받은 토큰
+      */
+    @GetMapping(value = "/kakaoauth", produces = "application/json")
+    public ResponseEntity<String> getKakaoAuth(@RequestParam String code) {
+        return memberService.kakaoAuth(code);
     }
 
     /*

@@ -1,31 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { ModeToggle } from "@/components/mode-toggle"
-import { siteConfig } from "@/config/metadata"
-import { navLinks } from "@/config/navlinks"
-import { settings } from "@/config/settings"
-import Image from "next/image"
-import { LoginDialog } from "@/components/auth/login"
-import { MemberMenu } from "../auth/membermenu"
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { LoginDialog } from "@/components/auth/logindialog";
+import { RegisterDialog } from "@/components/auth/registerdialog";
+import { ModeToggle } from "@/components/mode-toggle";
+import { siteConfig } from "@/config/metadata";
+import { navLinks } from "@/config/navlinks";
+import { settings } from "@/config/settings";
+import { MemberMenu } from "@/components/auth/membermenu";
+import { useAuth } from "@/components/auth/authcontext";
 
 export default function Navbar() {
-  const [navbar, setNavbar] = useState(false)
-  /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const loginFlag = true
+  const [navbar, setNavbar] = useState(false);
+  const { loggedin } = useAuth();
 
   const handleClick = async () => {
-    setNavbar(false)
-  }
+    setNavbar(false);
+  };
 
   useEffect(() => {
     if (navbar) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
-  }, [navbar])
+  }, [navbar]);
 
   return (
     <header className="select-none">
@@ -116,13 +117,17 @@ export default function Navbar() {
         </div>
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
-            {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
-            {loginFlag && <MemberMenu />}
-            {!loginFlag && <LoginDialog />}
+            {loggedin && <MemberMenu />}
+            {!loggedin && (
+              <>
+                <LoginDialog />
+                <RegisterDialog />
+              </>
+            )}
             <ModeToggle />
           </div>
         )}
       </nav>
     </header>
-  )
+  );
 }

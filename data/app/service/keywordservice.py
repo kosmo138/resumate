@@ -68,12 +68,12 @@ def search_keyword(company):
         pass
 
 
-# 인재상 검색 함수를 병렬로 처리하면서 15초 이상 걸리면 408 Request Timeout 에러를 반환
+# 인재상 검색 함수를 병렬로 처리하면서 30초 이상 걸리면 408 Request Timeout 에러를 반환
 def thread_search_keyword(company):
     # @see https://docs.python.org/ko/3/library/concurrent.futures.html
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(search_keyword, company)
         try:
-            return future.result(timeout=15)
+            return future.result(timeout=30)
         except concurrent.futures.TimeoutError:
             raise HTTPException(status_code=408, detail="Request Timeout")

@@ -1,5 +1,9 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
-import { Selector } from '@/types/letter';
+
+interface Selector {
+  value: string | undefined
+  onValueChange: (value: string) => void
+}
 
 export default function CategorySelector(selector: Selector) {
   return (

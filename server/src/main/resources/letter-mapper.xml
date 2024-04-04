@@ -1,0 +1,41 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="resumate.server.mybatis.LetterMapper">
+  <resultMap id="LetterHeadMap" type="resumate.server.dto.Letter">
+    <id property="id" column="id"/>
+    <result property="title" column="title"/>
+    <result property="modified" column="modified"/>
+  </resultMap>
+  <resultMap id="LetterBodyMap" type="resume.server.dto.Letter">
+    <id property="id" column="id"/>
+    <result property="resume_id" column="resume_id"/>
+    <result property="title" column="title"/>
+    <result property="company" column="company"/>
+    <result property="job" column="job"/>
+    <result property="content" column="content"/>
+  </resultMap>
+  <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
+    SELECT id, title, UNIX_TIMESTAMP(modified) AS modified FROM letter
+    WHERE email = #{email}
+    ORDER BY modified DESC
+  </select>
+  <select id="selectLetterBody" parameterType="_int" resultType="LetterBodyMap">
+    SELECT resume_id, title, company, job, content FROM letter WHERE id = #{id}
+  </select>
+  <select id="selectLetterId" parameterType="String" resultType="Integer">
+    SELECT id FROM letter WHERE email = #{email}
+  </select>
+  <insert id="insertLetter" parameterType="resumate.server.dto.Letter">
+    INSERT INTO letter (resume_id, title, company, job, content)
+    VALUES (#{resume_id}, #{title}, #{company}, #{job}, #{content})
+  </insert>
+  <update id="updateLetter" parameterType="resumate.server.dto.Letter">
+    UPDATE letter SET title = #{title}, company = #{company},
+    job = #{job}, content = #{content}, modified = NOW() 
+    WHERE id = #{id}
+  </update>
+  <delete id="deleteLetter" parameterType="_int">
+    DELETE FROM letter WHERE id = #{id}
+  </delete>
+</mapper>

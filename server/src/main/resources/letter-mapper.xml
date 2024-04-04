@@ -7,7 +7,7 @@
     <result property="title" column="title"/>
     <result property="modified" column="modified"/>
   </resultMap>
-  <resultMap id="LetterBodyMap" type="resume.server.dto.Letter">
+  <resultMap id="LetterBodyMap" type="resumate.server.dto.Letter">
     <id property="id" column="id"/>
     <result property="resume_id" column="resume_id"/>
     <result property="title" column="title"/>
@@ -20,7 +20,7 @@
     WHERE email = #{email}
     ORDER BY modified DESC
   </select>
-  <select id="selectLetterBody" parameterType="_int" resultType="LetterBodyMap">
+  <select id="selectLetterBody" parameterType="_int" resultMap="LetterBodyMap">
     SELECT resume_id, title, company, job, content FROM letter WHERE id = #{id}
   </select>
   <select id="selectLetterId" parameterType="String" resultType="Integer">

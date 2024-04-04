@@ -22,6 +22,7 @@ export default function CloneDialog() {
               className="col-start-4"
               onClick={() => (window.location.href = "/api/resume")}
             >
+              {/* https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns */}
               확인
             </Button>
           </div>

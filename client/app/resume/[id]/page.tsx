@@ -1,130 +1,32 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from "react";
-import ResumeCareer from "@/components/resume/resume-career";
-import ResumeTitle from "@/components/resume/resume-title";
-import ResumeCareerTextarea from "@/components/resume/resume-career-textarea";
-import ResumeEducation from "@/components/resume/resume-education";
-import ResumeSkill from "@/components/resume/resume-skill";
-import ResumeAward from "@/components/resume/resume-award";
-import ResumeLanguage from "@/components/resume/resume-language";
-import ResumeCancleButton from "@/components/resume/resume-cancle-button";
-import HeadingText from "@/components/heading-text";
-import Cookies from "js-cookie";
-import ResumeSubmitButton from "@/components/resume/resume-submit-button";
-import ResumeError from "@/components/resume/resume-error-modal";
-import ResumePage from "@/components/resume/resumedownload";
+import { useEffect, useState } from "react"
+import Cookies from "js-cookie"
+import { ResumeBody } from "@/types/resume"
+import HeadingText from "@/components/heading-text"
+import ResumeForm from "@/components/resume/resumeform"
 
 export default function ResumeEditor({ params }: { params: { id: string } }) {
-  // url 경로
-  const apiUrl = `/api/resume/${params.id}`;
-  // bearer 토큰 관리(추후 수정 예상)
-  const jwt = Cookies.get("authorization");
-  // 브라우저 경로로 권한 없는 이력서 접속 시 뜨는 모달창
-  const [errorPageOpen, setErrorPageOpen] = useState(false);
+  const [resumeBody, setResumeBody] = useState<ResumeBody>({})
 
-  // 동적으로 변하는 이력서 데이터를 useState로 관리하기 위해 이력서 폼 초기화
-  const [formData, setFormData] = useState({
-    title: "",
-    careerData: [{ date: "", content: "" }],
-    careerText: "",
-    education: [{ date: "", content: "" }],
-    skill: "",
-    award: [{ date: "", content: "" }],
-    language: "",
-  });
-
-  // rest api로 등록된 이력서로 화면에 랜더링하기 위한 초기값 설정
   useEffect(() => {
-    fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwt}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("오류가 발생했습니다.");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const {
-          title,
-          careerData,
-          careerText,
-          education,
-          skill,
-          award,
-          language,
-        } = data;
-        setFormData({
-          title: title,
-          careerData: careerData,
-          careerText: careerText,
-          education: education,
-          skill: skill,
-          award: award,
-          language: language,
-        });
-      })
-      .catch((error) => {
-        console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
-        // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
-        setErrorPageOpen(true);
-      });
-  }, [apiUrl]); // 웹 경로 변경될 때마다 useEffect 재실행
-
-  // 자식 컴포넌트에서 전달된 값 처리
-  const handleInputChange = (key: string, value: string) => {
-    setFormData({ ...formData, [key]: value });
-  };
-
-  // 폼 제출 이벤트 핸들러
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // 2열 이후로 공백을 포함하지 않은 데이터만 필터링
-    const filteredFormData = {
-      ...formData,
-      careerData: formData.careerData.filter(
-        (value, index) =>
-          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
-      ),
-      education: formData.education.filter(
-        (value, index) =>
-          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
-      ),
-      award: formData.award.filter(
-        (value, index) =>
-          index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
-      ),
-    };
-
-    // 이력서를 restAPI 통해 db로 전달
-    try {
-      fetch(apiUrl, {
-        method: "PATCH",
+    const fetchResume = () => {
+      fetch(`/api/resume/${params.id}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
+          Authorization: `Bearer ${Cookies.get("authorization")}`,
         },
-        body: JSON.stringify(filteredFormData),
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("이력서 데이터 전송 실패!");
-          }
-          return response.json();
+        .then((response) => response.json())
+        .then((data) => {
+          setResumeBody(data)
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-      alert("이력서 저장에 실패했습니다.");
+        .catch((error) => console.error(error))
     }
-  };
+
+    fetchResume()
+  }, [params.id])
 
   return (
     <main className="container flex flex-col items-center py-8">

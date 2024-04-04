@@ -1,102 +1,124 @@
 "use client"
-import * as React from "react"
-import { baseUrl } from "@/config/metadata"
-import { LetterBody } from "@/types/letter"
-import { notFound } from "next/navigation"
+import { useEffect, useState } from "react"
 import HeadingText from "@/components/heading-text"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import ContentForm from "@/components/letter/contentform"
+import { LetterBody, LetterContent } from "@/types/letter"
 
-export default async function LetterEditor(id: string) {
-  const [position, setPosition] = React.useState("bottom")
-  /* GET 요청에 대한 응답이 없으면 404 오류 페이지를 표시합니다 */
-  // const response = await fetch(`${baseUrl}/api/letter/${id}`)
-  //   .then((res) => res.json())
-  //   .catch(() => notFound())
-  // const letterBody: LetterBody = response.parse()
+export default function LetterEditor({ params }: { params: { id: string } }) {
+  const mock_data: LetterBody = JSON.parse(`
+  {
+    "resume_id": 1,
+    "title": "테스트 제목",
+    "company": "테스트 회사명",
+    "job": "테스트 직무",
+    "content": [
+      {
+        "category": "성장과정",
+        "text": "성장과정 내용"
+      },
+      {
+        "category": "지원동기",
+        "text": "지원동기 내용"
+      },
+      {
+        "category": "성격의 장단점",
+        "text": "성격의 장단점 내용"
+      },
+      {
+        "category": "입사 후 포부",
+        "text": "입사 후 포부 내용"
+      }
+    ]
+  }
+  `)
+  
+  const [letterBody, setLetterBody] = useState<LetterBody>()
+
+  useEffect(() => {
+    setLetterBody(mock_data)
+  }, [])
+
   return (
     <main className="container flex flex-col items-center py-8">
-      <HeadingText subtext="자기소개서 생성에 필요한 최소의 정보를 입력해 주세요">
-        자기소개서 수정
+      <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
+        자기소개서
       </HeadingText>
-      {/*<LetterForm letter={letterBody} />*/}
 
-      <div className="ml-20 my-3 w-full flex">
+      <div className="my-3 ml-20 flex w-full">
         <div className="flex items-center">
           <Label className="text-2xl font-bold">제목</Label>
         </div>
-        <Input className="ml-7 w-5/6 border-transparent" placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."></Input>
+        <Input
+          className="ml-7 w-5/6 border-transparent"
+          placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."
+          value={letterBody?.title}
+          onChange={(e) => {
+            if (letterBody) {
+              setLetterBody({ ...letterBody, title: e.target.value })
+            }
+          }}
+        ></Input>
       </div>
 
-      <div className="ml-20 my-3 w-full flex">
-        <div className="flex items-center">
-          <Label className="text-1xl font-bold">지원회사</Label>
-        </div>
-        <Input className="ml-2 w-2/5 mr-4" placeholder="지원 회사명 입력"></Input>
-        <div className="flex items-center">
+      <div className="my-3 ml-20 flex w-full flex-col">
+        <div className="mb-6 flex flex-row items-center">
           <Label className="text-1xl font-bold">직무</Label>
+          <Input
+            className="ml-2 w-2/5"
+            placeholder="직무명 입력"
+            value={letterBody?.job}
+            onChange={(e) => {
+              if (letterBody) {
+                setLetterBody({ ...letterBody, job: e.target.value })
+              }
+            }}
+          />
         </div>
-        <Input className="ml-2 w-2/5" placeholder="직무명 입력"></Input>
+        <div className="flex flex-row items-center">
+          <Label className="text-1xl font-bold">지원회사</Label>
+          <Input
+            className="ml-2 mr-4 w-2/5"
+            placeholder="지원 회사명 입력"
+            value={letterBody?.company}
+            onChange={(e) => {
+              if (letterBody) {
+                setLetterBody({ ...letterBody, company: e.target.value })
+              }
+            }}
+          />
+        </div>
       </div>
-
-
-      <div className="ml-20 my-3 w-full flex">
-        <div className="flex items-center">
-          <Label className="text-1xl font-bold mr-3">카테고리</Label>
-        </div>
-        <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectItem value="성장과정">성장과정</SelectItem>
-          <SelectItem value="지원동기">지원동기</SelectItem>
-          <SelectItem value="성격의 장단점">성격의 장단점</SelectItem>
-          <SelectItem value="입사 후 포부">입사 후 포부</SelectItem>
-          <SelectItem value="기업 이해 및 분석">기업 이해 및 분석</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-        <div className="flex items-center">
-          <Label className="ml-3 text-1xl font-bold">키워드</Label>
-        </div>
-        <Input className="ml-2 w-1/5" placeholder="직무명 입력"></Input>
-      </div>
-        <div className="w-2/5">
-          <Label className="text-left">•설명 : 자기소개서에 넣고싶은 키워드를 입력하세요.</Label>
-        </div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <div className="ml-20 my-3 w-full">
-        <div className="items-center">
-          <Label className="text-1xl">자기소개서 생성란</Label>
-        </div>
-        <Textarea></Textarea>
-      </div>
+      {letterBody &&
+        letterBody.content &&
+        letterBody.content.map((content: LetterContent, key: number) => {
+          return (
+            <ContentForm
+              content={content}
+              key={key}
+              letterBody={letterBody}
+              setLetterBody={setLetterBody}
+            />
+          )
+        })}
+      {!letterBody && (
+        <div className="text-2xl font-bold">로딩 중입니다...</div>
+      )}
       <div className="ml-20 w-full">
         <div>
-          <Button variant="outline" className="mr-2">삭제</Button>
+          <Button variant="outline" className="mr-2">
+            삭제
+          </Button>
           <Button>추가</Button>
         </div>
-          <Button variant="outline" className="text-black border-black bg-white">생성하기</Button>
-      </div>  
-
+        <div className="mt-4 flex justify-center">
+          <Button onClick={() => console.log(JSON.stringify(letterBody))}>
+            저장
+          </Button>
+        </div>
+      </div>
     </main>
   );
 }

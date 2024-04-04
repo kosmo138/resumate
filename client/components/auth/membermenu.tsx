@@ -36,7 +36,7 @@ export function MemberMenu() {
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={logout}>
             <FiLogOut className="mr-2 h-4 w-4" />
-            <span onClick={onLogout}>로그아웃</span>
+            <span>로그아웃</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

@@ -10,7 +10,7 @@ import {
 
 export default function CloneDialog() {
   return (
-    <Dialog open={false}>
+    <Dialog open={true}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>복제</DialogTitle>
@@ -20,9 +20,8 @@ export default function CloneDialog() {
           <div className="grid grid-cols-4 items-center gap-4">
             <Button
               className="col-start-4"
-              onClick={() => (window.location.href = "/api/resume")}
+              onClick={() => (window.location.href = "/resume")}
             >
-              {/* https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns */}
               확인
             </Button>
           </div>

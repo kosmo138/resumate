@@ -1,18 +1,18 @@
+import CategorySelector from "@/components/letter/categoryselect"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import CategorySelector from "@/components/letter/categoryselect"
-import { useLetter } from "@/components/letter/lettercontext"
-import { LetterContent } from "@/types/letter"
+import { LetterBody, LetterContent } from "@/types/letter"
 
 interface ContentFormProps {
   content: LetterContent
   key: number
+  letterBody: LetterBody
+  setLetterBody: (letterBody: LetterBody) => void
 }
 
-export default function ContentForm({ key, content }: ContentFormProps) {
+export default function ContentForm({ key, content, letterBody, setLetterBody }: ContentFormProps) {
   const { category, text } = content
-  const { letterBody, setLetterBody } = useLetter()
 
   return (
     <>

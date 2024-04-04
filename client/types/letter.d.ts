@@ -16,8 +16,3 @@ export type LetterContent = {
   category: string
   text: string
 }
-
-export type Selector = {
-  value: string | undefined
-  onValueChange: (value: string) => void
-}

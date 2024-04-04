@@ -1,6 +1,9 @@
 import csv
 import time
 import json
+import os
+import sys
+
 import requests
 from bs4 import BeautifulSoup
 from konlpy.tag import Kkma
@@ -12,13 +15,17 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
+from core.env import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-from app.core.models import Keyword
-from app.core.database import session
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# # app.core 모듈이 있는 상위 디렉토리로 이동하여 sys.path에 추가합니다.
+# sys.path.append(os.path.join(current_dir, '..', 'core'))
 
-
-# from app.service.keyword_bak import insert_keyword_results
-# from selenium.webdriver.chrome.options import Options as ChromeOptions
+# sys.path.append(r'C:\Users\kosmo\Desktop\kosmo_baeksn\project3\resumate\data\app\core')
+# from models import Keyword
+from core.entity import Keyword
+from core.database import session
 
 
 class GoogleSearchScraper:
@@ -134,7 +141,9 @@ class TextAnalyzer:
 
 def extract_keywords(csv_file_path):
     # Word2Vec 모델 경로
-    model_path = "wiki.model"
+    model_path = (
+        r"C:\Users\kosmo\Desktop\kosmo_baeksn\project3\resumate\data\models\wiki.model"
+    )
     # 목표 단어 리스트
     target_words = [
         "인재",
@@ -181,6 +190,7 @@ def extract_keywords(csv_file_path):
     try:
         with open(csv_file_path, "r", encoding="utf-8") as file:
             csv_reader = csv.reader(file)
+            next(csv_reader)
             for row in csv_reader:
                 if row:  # 빈 행이 아닌 경우에만 회사 이름 데이터를 가져옴
                     company_name = row[0]
@@ -219,22 +229,31 @@ def extract_keywords(csv_file_path):
 
 
 def insert_keyword(json_keywords):
-    # JSON 데이터를 파이썬 객체로 변환
-    extracted_data = json.loads(json_keywords)
+    try:
+        # JSON 데이터를 파이썬 객체로 변환
+        extracted_data = json.loads(json_keywords)
 
-    # 반복문을 통해 각 키워드 데이터를 데이터베이스에 추가
-    for data in extracted_data:
-        company = data.get("company")
-        keywords = data.get("keywords")
+        # 반복문을 통해 각 키워드 데이터를 데이터베이스에 추가
+        for data in extracted_data:
+            company = data.get("company")
+            keywords = data.get("keywords")
 
-        # Keyword 모델을 사용하여 새로운 키워드 객체 생성
-        new_keyword = Keyword(company=company, keyword=json.dumps(keywords))
+            # Keyword 모델을 사용하여 새로운 키워드 객체 생성
+            new_keyword = Keyword(
+                company=company, keyword=json.dumps(keywords, ensure_ascii=False)
+            )
 
-        # 새로운 키워드를 세션에 추가
-        session.add(new_keyword)
+            # 새로운 키워드를 세션에 추가
+            session.add(new_keyword)
 
-    # 세션에 추가된 모든 변경 사항을 데이터베이스에 커밋하여 저장
-    session.commit()
+        # 세션에 추가된 모든 변경 사항을 데이터베이스에 커밋하여 저장
+        session.commit()
+        print("데이터베이스에 저장 중입니다...")
+        print("저장 중인 데이터베이스:", extracted_data)
+        print("데이터베이스 저장이 완료되었습니다.")
+    except Exception as e:
+        # 에러가 발생한 경우 에러 메시지 출력
+        print(f"데이터베이스 저장 중 에러가 발생했습니다: {e}")
 
 
 def main(csv_file_path):

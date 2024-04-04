@@ -1,7 +1,7 @@
 import json
 import threading
 from fastapi import HTTPException
-from app.core.models import Keyword
+from entity import Keyword
 from app.core.database import session
 from app.service.keyword_scrap import scrap_keyword
 

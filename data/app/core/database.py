@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.core.env import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+from core.env import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
 DB_URI = f"mysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DB_URI)  # mysql과의 연결을 engine객체 생성을 통해 이루어짐.

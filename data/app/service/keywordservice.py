@@ -1,7 +1,7 @@
 import json
 import concurrent.futures
 from fastapi import HTTPException
-from app.core.models import Keyword
+from entity import Keyword
 from app.core.database import session
 from app.service.textscraper import TextScraper
 from app.service.keywordextractor import KeywordExtractor

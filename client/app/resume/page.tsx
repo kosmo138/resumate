@@ -7,7 +7,7 @@ import ResumeAddButton from "@/components/resume/resumeaddbutton"
 import ResumeCard from "@/components/resume/resumecard"
 import { ResumeHead } from "@/types/resume"
 import UnauthorizedDialog from "@/components/auth/unauthorized-dialog"
-import "@/components/auth/clone-dialog"
+
 export default function ResumeSelector() {
   const [resumeList, setResumeList] = useState<Array<ResumeHead>>([])
   const [isError, setIsError] = useState<boolean>(false)
@@ -32,7 +32,6 @@ export default function ResumeSelector() {
           setResumeList(data)
         })
     }
-
     fetchResumeList()
   }, [])
 

@@ -112,10 +112,6 @@ https://github.com/orgs/kosmo138/projects/1
 
 ### 프론트엔드 UI 설계
 
-**Figma Design**
-
-https://www.figma.com/file/7wtthKnK4TMikHDuORa0Om/pages?type=design&node-id=103%3A195&mode=design&t=xVZxyMz59nZR3Iom-1
-
 **전체 인원**
 
 전체 회의를 통해 UI 구성을 설계했습니다.

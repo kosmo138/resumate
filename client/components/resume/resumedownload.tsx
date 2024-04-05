@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import jsPDF from "jspdf"; //    라이브러리 설치 필요 : yarn add html2canvas jspdf / npm install html2canvas jspdf
 import domtoimage from "dom-to-image"; // 라이브러리 설치 필요
 import { Button } from "@/components/ui/button";
 
-export default function ResumePage({ resumeRef }: { resumeRef: any }) {
+export default function ResumePage({
+  resumeRef,
+}: {
+  resumeRef: RefObject<HTMLDivElement>;
+}) {
   const divRef = resumeRef;
 
   const downloadPDF = () => {
@@ -19,7 +23,7 @@ export default function ResumePage({ resumeRef }: { resumeRef: any }) {
           const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
           // 좌우 상하 여백 추가
-          const margin = 10; // 여백 크기를 조절할 수 있습니다.
+          const margin = 10; // 여백 크기 조절가능
           const marginLeft = margin;
           const marginRight = pdfWidth - margin;
           const marginTop = margin;
@@ -34,10 +38,10 @@ export default function ResumePage({ resumeRef }: { resumeRef: any }) {
             marginBottom - marginTop
           );
           // PDF 파일 저장
-          pdf.save("document.pdf");
+          pdf.save("resumate.pdf");
         })
         .catch((error) => {
-          console.error("Error creating PDF:", error);
+          console.error("PDF 생성 에러:", error);
         });
     }
   };

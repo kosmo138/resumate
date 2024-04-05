@@ -32,7 +32,7 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
 
   const handleButtonClick = () => {
     const Resumedata = {
-      title: "제목을 입력해주세요",
+      title: "새 이력서",
       careerData: [{ date: "", content: "" }],
       careerText: "",
       education: [{ date: "", content: "" }],

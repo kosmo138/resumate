@@ -13,4 +13,5 @@ if __name__ == "__main__":
     llm_chain = LLMChain(prompt=prompt, llm=llm)
     question = "What NFL team won the Super Bowl in the year Justin Beiber was born?"
 
-    llm_chain.run(question)
+    output = llm_chain.run(question)
+    print(output)

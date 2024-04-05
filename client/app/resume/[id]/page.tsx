@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ResumeCareer from "@/components/resume/resume-career";
 import ResumeTitle from "@/components/resume/resume-title";
 import ResumeCareerTextarea from "@/components/resume/resume-career-textarea";
@@ -22,6 +22,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   const jwt = Cookies.get("authorization");
   // 브라우저 경로로 권한 없는 이력서 접속 시 뜨는 모달창
   const [errorPageOpen, setErrorPageOpen] = useState(false);
+  const resumeRef = useRef<HTMLDivElement>(null);
 
   // 동적으로 변하는 이력서 데이터를 useState로 관리하기 위해 이력서 폼 초기화
   const [formData, setFormData] = useState({
@@ -137,38 +138,40 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
       <form className="w-full" onSubmit={handleSubmit}>
-        <ResumeTitle
-          initialTitle={formData.title}
-          onInputChange={(value) => handleInputChange("title", value)}
-        />
-        <ResumeCareer
-          initialCareerData={formData.careerData}
-          onInputChange={(value) => handleInputChange("careerData", value)}
-        />
-        <ResumeCareerTextarea
-          initialCareerText={formData.careerText}
-          onInputChange={(value) => handleInputChange("careerText", value)}
-        />
-        <ResumeEducation
-          initialEducation={formData.education}
-          onInputChange={(value) => handleInputChange("education", value)}
-        />
-        <ResumeSkill
-          initialSkill={formData.skill}
-          onInputChange={(value) => handleInputChange("skill", value)}
-        />
-        <ResumeAward
-          initialAward={formData.award}
-          onInputChange={(value) => handleInputChange("award", value)}
-        />
-        <ResumeLanguage
-          initialLanguage={formData.language}
-          onInputChange={(value) => handleInputChange("language", value)}
-        />
+        <div ref={resumeRef}>
+          <ResumeTitle
+            initialTitle={formData.title}
+            onInputChange={(value) => handleInputChange("title", value)}
+          />
+          <ResumeCareer
+            initialCareerData={formData.careerData}
+            onInputChange={(value) => handleInputChange("careerData", value)}
+          />
+          <ResumeCareerTextarea
+            initialCareerText={formData.careerText}
+            onInputChange={(value) => handleInputChange("careerText", value)}
+          />
+          <ResumeEducation
+            initialEducation={formData.education}
+            onInputChange={(value) => handleInputChange("education", value)}
+          />
+          <ResumeSkill
+            initialSkill={formData.skill}
+            onInputChange={(value) => handleInputChange("skill", value)}
+          />
+          <ResumeAward
+            initialAward={formData.award}
+            onInputChange={(value) => handleInputChange("award", value)}
+          />
+          <ResumeLanguage
+            initialLanguage={formData.language}
+            onInputChange={(value) => handleInputChange("language", value)}
+          />
+        </div>
         <div className="flex justify-center items-center gap-4 mt-10">
           <ResumeCancleButton />
           <ResumeSubmitButton />
-          <ResumePage />
+          <ResumePage resumeRef={resumeRef} />
         </div>
       </form>
       <ResumeError error={errorPageOpen} />

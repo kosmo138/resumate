@@ -73,7 +73,7 @@ public class MemberService {
 
         Cookie cookie = new Cookie("authorization", access_token);
         cookie.setPath("/");
-        // cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
 

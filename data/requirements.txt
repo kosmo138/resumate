@@ -2,6 +2,8 @@ beautifulsoup4
 fastapi
 gensim
 konlpy
+langchain
+langchain_openai
 mysqlclient
 torch
 requests

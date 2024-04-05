@@ -1,4 +1,3 @@
-"use client"
 import { ResumeHead } from "@/types/resume"
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"

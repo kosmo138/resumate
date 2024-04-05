@@ -3,7 +3,9 @@ fastapi
 gensim
 konlpy
 mysqlclient
+torch
 requests
 selenium
 sqlalchemy
+transformers
 uvicorn

@@ -1,206 +1,275 @@
 package resumate.server.service;
 
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import resumate.server.config.JsonBuilder;
 import resumate.server.config.JwtConfig;
-import resumate.server.dto.Member;
-import resumate.server.mybatis.MemberMapper;
-
-/**
- * RequiredArgsConstructor
- * - 초기화되지 않은 final 필드에 대한 생성자를 Lombok이 생성하여 의존성 주입
- * - Autowired를 이용한 필드 의존성 주입보다 생성자 주입이 권장됨
- * 
- * @see https://ahndding.tistory.com/9
- */
+import resumate.server.dto.Resume;
+import resumate.server.mybatis.ResumeMapper;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final MemberMapper memberMapper;
+public class ResumeService {
+    private final ResumeMapper resumeMapper;
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
-    // true = 통과, 문제가 없는 상황
-    // false = 실패, 문제가 있는 상황
-
     /*
-     * 입력 유효성 검사
-     * 입력: 이메일, 비밀번호
-     * 출력: 이메일, 비밀번호가 null이 아니고 비어있지 않은지 확인
+     * 입력: Authorization 요청 헤더 - Bearer 토큰
+     * 출력: 로그인된 이메일 주소
      */
-    public boolean checkNull(String email, String password) {
-        return email != null && password != null && !email.isEmpty() && !password.isEmpty();
-    }
-
-    /*
-     * 이메일 중복 확인
-     * 입력: 이메일
-     * 출력: 이메일이 중복되지 않았는지 확인
-     */
-    public boolean checkMemberMail(String email) {
-        return memberMapper.selectMemberCount(email) == 0;
-    }
-
-    /*
-     * 이메일, 비밀번호 검증
-     * 입력: 이메일, 비밀번호
-     * 출력: 이메일과 비밀번호 일치 여부
-     */
-    public boolean checkMemberPass(String email, String password) {
-        if (!checkNull(email, password)) {
-            return false;
-        }
-        String encodedPass = memberMapper.selectMemberPass(email);
-        return passwordEncoder.matches(password, encodedPass);
-    }
-
-    /*
-     * JWT 토큰을 쿠키에 저장
-     * 입력: 이메일
-     * 출력: 쿠키에 JWT 토큰 저장
-     */
-    void tokenInCookie(String email, HttpServletResponse response) {
-        String access_token = jwtConfig.issueAccessToken(email);
-
-        Cookie cookie = new Cookie("authorization", access_token);
-        cookie.setPath("/");
-        // cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-    }
-
-    /*
-     * 로그인
-     * 입력: 이메일, 비밀번호
-     * 출력: 성공 -> 성공 메시지 + JWT를 쿠키에 저장 / 실패 -> 실패 메시지
-     */
-    public ResponseEntity<String> loginHandler(Member member, HttpServletResponse response) {
-        String email = member.getEmail();
-        String password = member.getPassword();
-
-        if (checkMemberPass(email, password)) {
-            tokenInCookie(email, response);
-
-            String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "로그인에 성공했습니다.")
-                    .put("email", email)
-                    .build();
-            return ResponseEntity.ok().body(responseJson);
-        } else {
-            String responseJson = jsonBuilder
-                    .put("status", "fail")
-                    .put("message", "이메일과 비밀번호를 확인해주세요.")
-                    .build();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
-        }
-    }
-
-    /*
-     * 회원가입
-     * 입력: 이메일, 비밀번호
-     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
-     */
-    public ResponseEntity<String> insertMember(Member member) {
-        String email = member.getEmail();
-        String password = member.getPassword();
-
-        if (checkNull(email, password) && checkMemberMail(email)) {
-            Member newMember = new Member();
-            newMember.setEmail(email);
-            newMember.setPassword(passwordEncoder.encode(password));
-            memberMapper.insertMember(newMember);
-
-            String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "계정이 생성되었습니다. 로그인을 진행해 주세요.")
-                    .build();
-            return ResponseEntity.ok().body(responseJson);
-        } else {
-            String responseJson = jsonBuilder
-                    .put("status", "fail")
-                    .put("message", "이메일과 비밀번호를 확인해주세요.")
-                    .build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
-        }
-    }
-
-    /*
-     * 비밀번호 변경
-     * 입력: JWT, 기존 비밀번호, 신규 비밀번호
-     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
-     */
-    public ResponseEntity<String> updateMember(String bearer, Member member) {
+    public String getEmailFromBearer(String bearer) {
         String token = bearer.substring(7);
-        String email = jwtConfig.getEmailFromToken(token);
-        if (email == null) {
+        return jwtConfig.getEmailFromToken(token);
+    }
+
+    /*
+     * 입력: JSON 문자열
+     * 출력: JSON 문자열의 title 값
+     */
+    public String getTitleFromJson(String json) {
+        final JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        return jsonObject.get("title").getAsString();
+    }
+
+    /*
+     * 입력: Bearer 토큰
+     * 출력: 로그인 여부
+     */
+    public boolean isLoggedin(String bearer) {
+        String email = getEmailFromBearer(bearer);
+        return email != null && !email.isEmpty();
+    }
+
+    /*
+     * 입력: 이메일, 이력서 ID
+     * 출력: 이력서 소유 여부
+     */
+    public boolean isResumeOwner(String email, int id) {
+        List<Integer> resumeIdList = resumeMapper.selectResumeId(email);
+        for (int resumeId : resumeIdList) {
+            if (resumeId == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+     * 이력서 목록 조회
+     * 입력: Bearer 토큰
+     * 출력: 성공 -> 이력서 목록 / 실패 -> 로그인 필요 메시지
+     */
+    public ResponseEntity<String> selectResumeHead(String bearer) {
+        if (bearer == null || bearer.isEmpty()) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
                     .put("message", "로그인이 필요합니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String password = member.getPassword();
-            String password2 = member.getPassword2();
-
-            if (checkNull(email, password) && password2 != null && checkMemberPass(email, password)) {
-                Member changedMember = new Member();
-                changedMember.setEmail(email);
-                changedMember.setPassword(passwordEncoder.encode(password2));
-                memberMapper.updateMember(changedMember);
-                String responseJson = jsonBuilder
-                        .put("status", "success")
-                        .put("message", "비밀번호가 변경되었습니다.")
-                        .build();
-                return ResponseEntity.ok().body(responseJson);
-            } else {
+            String email = getEmailFromBearer(bearer);
+            if (!isLoggedin(bearer)) {
                 String responseJson = jsonBuilder
                         .put("status", "fail")
-                        .put("message", "비밀번호를 확인해 주세요.")
+                        .put("message", "로그인이 필요합니다.")
                         .build();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else {
+                List<Resume> resumeList = resumeMapper.selectResumeHead(email);
+                Gson gson = new Gson();
+                String responseJson = gson.toJson(resumeList);
+                return ResponseEntity.ok().body(responseJson);
             }
         }
     }
 
     /*
-     * 회원탈퇴
-     * 입력: JWT, 비밀번호
-     * 출력: 성공 -> 성공 메시지 / 실패 -> 실패 메시지
+     * 이력서 내용 조회
+     * 입력: Bearer 토큰, 이력서 ID
+     * 출력: 성공 -> 이력서 내용 / 실패 -> 권한 없음 메시지
      */
-    public ResponseEntity<String> deleteMember(String bearer, Member member) {
-        String token = bearer.substring(7);
-        String email = jwtConfig.getEmailFromToken(token);
-        String password = member.getPassword();
-
-        if (email == null) {
+    public ResponseEntity<String> selectResumeBody(String bearer, int id) {
+        if (bearer == null || bearer.isEmpty()) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
                     .put("message", "로그인이 필요합니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
-        } else if (checkNull(email, password) && checkMemberPass(email, password)) {
-            memberMapper.deleteMember(email);
-            String responseJson = jsonBuilder
-                    .put("status", "success")
-                    .put("message", "계정이 삭제되었습니다.")
-                    .put("email", email)
-                    .build();
-            return ResponseEntity.ok().body(responseJson);
         } else {
+            String email = getEmailFromBearer(bearer);
+            if (!isResumeOwner(email, id)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else {
+                String resume = resumeMapper.selectResumeBody(id);
+                return ResponseEntity.ok().body(resume);
+            }
+        }
+    }
+
+    /*
+     * 이력서 수정
+     * 입력: Bearer 토큰, 수정 이력서 내용, 이력서 ID
+     * 출력: 성공 -> 이력서 수정 성공 메시지 / 실패 -> 권한 없음 메시지
+     */
+    public ResponseEntity<String> updateResume(String bearer, String resume, int id) {
+        if (bearer == null || bearer.isEmpty()) {
             String responseJson = jsonBuilder
                     .put("status", "fail")
-                    .put("message", "이메일과 비밀번호를 확인해주세요.")
+                    .put("message", "로그인이 필요합니다.")
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String email = getEmailFromBearer(bearer);
+
+            if (!isResumeOwner(email, id)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else if (resume == null || getTitleFromJson(resume).length() == 0) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "제목을 입력해주세요.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+            } else {
+                Resume newResume = new Resume();
+                newResume.setEmail(email);
+                newResume.setTitle(getTitleFromJson(resume));
+                newResume.setContent(resume);
+                newResume.setId(id);
+                resumeMapper.updateResume(newResume);
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "이력서가 수정되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            }
+        }
+    }
+
+    /*
+     * 이력서 등록
+     * 입력: Bearer 토큰, 이력서 내용
+     * 출력: 성공 -> 이력서 등록 성공 메시지 / 실패 -> 권한 없음 메시지
+     */
+    public ResponseEntity<String> insertResume(String bearer, String resume) {
+        if (bearer == null || bearer.isEmpty()) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "로그인이 필요합니다.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String email = getEmailFromBearer(bearer);
+
+            if (!isLoggedin(bearer)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else if (resume == null || getTitleFromJson(resume).length() == 0) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "제목을 입력해주세요.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+            } else {
+                Resume newResume = new Resume();
+                newResume.setEmail(email);
+                newResume.setTitle(getTitleFromJson(resume));
+                newResume.setContent(resume);
+                resumeMapper.insertResume(newResume);
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "이력서가 추가되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            }
+        }
+    }
+
+    /*
+     * 이력서 복제
+     * 입력: Bearer 토큰, 이력서 ID
+     * 출력: 성공 -> 이력서 복제 성공 메시지 / 실패 -> 권한 없음 메시지
+     */
+    public ResponseEntity<String> cloneResume(String bearer, int id) {
+        if (bearer == null || bearer.isEmpty()) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "로그인이 필요합니다.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String email = getEmailFromBearer(bearer);
+
+            if (!isResumeOwner(email, id)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else {
+                String resumeBody = resumeMapper.selectResumeBody(id);
+                Resume resume = new Resume();
+                resume.setEmail(email);
+                resume.setTitle(getTitleFromJson(resumeBody));
+                resume.setContent(resumeBody);
+                resumeMapper.insertResume(resume);
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", "이력서가 복제되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            }
+        }
+    }
+
+    /*
+     * 이력서 삭제
+     * 입력: Bearer 토큰, 이력서 ID
+     * 출력: 성공 -> 이력서 삭제 성공 메시지 / 실패 -> 권한 없음 메시지
+     */
+    public ResponseEntity<String> deleteResume(String bearer, int id) {
+        if (bearer == null || bearer.isEmpty()) {
+            String responseJson = jsonBuilder
+                    .put("status", "fail")
+                    .put("message", "로그인이 필요합니다.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+        } else {
+            String email = getEmailFromBearer(bearer);
+
+            if (!isResumeOwner(email, id)) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "권한이 없습니다.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
+            } else {
+                resumeMapper.deleteResume(id);
+                String responseJson = jsonBuilder
+                        .put("status", "success")
+                        .put("message", id + "번 이력서가 삭제되었습니다.")
+                        .build();
+                return ResponseEntity.ok().body(responseJson);
+            }
         }
     }
 }

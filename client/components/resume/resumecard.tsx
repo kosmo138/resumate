@@ -25,7 +25,7 @@ export default function ResumeCard({
   const url = `/api/resume/${id}`
 
   const handleCloneClick = () => {
-    fetch(url, {
+    fetch(`/api/resume/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${Cookies.get("authorization")}`,
@@ -58,7 +58,7 @@ export default function ResumeCard({
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("클론에 실패했습니다")
+          throw new Error("Network response was not ok")
         } else {
           location.reload()
         }
@@ -94,13 +94,13 @@ export default function ResumeCard({
           </DropdownMenu>
 
           <div className="mt-3 flex grid h-20 w-full text-lg font-bold">
-            <Link href={url} passHref>
+            <Link href={`/resume/${id}`} passHref>
               {title}
             </Link>
           </div>
           <div>{modified}</div>
           <div className="flex justify-end">
-            <Link href="/letter/edit/${id}">
+            <Link href="/letter/edit/${resumeHead.id}">
               <ResumeButton />
             </Link>
           </div>

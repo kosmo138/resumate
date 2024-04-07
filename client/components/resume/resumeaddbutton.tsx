@@ -55,7 +55,6 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
         }
         reloadResumeList()
       })
-      // 새 이력서의 ID를 가져옵니다.
       .catch((error) => {
         console.log("POST 에러:", error)
       })

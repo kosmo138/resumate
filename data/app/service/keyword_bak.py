@@ -18,7 +18,7 @@ def insert_keyword_csv(results):
 
 
 def insert_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     new_keyword = Keyword(company=company, keyword=keyword_json)
     session.add(new_keyword)
     session.commit()
@@ -30,7 +30,7 @@ def select_keyword(company):
 
 
 def update_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     session.query(Keyword).filter(Keyword.company == company).update(
         {Keyword.keyword: keyword_json}
     )
@@ -48,7 +48,7 @@ def search_keyword(company):
         print(f"[Debug] keyword_list: {keyword_list}")
         if keyword_list == None:
             keyword_list = scrap_keyword(company)
-        return json.dumps(keyword_list)
+        return json.dumps(keyword_list, ensure_ascii=False)
     except Exception as e:
         print(e)
     finally:

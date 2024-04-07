@@ -7,7 +7,6 @@ CREATE TABLE companies(
 
 -- DROP TABLE keyword;
 
-
 CREATE TABLE keyword (
     id SMALLINT AUTO_INCREMENT PRIMARY KEY,
     company VARCHAR(40) NOT NULL UNIQUE,
@@ -19,6 +18,8 @@ INSERT INTO keyword (company, keyword) VALUES('LG전자', '["노력", "꾸준함
 
 SELECT * FROM keyword;
 
-DELETE FROM keyword;
+DELETE FROM keyword WHERE id =84;
 
 UPDATE keyword SET company = LOWER(company);
+
+DESCRIBE letter;

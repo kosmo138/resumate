@@ -1,7 +1,7 @@
 import json
 import concurrent.futures
 from fastapi import HTTPException
-from entity import Keyword
+from app.core.entity import Keyword
 from app.core.database import session
 from app.service.textscraper import TextScraper
 from app.service.keywordextractor import KeywordExtractor
@@ -9,7 +9,7 @@ from app.service.keywordextractor import KeywordExtractor
 
 # 회사명 및 인재상 키워드 CRUD on MySQL
 def insert_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     new_keyword = Keyword(company=company, keyword=keyword_json)
     session.add(new_keyword)
     session.commit()
@@ -24,7 +24,7 @@ def select_keyword(company):
 
 
 def update_keyword(company, keyword_list):
-    keyword_json = json.dumps(keyword_list)
+    keyword_json = json.dumps(keyword_list, ensure_ascii=False)
     session.query(Keyword).filter(Keyword.company == company).update(
         {Keyword.keyword: keyword_json}
     )
@@ -55,17 +55,23 @@ def search_keyword(company):
                     status_code=500, detail="텍스트를 가져오는 데 실패했습니다."
                 )
             nouns = keyword_extractor.extract_nouns(text)
-            if nouns == None:
+            if len(nouns) == 0:
                 raise HTTPException(status_code=500, detail="명사 추출에 실패했습니다.")
             related_keywords = keyword_extractor.extract_related_keywords(nouns)
             keyword_list = list(related_keywords)
-            insert_keyword(company, keyword_list)
+            if len(keyword_list) == 0:
+                # 단어 추출 안된 회사명은 db에 저장 X.
+                raise HTTPException(
+                    status_code=400,
+                    detail="검색하신 회사명의 인재상 연관단어를 찾지 못했습니다.",
+                )
+            if keyword_list:
+                insert_keyword(company, keyword_list)
+            else:
+                print("키워드 리스트가 비어 있어 데이터베이스에 저장되지 않았습니다.")
         return keyword_list
     except Exception as e:
-        print(e)
-    finally:
-        # driver.quit()
-        pass
+        return e
 
 
 # 인재상 검색 함수를 병렬로 처리하면서 30초 이상 걸리면 408 Request Timeout 에러를 반환
@@ -78,9 +84,12 @@ def thread_search_keyword(company):
             return future.result(timeout=30)
         except concurrent.futures.TimeoutError:
             raise HTTPException(status_code=408, detail="Request Timeout")
+        except HTTPException as e:
+            return e
 
 
 def transform_name(company):
     # 공백 제거, 모든 알파벳 소문자
-    pass
-    return company
+    before_company = company.lower()
+    transform_company = before_company.replace(" ", "")
+    return transform_company

@@ -398,6 +398,7 @@ data/models/
 *.model
 
 # Jupyter Notebook
+notebook/
 
 # IPython
 

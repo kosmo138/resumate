@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from app.service.keywordservice import thread_search_keyword
-import urllib.parse
+import urllib.parse #url 디코딩에 사용됨.
 
-router = APIRouter()
+router = APIRouter() #APIRouter 클래스를 사용하여 새로운 라우터를 생성
 
 
-@router.get("/")
-def null_company_error():
+@router.get("/") #핸들러 정의
+def null_company_error(): #핸들러함수
     raise HTTPException(status_code=400, detail="회사명을 입력해 주세요.")
 
 

@@ -5,15 +5,15 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/components/auth/authcontext";
+} from "@/components/ui/dropdown-menu"
+import { useAuth } from "@/components/auth/authcontext"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 import { FiUser, FiKey, FiXCircle, FiLogOut } from "react-icons/fi";
 
 export function MemberMenu() {
-  const { logout } = useAuth();
+  const { logout } = useAuth()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -41,5 +41,5 @@ export function MemberMenu() {
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

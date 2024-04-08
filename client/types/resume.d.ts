@@ -13,3 +13,11 @@ export type ResumeBody = {
     award?: object
     language?: string
 }
+const newResumeList:
+    | ResumeHead
+    | {
+        id: number
+        title: string
+        updateAt: string
+      },
+  []

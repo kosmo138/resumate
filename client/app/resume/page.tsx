@@ -62,7 +62,7 @@ export default function ResumeSelector() {
                 typeof resumeHead.modified === "number"
                   ? formatDate(resumeHead.modified)
                   : resumeHead.modified
-              } // 수정된 날짜를 포맷팅하여 전달합니다.
+              } // 코드의 유연성을 높이기 위해 조건 연산자를 사용하여 모든 상황을 고려하여 처리.
             />
           ))}
       </div>

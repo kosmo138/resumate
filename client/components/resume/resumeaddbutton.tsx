@@ -55,14 +55,12 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
         }
         reloadResumeList()
       })
-      // 새 이력서의 ID를 가져옵니다.
       .catch((error) => {
         console.log("POST 에러:", error)
       })
   }
   return (
     <>
-      {/* TODO: POST 요청 보내고 GET 요청 해서 가져온 데이터를 page.tsx의 resumeList 상태에 반영하는 함수 */}
       <Card onClick={handleButtonClick}>
         <CardContent>
           <div className="mb-10 mt-8 text-center text-lg font-bold">

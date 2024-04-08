@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import React, { useState } from "react";
 
-export default function ResumeCancleButton() {
+export default function ResumeCancelButton() {
   //dialog 상태 관리
   const [isOpen, setIsOpen] = useState(false);
 

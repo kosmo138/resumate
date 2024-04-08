@@ -173,7 +173,11 @@ ERD를 검토 및 수정하여 AWS RDS에서 실행 중인 MySQL 데이터베이
 
 **Ver. 1**
 
-![E-R Diagram](/docs/diagram/er-diagram.png)
+![E-R Diagram 1](/docs/diagram/er-diagram-1.png)
+
+**Ver. 2**
+
+![E-R Diagram 2](/docs/diagram/er-diagram-2.svg)
 
 ## 개발 환경 준비
 

@@ -8,22 +8,22 @@ export default function LetterSelector() {
     {
       id: 1,
       title: "첫 번째 자기소개서",
-      updatedAt: "2024-03-01",
+      modified: "2024-03-01",
     },
     {
       id: 2,
       title: "두 번째 자기소개서",
-      updatedAt: "2024-03-02",
+      modified: "2024-03-02",
     },
     {
       id: 3,
       title: "세 번째 자기소개서",
-      updatedAt: "2024-03-03",
+      modified: "2024-03-03",
     },
     {
       id: 4,
       title: "네 번째 자기소개서",
-      updatedAt: "2024-03-04",
+      modified: "2024-03-04",
     },
   ]
   return (

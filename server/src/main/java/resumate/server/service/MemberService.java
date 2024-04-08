@@ -78,6 +78,24 @@ public class MemberService {
     }
 
     /*
+     * 입력: Authorization 요청 헤더 - Bearer 토큰
+     * 출력: 로그인된 이메일 주소
+     */
+    public String getEmailFromBearer(String bearer) {
+        String token = bearer.substring(7);
+        return jwtConfig.getEmailFromToken(token);
+    }
+
+    /*
+     * 입력: Bearer 토큰
+     * 출력: 로그인 여부
+     */
+    public boolean isLoggedin(String bearer) {
+        String email = getEmailFromBearer(bearer);
+        return email != null && !email.isEmpty();
+    }
+
+    /*
      * 로그인
      * 입력: 이메일, 비밀번호
      * 출력: 성공 -> 성공 메시지 + JWT를 쿠키에 저장 / 실패 -> 실패 메시지

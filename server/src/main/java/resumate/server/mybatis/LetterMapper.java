@@ -9,7 +9,7 @@ import resumate.server.dto.Letter;
 @Mapper
 public interface LetterMapper {
     List<Letter> selectLetterHead(String email);
-    String selectLetterBody(int id);
+    Letter selectLetterBody(int id);
     List<Integer> selectLetterId(String email);
     void insertLetter(Letter letter);
     void updateLetter(Letter letter);

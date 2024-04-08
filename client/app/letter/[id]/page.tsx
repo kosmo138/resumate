@@ -19,3 +19,4 @@ export default async function LetterEditor(id: string) {
     </main>
   )
 }
+// axjax fatch axiox.get.post

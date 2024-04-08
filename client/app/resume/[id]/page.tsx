@@ -8,12 +8,13 @@ import ResumeEducation from "@/components/resume/resume-education";
 import ResumeSkill from "@/components/resume/resume-skill";
 import ResumeAward from "@/components/resume/resume-award";
 import ResumeLanguage from "@/components/resume/resume-language";
-import ResumeCancleButton from "@/components/resume/resume-cancle-button";
+import ResumeCancelButton from "@/components/resume/resume-cancel-button";
 import HeadingText from "@/components/heading-text";
 import Cookies from "js-cookie";
 import ResumeSubmitButton from "@/components/resume/resume-submit-button";
 import ResumeError from "@/components/resume/resume-error-modal";
 import ResumePage from "@/components/resume/resumedownload";
+import { ResumeBody } from "@/types/resume";
 
 export default function ResumeEditor({ params }: { params: { id: string } }) {
   // url 경로
@@ -22,10 +23,12 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   const jwt = Cookies.get("authorization");
   // 브라우저 경로로 권한 없는 이력서 접속 시 뜨는 모달창
   const [errorPageOpen, setErrorPageOpen] = useState(false);
+  // 화면을 pdf파일로 저장하기 위해 dom 구역 지정을 위한 useRef 활용
+  // null값으로 초기화 하지 않으면 prop부분에서 undefined 에러 발생
   const resumeRef = useRef<HTMLDivElement>(null);
 
   // 동적으로 변하는 이력서 데이터를 useState로 관리하기 위해 이력서 폼 초기화
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ResumeBody>({
     title: "",
     careerData: [{ date: "", content: "" }],
     careerText: "",
@@ -50,26 +53,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         }
         return response.json();
       })
-      .then((data) => {
-        const {
-          title,
-          careerData,
-          careerText,
-          education,
-          skill,
-          award,
-          language,
-        } = data;
-        setFormData({
-          title: title,
-          careerData: careerData,
-          careerText: careerText,
-          education: education,
-          skill: skill,
-          award: award,
-          language: language,
-        });
-      })
+      .then((data) => setFormData(data))
       .catch((error) => {
         console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
         // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
@@ -85,7 +69,9 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // 2열 이후로 공백을 포함하지 않은 데이터만 필터링
+    // '2번째 목록 이후'로 공백(입력을 아무것도 하지 않은)을 제외한 데이터만 필터링해서 저장하기 위함
+    // formdata를 저장할 때 아무것도 입력하지 않은 공백란은 저장하지 않으려고 trim 함수 사용
+    // ex) 2번째 경력란에 날짜와 컨텐츠에 "  " 처럼 공백만 있을 경우 DB에 전달하지 않기 위함
     const filteredFormData = {
       ...formData,
       careerData: formData.careerData.filter(
@@ -103,28 +89,24 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     };
 
     // 이력서를 restAPI 통해 db로 전달
-    try {
-      fetch(apiUrl, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-        body: JSON.stringify(filteredFormData),
+    fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify(filteredFormData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("이력서 데이터 전송 실패!");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("이력서 데이터 전송 실패!");
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-      alert("이력서 저장에 실패했습니다.");
-    }
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("이력서 저장에 실패했습니다. Error:" + error);
+      });
   };
 
   return (
@@ -169,7 +151,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
           />
         </div>
         <div className="flex justify-center items-center gap-4 mt-10">
-          <ResumeCancleButton />
+          <ResumeCancelButton />
           <ResumeSubmitButton />
           <ResumePage resumeRef={resumeRef} />
         </div>

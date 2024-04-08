@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { LoginDialog } from "@/components/auth/logindialog"
@@ -9,6 +10,8 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
 import { settings } from "@/config/settings"
+import { MemberMenu } from "@/components/auth/membermenu"
+import { useAuth } from "@/components/auth/authcontext"
 import { MemberMenu } from "@/components/auth/membermenu"
 import { useAuth } from "@/components/auth/authcontext"
 

@@ -44,7 +44,6 @@ export default function ResumeCard({
       })
       .catch((error) => {
         console.error("에러 발생:", error)
-        // 에러 처리
       })
   }
 

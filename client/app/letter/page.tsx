@@ -1,9 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import HeadingText from "@/components/heading-text"
 import LetterCard from "@/components/letter/lettercard"
-import { useLetter } from "@/components/letter/lettercontext"
-import { useEffect } from "react"
+import { LetterHead } from "@/types/letter"
 
 export default function LetterSelector() {
   const mock_data = JSON.parse(`
@@ -20,11 +20,11 @@ export default function LetterSelector() {
     }
   ]
   `)
-  const { letterHead, setLetterHead } = useLetter()
+  const [letterHead, setLetterHead] = useState<LetterHead[]>()
 
   useEffect(() => {
     setLetterHead(mock_data)
-  }, [setLetterHead, mock_data])
+  }, [])
 
   return (
     <main className="container flex flex-col items-center py-8">

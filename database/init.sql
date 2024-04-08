@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS resume;
 
 DROP TABLE IF EXISTS letter;
 
+DROP TABLE IF EXISTS keyword;
+
 /* 테이블 생성 */
 CREATE TABLE member (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,6 +49,12 @@ CREATE TABLE letter (
     FOREIGN KEY (resume_id) REFERENCES resume(id) ON DELETE CASCADE
 );
 
+CREATE TABLE keyword (
+    id SMALLINT AUTO_INCREMENT PRIMARY KEY,
+    company VARCHAR(100) NOT NULL UNIQUE,
+    keyword JSON NOT NULL
+);
+
 /* 테이블 조회 */
 SHOW TABLES;
 
@@ -56,12 +64,16 @@ DESCRIBE resume;
 
 DESCRIBE letter;
 
+DESCRIBE keyword;
+
 /* 테이블 설정 변경 */
 ALTER TABLE member AUTO_INCREMENT = 1;
 
 ALTER TABLE resume AUTO_INCREMENT = 1;
 
 ALTER TABLE letter AUTO_INCREMENT = 1;
+
+ALTER TABLE keyword AUTO_INCREMENT = 1;
 
 ALTER TABLE resume
 MODIFY COLUMN modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
@@ -132,3 +144,16 @@ WHERE id = 1;
 
 DELETE FROM letter
 WHERE id = 1;
+
+/* keyword CRUD */
+INSERT INTO keyword (company, keyword)
+VALUES ('abc', '{"a", "b", "c"}');
+
+SELECT id, company, keyword FROM keyword;
+
+UPDATE keyword
+SET keyword = '{"a", "b", "c", "d"}'
+WHERE company = 'abc';
+
+DELETE FROM keyword
+WHERE company = 'abc';

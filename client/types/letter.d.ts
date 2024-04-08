@@ -2,6 +2,9 @@ type LetterHead = {
   id: number
   title: string
   modified: string
+  id: number
+  title: string
+  modified: string
 }
 
 export type LetterBody = {
@@ -15,9 +18,4 @@ export type LetterBody = {
 export type LetterContent = {
   category: string
   text: string
-}
-
-export type Selector = {
-  value: string | undefined
-  onValueChange: (value: string) => void
 }

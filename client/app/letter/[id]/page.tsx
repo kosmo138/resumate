@@ -1,12 +1,11 @@
 "use client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import HeadingText from "@/components/heading-text"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
 import { LetterBody, LetterContent } from "@/types/letter"
-import { useLetter } from "@/components/letter/lettercontext"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
   const mock_data: LetterBody = JSON.parse(`
@@ -35,8 +34,8 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     ]
   }
   `)
-
-  const { letterBody, setLetterBody } = useLetter()
+  
+  const [letterBody, setLetterBody] = useState<LetterBody>()
 
   useEffect(() => {
     setLetterBody(mock_data)
@@ -95,7 +94,14 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       {letterBody &&
         letterBody.content &&
         letterBody.content.map((content: LetterContent, key: number) => {
-          return <ContentForm content={content} key={key} />
+          return (
+            <ContentForm
+              content={content}
+              key={key}
+              letterBody={letterBody}
+              setLetterBody={setLetterBody}
+            />
+          )
         })}
       {!letterBody && (
         <div className="text-2xl font-bold">로딩 중입니다...</div>
@@ -116,3 +122,4 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     </main>
   )
 }
+// axjax fatch axiox.get.post

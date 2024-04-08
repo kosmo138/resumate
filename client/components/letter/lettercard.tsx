@@ -1,6 +1,6 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { LetterHead } from "@/types/letter";
-import Link from "next/link";
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { LetterHead } from "@/types/letter"
+import Link from "next/link"
 
 export default function LetterCard({ letterHead }: { letterHead: LetterHead }) {
   return (
@@ -14,5 +14,5 @@ export default function LetterCard({ letterHead }: { letterHead: LetterHead }) {
         <p>{letterHead.modified}</p>
       </CardFooter>
     </Card>
-  );
+  )
 }

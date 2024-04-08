@@ -1,5 +1,7 @@
 package resumate.server.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +16,6 @@ public class Letter {
     private String title;
     private String company;
     private String job;
-    private String content;
+    private List<LetterContent> content;
     private int modified;
 }

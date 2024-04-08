@@ -13,7 +13,9 @@
     <result property="title" column="title"/>
     <result property="company" column="company"/>
     <result property="job" column="job"/>
-    <result property="content" column="content"/>
+    <result property="content" column="content" 
+      javaType="List" jdbcType="JSON"
+      typeHandler="resumate.server.mybatis.LetterContentHandler"/>
   </resultMap>
   <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
     SELECT id, title, UNIX_TIMESTAMP(modified) AS modified FROM letter

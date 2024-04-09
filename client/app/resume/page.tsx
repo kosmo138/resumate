@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Cookies from "js-cookie"
-import HeadingText from "@/components/heading-text"
-import ResumeAddButton from "@/components/resume/resumeaddbutton"
-import ResumeCard from "@/components/resume/resumecard"
-import { ResumeHead } from "@/types/resume"
-import UnauthorizedDialog from "@/components/auth/unauthorized-dialog"
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import HeadingText from "@/components/heading-text";
+import ResumeAddButton from "@/components/resume/resumeaddbutton";
+import ResumeCard from "@/components/resume/resumecard";
+import { ResumeHead } from "@/types/resume";
+import UnauthorizedDialog from "@/components/auth/unauthorized-dialog";
 
 export default function ResumeSelector() {
-  const [resumeList, setResumeList] = useState<Array<ResumeHead>>([])
-  const [isError, setIsError] = useState<boolean>(false)
+  const [resumeList, setResumeList] = useState<Array<ResumeHead>>([]);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchResumeList = () => {
@@ -23,30 +23,29 @@ export default function ResumeSelector() {
       })
         .then((response) => {
           if (response.status === 200) {
-            return response.json()
+            return response.json();
           } else {
-            setIsError(true)
+            setIsError(true);
           }
         })
         .then((data) => {
-          setResumeList(data)
-        })
-    }
-    fetchResumeList()
-  }, [])
+          setResumeList(data);
+        });
+    };
+    fetchResumeList();
+  }, []);
 
   // UNIX 타임스탬프를 YYYY-MM-DD 형식으로 변환하는 함수
   const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp * 1000) // UNIX 타임스탬프(ms)를 받습니다.
-    const year = date.getFullYear()
-    const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    const day = date.getDate().toString().padStart(2, "0")
-    return `${year}-${month}-${day}`
-  }
+    const date = new Date(timestamp * 1000); // UNIX 타임스탬프(ms)를 받습니다.
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <main className="container flex flex-col items-center py-8">
-      <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>
       <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>
       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <ResumeAddButton setResumeList={setResumeList} />
@@ -68,5 +67,5 @@ export default function ResumeSelector() {
           ))}
       </div>
     </main>
-  )
+  );
 }

@@ -36,3 +36,4 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     </main>
   );
 }
+// axjax fatch axiox.get.post

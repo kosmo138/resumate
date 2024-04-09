@@ -3,6 +3,10 @@ type ResumeHead = {
   title: string;
   modified: string;
 };
+  id: number;
+  title: string;
+  modified: string;
+};
 
 export type ResumeBody = {
   id?: number;

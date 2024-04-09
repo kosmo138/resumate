@@ -389,6 +389,14 @@ docs/_build/
 .pybuilder/
 target/
 
+# Chrome Driver
+chrome/
+chromedriver/
+
+# Models
+data/models/
+*.model
+
 # Jupyter Notebook
 
 # IPython

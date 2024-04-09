@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 export function LoginDialog() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     fetch("/api/login", {
       method: "POST",
       headers: {
@@ -26,13 +26,13 @@ export function LoginDialog() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.status === "success") {
-          window.location.reload()
+        if (data.status === "success") {
+          window.location.reload();
         } else {
-          alert(data.message)
+          alert(data.message);
         }
-      })
-  }
+      });
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -79,5 +79,5 @@ export function LoginDialog() {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

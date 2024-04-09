@@ -33,6 +33,7 @@ export default function ResumeSubmitButton({
           </Button>
         </DialogTrigger>
         {/* DialogContent 조건부 렌더링 */}
+        {/* 제목을 입력하지 않았을경우 */}
         {isOpen && (
           <DialogContent>
             <DialogClose onClick={closeDialog} />
@@ -45,6 +46,7 @@ export default function ResumeSubmitButton({
                 <DialogFooter></DialogFooter>
               </>
             )}
+            {/* 제목은 입력했는데 특정 사유로 저장에 실패했을때, 저장에 정공했을때 */}
             {(!isError || (isError && !saveError)) && (
               <>
                 <p className="font-bold text-center text-lg">

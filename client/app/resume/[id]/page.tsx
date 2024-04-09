@@ -72,12 +72,12 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // title에 아무것도 입력이 안 되어있으면 db로 전송이 되지 않기때문에 임의의 제목 입력
     // '2번째 목록 이후'로 공백(입력을 아무것도 하지 않은)을 제외한 데이터만 필터링해서 저장하기 위함
     // formdata를 저장할 때 아무것도 입력하지 않은 공백란은 저장하지 않으려고 trim 함수 사용
     // ex) 2번째 경력란에 날짜와 컨텐츠에 "  " 처럼 공백만 있을 경우 DB에 전달하지 않기 위함
     const filteredFormData = {
       ...formData,
+      // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
       title: formData.title === "" ? setIsError(true) : formData.title,
       careerData: formData.careerData.filter(
         (value, index) =>
@@ -109,6 +109,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         return response.json();
       })
       .catch(() => {
+        // 임의의 사유로 모달창 에러 발생시
         setSaveError(true);
       });
   };

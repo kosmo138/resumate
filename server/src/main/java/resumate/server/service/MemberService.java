@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -221,22 +220,5 @@ public class MemberService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         }
-    }
-
-    /*
-     * 카카오 로그인
-     * 입력: 인가 code
-     * 출력: 테스트용 JSON
-     */
-    public ResponseEntity<String> kakaoAuth(String code) {
-        final String token = getToken(code);
-        return ResponseEntity.ok().body(token);
-    }
-
-    private String getToken(String code) {
-        final WebClient client = WebClient.create();
-        final String token = client.post().uri("https://kauth.kakao.com/oauth/token")
-                .retrieve().bodyToMono(String.class).block();
-        return token;
     }
 }

@@ -210,14 +210,15 @@ public class MemberService {
      * 출력: 테스트용 JSON
      */
     public ResponseEntity<String> kakaoAuth(String code) {
-        final String token = getToken(code);
+        // final String token = getToken(code);
+        final String token = code;
         return ResponseEntity.ok().body(token);
     }
 
     private String getToken(String code) {
         final WebClient client = WebClient.create();
         final String token = client.post().uri("https://kauth.kakao.com/oauth/token")
-                .retrieve().bodyToMono(String.class).block();
+                .retrieve().bodyToMono(String.class).block();`
         return token;
     }
 }

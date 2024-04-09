@@ -14,7 +14,7 @@
     <result property="company" column="company"/>
     <result property="job" column="job"/>
     <result property="content" column="content" 
-      javaType="List" jdbcType="JSON"
+      javaType="List" jdbcType="LONGVARCHAR"
       typeHandler="resumate.server.mybatis.LetterContentHandler"/>
   </resultMap>
   <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
@@ -30,11 +30,14 @@
   </select>
   <insert id="insertLetter" parameterType="resumate.server.dto.Letter">
     INSERT INTO letter (resume_id, title, company, job, content)
-    VALUES (#{resume_id}, #{title}, #{company}, #{job}, #{content})
+    VALUES (#{resume_id}, #{title}, #{company}, #{job}, 
+    #{content, typeHandler=resumate.server.mybatis.LetterContentHandler})
   </insert>
   <update id="updateLetter" parameterType="resumate.server.dto.Letter">
     UPDATE letter SET title = #{title}, company = #{company},
-    job = #{job}, content = #{content}, modified = NOW() 
+    job = #{job}, 
+    content = #{content, typeHandler=resumate.server.mybatis.LetterContentHandler}, 
+    modified = NOW() 
     WHERE id = #{id}
   </update>
   <delete id="deleteLetter" parameterType="_int">

@@ -164,7 +164,10 @@ public class LetterService {
             } else {
                 Letter newLetter = new Letter();
                 newLetter.setEmail(email);
+                newLetter.setResume_id(letter.getResume_id());
                 newLetter.setTitle(letter.getTitle());
+                newLetter.setCompany(letter.getCompany());
+                newLetter.setJob(letter.getJob());
                 newLetter.setContent(letter.getContent());
                 letterMapper.insertLetter(newLetter);
                 String responseJson = jsonBuilder

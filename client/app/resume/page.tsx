@@ -47,6 +47,7 @@ export default function ResumeSelector() {
   return (
     <main className="container flex flex-col items-center py-8">
       <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>
+      <HeadingText subtext="수정할 이력서를 선택해 주세요">이력서</HeadingText>
       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <ResumeAddButton setResumeList={setResumeList} />
         {isError && <UnauthorizedDialog />}

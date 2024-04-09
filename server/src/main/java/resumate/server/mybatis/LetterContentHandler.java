@@ -10,6 +10,7 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import resumate.server.dto.LetterContent;
 
@@ -24,17 +25,29 @@ public class LetterContentHandler extends BaseTypeHandler<List<LetterContent>> {
     @Override
     public List<LetterContent> getNullableResult(ResultSet rs, String columnName)
             throws SQLException {
-        return null;
+        String json = rs.getString(columnName);
+        Gson gson = new Gson();
+        return json == null ? null
+                : gson.fromJson(json, new TypeToken<List<LetterContent>>() {
+                }.getType());
     }
 
     @Override
     public List<LetterContent> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return null;
+        String json = rs.getString(columnIndex);
+        Gson gson = new Gson();
+        return json == null ? null
+                : gson.fromJson(json, new TypeToken<List<LetterContent>>() {
+                }.getType());
     }
 
     @Override
     public List<LetterContent> getNullableResult(CallableStatement cs, int columnIndex)
             throws SQLException {
-        return null;
+        String json = cs.getString(columnIndex);
+        Gson gson = new Gson();
+        return json == null ? null
+                : gson.fromJson(json, new TypeToken<List<LetterContent>>() {
+                }.getType());
     }
 }

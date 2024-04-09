@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Letter {
     private int id;
     private String email;
-    private String resume_id;
+    private int resume_id;
     private String title;
     private String company;
     private String job;

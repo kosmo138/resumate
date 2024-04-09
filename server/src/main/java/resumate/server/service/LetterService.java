@@ -120,8 +120,9 @@ public class LetterService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
             } else {
                 Letter newLetter = new Letter();
-                newLetter.setEmail(email);
                 newLetter.setTitle(letter.getTitle());
+                newLetter.setCompany(letter.getCompany());
+                newLetter.setJob(letter.getJob());
                 newLetter.setContent(letter.getContent());
                 newLetter.setId(id);
                 letterMapper.updateLetter(newLetter);
@@ -159,6 +160,12 @@ public class LetterService {
                 String responseJson = jsonBuilder
                         .put("status", "fail")
                         .put("message", "제목을 입력해주세요.")
+                        .build();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
+            } else if (letter.getResume_id() == 0) {
+                String responseJson = jsonBuilder
+                        .put("status", "fail")
+                        .put("message", "이력서를 선택해주세요.")
                         .build();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseJson);
             } else {
@@ -204,7 +211,10 @@ public class LetterService {
                 Letter letterBody = letterMapper.selectLetterBody(id);
                 Letter newLetter = new Letter();
                 newLetter.setEmail(email);
+                newLetter.setResume_id(letterBody.getResume_id());
                 newLetter.setTitle(letterBody.getTitle() + " - 복사본");
+                newLetter.setCompany(letterBody.getCompany());
+                newLetter.setJob(letterBody.getJob());
                 newLetter.setContent(letterBody.getContent());
                 letterMapper.insertLetter(newLetter);
                 String responseJson = jsonBuilder

@@ -67,7 +67,7 @@ public class LetterController {
 
     /*
      * PATCH /api/letter/1 -> 자소서 수정
-     * 입력: 헤더 JWT, {"title": "제목", "career": "경력", "education": ...}
+     * 입력: 헤더 JWT, {"title": "제목", "company": "회사명", "content": ...}
      * 출력: 자소서 수정 성공 메시지
      */
     @PatchMapping(value = "/{id}", consumes = "application/json", produces = "application/json")

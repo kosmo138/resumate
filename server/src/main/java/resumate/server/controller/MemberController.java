@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import resumate.server.dto.Member;
+import resumate.server.service.KakaoAuthService;
 import resumate.server.service.MemberService;
 
 @RestController
@@ -21,6 +22,7 @@ import resumate.server.service.MemberService;
 @RequestMapping("/api")
 public class MemberController {
     private final MemberService memberService;
+    private final KakaoAuthService kakaoAuthService;
 
     /**
      * POST /api/login -> 로그인
@@ -34,12 +36,13 @@ public class MemberController {
 
     /**
      * GET /api/kakaoauth -> 카카오 로그인
+     * 
      * @param code 카카오 인가 코드
-     * @return POST 요청의 응답으로 받은 토큰
-      */
+     * @return POST 요청의 응답으로 받은 토큰 JSON
+     */
     @GetMapping(value = "/kakaoauth", produces = "application/json")
     public ResponseEntity<String> getKakaoAuth(@RequestParam String code) {
-        return memberService.kakaoAuth(code);
+        return kakaoAuthService.kakaoAuth(code);
     }
 
     /*

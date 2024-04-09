@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,8 @@ public class MemberController {
      * @return POST 요청의 응답으로 받은 토큰 JSON
      */
     @GetMapping(value = "/kakaoauth", produces = "application/json")
-    public ResponseEntity<String> getKakaoAuth(@RequestParam String code) {
-        return kakaoAuthService.kakaoAuth(code);
+    public RedirectView getKakaoAuth(@RequestParam String code, HttpServletResponse response) {
+        return kakaoAuthService.kakaoAuth(code, response);
     }
 
     /*

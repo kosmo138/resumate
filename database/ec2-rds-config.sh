@@ -16,18 +16,18 @@ ufw status
 
 # To                         Action      From
 # --                         ------      ----
-# 22/tcp                     ALLOW       Anywhere                  
-# 22                         ALLOW       Anywhere                  
-# 443                        ALLOW       Anywhere                  
-# 8080                       ALLOW       Anywhere                  
-# 80                         ALLOW       Anywhere                  
-# 3306                       ALLOW       Anywhere                  
-# 22/tcp (v6)                ALLOW       Anywhere (v6)             
-# 22 (v6)                    ALLOW       Anywhere (v6)             
-# 443 (v6)                   ALLOW       Anywhere (v6)             
-# 8080 (v6)                  ALLOW       Anywhere (v6)             
-# 80 (v6)                    ALLOW       Anywhere (v6)             
-# 3306 (v6)                  ALLOW       Anywhere (v6)             
+# 22/tcp                     ALLOW       Anywhere
+# 22                         ALLOW       Anywhere
+# 443                        ALLOW       Anywhere
+# 8080                       ALLOW       Anywhere
+# 80                         ALLOW       Anywhere
+# 3306                       ALLOW       Anywhere
+# 22/tcp (v6)                ALLOW       Anywhere (v6)
+# 22 (v6)                    ALLOW       Anywhere (v6)
+# 443 (v6)                   ALLOW       Anywhere (v6)
+# 8080 (v6)                  ALLOW       Anywhere (v6)
+# 80 (v6)                    ALLOW       Anywhere (v6)
+# 3306 (v6)                  ALLOW       Anywhere (v6)
 
 # 172.31.64.78 3306/tcp      ALLOW FWD   Anywhere
 
@@ -73,18 +73,18 @@ iptables -t nat -L -v
 # 시작
 
 # Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
-#  pkts bytes target     prot opt in     out     source               destination         
+#  pkts bytes target     prot opt in     out     source               destination
 #     0     0 DNAT       tcp  --  eth0   any     anywhere             anywhere             tcp dpt:mysql to:172.31.64.78:3306
 #     0     0 DNAT       tcp  --  eth1   any     anywhere             anywhere             tcp dpt:mysql to:172.31.64.78:3306
 
 # Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
-#  pkts bytes target     prot opt in     out     source               destination         
+#  pkts bytes target     prot opt in     out     source               destination
 
 # Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
-#  pkts bytes target     prot opt in     out     source               destination         
+#  pkts bytes target     prot opt in     out     source               destination
 
 # Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
-#  pkts bytes target     prot opt in     out     source               destination         
+#  pkts bytes target     prot opt in     out     source               destination
 #    14  1016 MASQUERADE  all  --  any    any     anywhere             anywhere
 
 # 끝

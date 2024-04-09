@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image"
 import Link from "next/link"
@@ -17,16 +17,16 @@ export default function Navbar() {
   const { loggedin } = useAuth()
 
   const handleClick = async () => {
-    setNavbar(false)
-  }
+    setNavbar(false);
+  };
 
   useEffect(() => {
     if (navbar) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
-  }, [navbar])
+  }, [navbar]);
 
   return (
     <header className="select-none">
@@ -129,5 +129,5 @@ export default function Navbar() {
         )}
       </nav>
     </header>
-  )
+  );
 }

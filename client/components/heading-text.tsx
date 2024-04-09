@@ -3,12 +3,9 @@ interface HeadingProps {
   subtext?: string
 }
 
-export default function HeadingText({
-  children,
-  subtext,
-}: HeadingProps) {
+export default function HeadingText({ children, subtext }: HeadingProps) {
   return (
-    <header className="flex flex-col items-center space-y-2 text-center mb-6">
+    <header className="mb-6 flex flex-col items-center space-y-2 text-center">
       <h1 className="text-3xl font-bold text-primary lg:text-4xl">
         {children}
       </h1>

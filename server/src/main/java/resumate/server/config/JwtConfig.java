@@ -58,7 +58,6 @@ public class JwtConfig {
             Claims claims = jwtParserBuilder.build().parseSignedClaims(access_token).getPayload();
             return claims.getSubject();
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
             return null;
         }
     }

@@ -35,7 +35,7 @@ public class LetterController {
     /*
      * GET /api/letter/1 -> 자소서 내용 조회
      * 입력: 헤더 JWT, 자소서 ID
-     * 출력: {"title": "제목", "career": "경력", "education": ...}
+     * 출력: {"title": "제목", "company": "회사명", "content": ...}
      */
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<String> getLetterById(@RequestHeader("authorization") String bearer,
@@ -45,7 +45,7 @@ public class LetterController {
 
     /*
      * POST /api/letter -> 자소서 등록
-     * 입력: 헤더 JWT, {"title": "제목", "career": "경력", "education": ...}
+     * 입력: 헤더 JWT, {"title": "제목", "company": "회사명", "content": ...}
      * 출력: 자소서 등록 성공 메시지
      */
     @PostMapping(value = { "", "/" }, consumes = "application/json", produces = "application/json")

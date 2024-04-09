@@ -10,7 +10,7 @@ import { HeroHeader, ContentSection } from "@/types/landing"
 export const heroHeader: HeroHeader = {
   header: `세상에서 가장 쉬운 자기소개서 작성`,
   subheader: `최소의 이력서 정보 입력으로 3분만에 자기소개서를 완성할 수 있습니다`,
-  image: `/hero-img.webp`,
+  image: `/hero-img.png`,
 }
 
 export const featureCards: ContentSection = {
@@ -38,7 +38,7 @@ export const featureCards: ContentSection = {
 export const features: ContentSection = {
   header: `기능 소개`,
   subheader: `레쥬메이트의 주요 기능을 소개합니다`,
-  image: `https://fastly.picsum.photos/id/312/400/300.jpg?hmac=rheDmE3u5ebZsvOy_qXh_WcTr7FNRXcUOLtMnVlG7s0`,
+  image: `/features-img.jpg`,
   content: [
     {
       text: `이력서와 지원 직무 입력`,

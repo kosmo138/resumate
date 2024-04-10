@@ -26,6 +26,10 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
   // 화면을 pdf파일로 저장하기 위해 dom 구역 지정을 위한 useRef 활용
   // null값으로 초기화 하지 않으면 prop부분에서 undefined 에러 발생
   const resumeRef = useRef<HTMLDivElement>(null);
+  // 이력서 제목이 없을 경우에 모달창 조건부 랜더링
+  const [isError, setIsError] = useState(false);
+  // 이력서 저장이 무언가로 인해 오류가 발생겼을경우 모달창 조건부 랜더링
+  const [saveError, setSaveError] = useState(false);
 
   // 동적으로 변하는 이력서 데이터를 useState로 관리하기 위해 이력서 폼 초기화
   const [formData, setFormData] = useState<ResumeBody>({
@@ -54,8 +58,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         return response.json();
       })
       .then((data) => setFormData(data))
-      .catch((error) => {
-        console.error("데이터를 가져오는 동안 오류가 발생했습니다:", error);
+      .catch(() => {
         // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
         setErrorPageOpen(true);
       });
@@ -74,6 +77,8 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     // ex) 2번째 경력란에 날짜와 컨텐츠에 "  " 처럼 공백만 있을 경우 DB에 전달하지 않기 위함
     const filteredFormData = {
       ...formData,
+      // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
+      title: formData.title === "" ? setIsError(true) : formData.title,
       careerData: formData.careerData.filter(
         (value, index) =>
           index === 0 || value.date.trim() !== "" || value.content.trim() !== ""
@@ -99,13 +104,13 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("이력서 데이터 전송 실패!");
+          throw new Error("이력서 저장에 실패했습니다.");
         }
         return response.json();
       })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("이력서 저장에 실패했습니다. Error:" + error);
+      .catch(() => {
+        // 임의의 사유로 모달창 에러 발생시
+        setSaveError(true);
       });
   };
 
@@ -152,7 +157,7 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
         </div>
         <div className="flex justify-center items-center gap-4 mt-10">
           <ResumeCancelButton />
-          <ResumeSubmitButton />
+          <ResumeSubmitButton isError={isError} saveError={saveError} />
           <ResumePage resumeRef={resumeRef} />
         </div>
       </form>

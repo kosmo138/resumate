@@ -5,7 +5,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.view.RedirectView;
@@ -16,7 +15,6 @@ import com.google.gson.JsonObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import resumate.server.config.JsonBuilder;
 import resumate.server.config.JwtConfig;
 import resumate.server.config.SecurityConfig;
 import resumate.server.dto.Member;
@@ -27,7 +25,6 @@ public class KakaoAuthService {
     private final MemberService memberService;
     private final JwtConfig jwtConfig;
     private final SecurityConfig securityConfig;
-    private final JsonBuilder jsonBuilder;
 
     @Value("${kakao.apikey}")
     private String kakaoApiKey;
@@ -39,7 +36,7 @@ public class KakaoAuthService {
         final String tokenJson = getTokenJson(code);
         final String accessToken = getIdTokenFromJson(tokenJson);
         final String email = jwtConfig.getEmailFromToken(accessToken);
-        // checkMemberMail: 신규 회원이라면 true, 기존 회원이라면 false
+        /* checkMemberMail: 신규 회원이라면 true, 기존 회원이라면 false */
         if (memberService.checkMemberMail(email)) {
             registerKakaoMember(email);
         }

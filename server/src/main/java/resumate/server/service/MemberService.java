@@ -29,8 +29,11 @@ public class MemberService {
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
-    // true = 통과, 문제가 없는 상황
-    // false = 실패, 문제가 있는 상황
+    /*
+     * 반환값의 의미
+     * true = 통과, 문제가 없는 상황
+     * false = 실패, 문제가 있는 상황
+     */
 
     /*
      * 입력 유효성 검사

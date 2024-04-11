@@ -51,7 +51,7 @@ if __name__ == "__main__":
     키워드 정보:
     키워드: {keywords}
 
-    이 정보를 바탕으로 자기소개서 초안을 작성해주세요."""
+    이 정보를 바탕으로 한글로 자기소개서 초안을 작성해주세요."""
     prompt = PromptTemplate.from_template(template)
 
     # OpenAI 객체 생성

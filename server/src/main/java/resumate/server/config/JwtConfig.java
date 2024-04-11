@@ -1,5 +1,7 @@
 package resumate.server.config;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -7,10 +9,15 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Configuration
 public class JwtConfig {
@@ -41,7 +48,7 @@ public class JwtConfig {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + 1000 * 60 * 60 * 6);
         return Jwts.builder()
-                .subject(email)
+                .claim("email", email)
                 .issuedAt(now)
                 .expiration(expirationDate)
                 .signWith(secretKey)
@@ -51,15 +58,20 @@ public class JwtConfig {
     /*
      * 입력: JWT 토큰
      * 출력: 로그인 이메일 주소
+     * 예외: OAuth2.0 토큰의 경우, SignatureException 발생
      */
     public String getEmailFromToken(String access_token) {
         try {
             JwtParserBuilder jwtParserBuilder = Jwts.parser().verifyWith(secretKey);
             Claims claims = jwtParserBuilder.build().parseSignedClaims(access_token).getPayload();
-            return claims.getSubject();
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-            return null;
+            return claims.get("email", String.class).toString();
+        } catch (UnsupportedJwtException e) {
+            String[] parts = access_token.split("\\.");
+            String payloadStr = parts[1];
+            String decodedPayload = new String(Base64.getDecoder().decode(payloadStr), StandardCharsets.UTF_8);
+            Gson gson = new Gson();
+            JsonObject payload = gson.fromJson(decodedPayload, JsonObject.class);
+            return payload.get("email").getAsString();
         }
     }
 

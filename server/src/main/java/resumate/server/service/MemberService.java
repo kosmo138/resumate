@@ -29,8 +29,11 @@ public class MemberService {
     private final JsonBuilder jsonBuilder;
     private final JwtConfig jwtConfig;
 
-    // true = 통과, 문제가 없는 상황
-    // false = 실패, 문제가 있는 상황
+    /*
+     * 반환값의 의미
+     * true = 통과, 문제가 없는 상황
+     * false = 실패, 문제가 있는 상황
+     */
 
     /*
      * 입력 유효성 검사
@@ -73,8 +76,25 @@ public class MemberService {
 
         Cookie cookie = new Cookie("authorization", access_token);
         cookie.setPath("/");
-        // cookie.setHttpOnly(true);
         response.addCookie(cookie);
+    }
+
+    /*
+     * 입력: Authorization 요청 헤더 - Bearer 토큰
+     * 출력: 로그인된 이메일 주소
+     */
+    public String getEmailFromBearer(String bearer) {
+        String token = bearer.substring(7);
+        return jwtConfig.getEmailFromToken(token);
+    }
+
+    /*
+     * 입력: Bearer 토큰
+     * 출력: 로그인 여부
+     */
+    public boolean isLoggedin(String bearer) {
+        String email = getEmailFromBearer(bearer);
+        return email != null && !email.isEmpty();
     }
 
     /*

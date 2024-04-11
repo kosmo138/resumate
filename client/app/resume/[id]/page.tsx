@@ -119,11 +119,6 @@ export default function ResumeEditor({ params }: { params: { id: string } }) {
       <HeadingText subtext="자소서 생성에 필요한 최소의 정보를 입력해 주세요">
         이력서 수정
       </HeadingText>
-      <div
-        data-orientation="horizontal"
-        role="none"
-        className="shrink-0 bg-border h-[1px] w-full"
-      ></div>
       <form className="w-full" onSubmit={handleSubmit}>
         <div ref={resumeRef}>
           <ResumeTitle

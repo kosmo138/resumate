@@ -1,12 +1,12 @@
-import HeadingText from "@/components/heading-text"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import HeadingText from "@/components/heading-text";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function RecruitMenu() {
   return (
     <main className="container flex flex-col py-8">
-      <HeadingText subtext="사람인 제공 채용 정보를 검색하실 수 있습니다">
-        채용정보
+      <HeadingText subtext="레쥬메이트를 이용하시면서 궁금한 점을 질문해 주세요">
+        Q&A
       </HeadingText>
       <section className="mt-6">
         <div className="flex flex-row space-x-4 text-lg">
@@ -23,5 +23,5 @@ export default function RecruitMenu() {
         </div>
       </section>
     </main>
-  )
+  );
 }

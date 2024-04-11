@@ -1,9 +1,18 @@
 /* root 계정으로 접속 */
+/* root 계정으로 접속 */
 SHOW DATABASES;
 
 ALTER USER 'root' undefined IDENTIFIED BY '{MYSQL_ROOTPW}';
 
+
+ALTER USER 'root' undefined IDENTIFIED BY '{MYSQL_ROOTPW}';
+
 CREATE DATABASE resumate;
+
+CREATE USER '{MYSQL_USERNAME}' undefined IDENTIFIED BY '{MYSQL_password}';
+
+GRANT ALL PRIVILEGES ON resumate.* TO '{MYSQL_USERNAME}' undefined;
+
 
 CREATE USER '{MYSQL_USERNAME}' undefined IDENTIFIED BY '{MYSQL_password}';
 

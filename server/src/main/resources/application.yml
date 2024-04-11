@@ -30,3 +30,7 @@ logging:
 
 jwt:
   secret: ${JWT_SECRET}
+
+kakao:
+  apikey: ${KAKAO_REST_API_KEY}
+  redirect_uri: ${KAKAO_REDIRECT_URI}

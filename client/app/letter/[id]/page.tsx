@@ -6,40 +6,88 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
 import { LetterBody, LetterContent } from "@/types/letter"
+import Cookies from "js-cookie"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
-  const mock_data: LetterBody = JSON.parse(`
-  {
-    "resume_id": 1,
-    "title": "테스트 제목",
-    "company": "테스트 회사명",
-    "job": "테스트 직무",
-    "content": [
-      {
-        "category": "성장과정",
-        "text": "성장과정 내용"
-      },
-      {
-        "category": "지원동기",
-        "text": "지원동기 내용"
-      },
-      {
-        "category": "성격의 장단점",
-        "text": "성격의 장단점 내용"
-      },
-      {
-        "category": "입사 후 포부",
-        "text": "입사 후 포부 내용"
-      }
-    ]
-  }
-  `)
+  // const mock_data: LetterBody = JSON.parse(`
+  // {
+  //   "resume_id": 1,
+  //   "title": "테스트 제목",
+  //   "company": "테스트 회사명",
+  //   "job": "테스트 직무",
+  //   "content": [
+  //     {
+  //       "category": "성장과정",
+  //       "text": "성장과정 내용"
+  //     },
+  //     {
+  //       "category": "지원동기",
+  //       "text": "지원동기 내용"
+  //     },
+  //     {
+  //       "category": "성격의 장단점",
+  //       "text": "성격의 장단점 내용"
+  //     },
+  //     {
+  //       "category": "입사 후 포부",
+  //       "text": "입사 후 포부 내용"
+  //     }
+  //   ]
+  // }
+  // `)
+  const apiUrl = `/api/letter/${params.id}`;
+  const jwt = Cookies.get("authorization");
+  const [errorPageOpen, setErrorPageOpen] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
   
-  const [letterBody, setLetterBody] = useState<LetterBody>()
+  const [letterBody, setLetterBody] = useState<LetterBody>({
+    resume_id: 1,
+    title: "",
+    company: "",
+    job: "",
+    content: [{ category: "", text: "" }],
+  });
 
   useEffect(() => {
-    setLetterBody(mock_data)
-  }, [])
+    fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("오류가 발생했습니다.");
+        }
+        return response.json();
+      })
+      .then((data) => setLetterBody(data))
+      .catch(() => {
+        // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
+        setErrorPageOpen(true);
+      });
+  }, [apiUrl]); // 웹 경로 변경될 때마다 useEffect 재실행
+
+  const handleInputChange = (key: string, value: string) => {
+    setLetterBody({ ...letterBody, [key]: value });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const filteredFormData = {
+      ...letterBody,
+      // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
+      title: letterBody.title === "" ? setIsError(true) : letterBody.title,
+      careerData: letterBody.content.filter(
+        (value, index) =>
+          index === 0 || value.category.trim() !== "" || value.text.trim() !== ""
+      ),
+    };  
+  }  
 
   return (
     <main className="container flex flex-col items-center py-8">

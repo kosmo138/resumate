@@ -8,11 +8,11 @@ type LetterHead = {
 }
 
 export type LetterBody = {
-  resume_id?: number
-  title?: string
-  company?: string
-  job?: string
-  content?: LetterContent[]
+  resume_id: number
+  title: string
+  company: string
+  job: string
+  content: LetterContent[]
 }
 
 export type LetterContent = {

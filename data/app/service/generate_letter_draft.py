@@ -7,14 +7,10 @@ import json
 
 # 자기소개서 초안 작성 함수
 def generate_cover_letter(resume_data, keyword_data, openai_api_key):
-    # resume_data와 keyword_data를 JSON 형식의 문자열로 변환
-    resume_json = json.dumps(resume_data)
-    keyword_json = json.dumps(keyword_data)
-
     # 프롬프트 템플릿 정의
     template = """
-    Resume Data: {resume_json}
-    Keyword Data: {keyword_json}
+    Resume Data: {resume_data}
+    Keyword Data: {keyword_data}
     """
 
     # PromptTemplate을 사용하여 프롬프트 생성
@@ -25,10 +21,10 @@ def generate_cover_letter(resume_data, keyword_data, openai_api_key):
     llm_chain = LLMChain(prompt=prompt, llm=llm)
 
     # 질문 입력
-    # question = "Write a cover letter using the provided data."
+    question = "Write a cover letter using the provided data."
 
     # LLMChain 객체를 사용하여 자기소개서 초안 생성
-    output = llm_chain.run(resume_json=resume_json, keyword_json=keyword_json)
+    output = llm_chain.run(resume_data=resume_data, keyword_data=keyword_data)
 
     return output
 

@@ -1,5 +1,7 @@
 package resumate.server.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,10 +12,10 @@ import lombok.Setter;
 public class Letter {
     private int id;
     private String email;
-    private String resume_id;
+    private int resume_id;
     private String title;
     private String company;
     private String job;
-    private String content;
+    private List<LetterContent> content;
     private int modified;
 }

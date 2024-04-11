@@ -10,14 +10,6 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-<<<<<<< HEAD
-import React from "react"
-
-export function LoginDialog() {
-  const [email, setEmail] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-=======
 import { useState } from "react"
 
 type env = string | undefined
@@ -29,7 +21,6 @@ export function LoginDialog() {
   const REDIRECT_URI: env = process.env.NEXT_PUBLIC_REDIRECT_URI
   const LOGIN_LINK: env = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
->>>>>>> origin/dev
     e.preventDefault()
     fetch("/api/login", {
       method: "POST",
@@ -40,11 +31,7 @@ export function LoginDialog() {
     })
       .then((res) => res.json())
       .then((data) => {
-<<<<<<< HEAD
-        if(data.status === "success") {
-=======
         if (data.status === "success") {
->>>>>>> origin/dev
           window.location.reload()
         } else {
           alert(data.message)
@@ -94,14 +81,11 @@ export function LoginDialog() {
               로그인
             </Button>
           </div>
-<<<<<<< HEAD
-=======
           <div className="flex flex-row justify-center">
             <a href={LOGIN_LINK}>
               <img src="kakao_login_medium_wide.png" className="col-start-1" />
             </a>
           </div>
->>>>>>> origin/dev
         </form>
       </DialogContent>
     </Dialog>

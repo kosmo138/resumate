@@ -76,10 +76,6 @@ public class MemberService {
 
         Cookie cookie = new Cookie("authorization", access_token);
         cookie.setPath("/");
-<<<<<<< HEAD
-        // cookie.setHttpOnly(true);
-=======
->>>>>>> origin/dev
         response.addCookie(cookie);
     }
 

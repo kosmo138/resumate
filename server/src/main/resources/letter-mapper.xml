@@ -4,10 +4,7 @@
 <mapper namespace="resumate.server.mybatis.LetterMapper">
   <resultMap id="LetterHeadMap" type="resumate.server.dto.Letter">
     <id property="id" column="id"/>
-<<<<<<< HEAD
-=======
     <result property="resume_id" column="resume_id"/>
->>>>>>> origin/dev
     <result property="title" column="title"/>
     <result property="modified" column="modified"/>
   </resultMap>
@@ -17,12 +14,6 @@
     <result property="title" column="title"/>
     <result property="company" column="company"/>
     <result property="job" column="job"/>
-<<<<<<< HEAD
-    <result property="content" column="content"/>
-  </resultMap>
-  <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
-    SELECT id, title, UNIX_TIMESTAMP(modified) AS modified FROM letter
-=======
     <result property="content" column="content" 
       javaType="List" jdbcType="LONGVARCHAR"
       typeHandler="resumate.server.mybatis.LetterContentHandler"/>
@@ -30,30 +21,17 @@
   </resultMap>
   <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
     SELECT id, resume_id, title, UNIX_TIMESTAMP(modified) AS modified FROM letter
->>>>>>> origin/dev
     WHERE email = #{email}
     ORDER BY modified DESC
   </select>
   <select id="selectLetterBody" parameterType="_int" resultMap="LetterBodyMap">
-<<<<<<< HEAD
-    SELECT resume_id, title, company, job, content FROM letter WHERE id = #{id}
-=======
     SELECT id, resume_id, title, company, job, content, 
     UNIX_TIMESTAMP(modified) AS modified FROM letter WHERE id = #{id}
->>>>>>> origin/dev
   </select>
   <select id="selectLetterId" parameterType="String" resultType="Integer">
     SELECT id FROM letter WHERE email = #{email}
   </select>
   <insert id="insertLetter" parameterType="resumate.server.dto.Letter">
-<<<<<<< HEAD
-    INSERT INTO letter (resume_id, title, company, job, content)
-    VALUES (#{resume_id}, #{title}, #{company}, #{job}, #{content})
-  </insert>
-  <update id="updateLetter" parameterType="resumate.server.dto.Letter">
-    UPDATE letter SET title = #{title}, company = #{company},
-    job = #{job}, content = #{content}, modified = NOW() 
-=======
     INSERT INTO letter (email, resume_id, title, company, job, content)
     VALUES (#{email}, #{resume_id}, #{title}, #{company}, #{job}, 
     #{content, typeHandler=resumate.server.mybatis.LetterContentHandler})
@@ -63,7 +41,6 @@
     job = #{job}, 
     content = #{content, typeHandler=resumate.server.mybatis.LetterContentHandler}, 
     modified = NOW() 
->>>>>>> origin/dev
     WHERE id = #{id}
   </update>
   <delete id="deleteLetter" parameterType="_int">

@@ -123,7 +123,4 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
   );
 }
 // axjax fatch axiox.get.post
-<<<<<<< HEAD
-=======
 // axjax fatch axiox.get.post
->>>>>>> origin/dev

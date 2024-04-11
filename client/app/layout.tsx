@@ -1,16 +1,16 @@
-import "./globals.css"
-import { siteConfig } from "@/config/metadata"
-import { Noto_Sans_KR } from "next/font/google"
-import Navbar from "@/components/layout/navbar"
-import Footer from "@/components/layout/footer"
-import { ThemeProvider } from "@/components/theme-provider"
-import { AuthProvider } from "@/components/auth/authcontext"
-import { settings } from "@/config/settings"
+import "./globals.css";
+import { siteConfig } from "@/config/metadata";
+import { Noto_Sans_KR } from "next/font/google";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth/authcontext";
+import { settings } from "@/config/settings";
 
 const noto_sans_kr = Noto_Sans_KR({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 // metadata 객체의 속성들은 <head> 내부의 <meta> 태그로 변환됩니다.
 export const metadata = {
@@ -54,17 +54,17 @@ export const metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-}
+};
 
 export const viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
-}
+};
 
 interface RootLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -92,5 +92,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       </body>
     </html>
-  )
+  );
 }

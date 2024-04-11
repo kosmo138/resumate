@@ -6,12 +6,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useAuth } from "@/components/auth/authcontext"
 
 import { Button } from "@/components/ui/button"
 
 import { FiUser, FiKey, FiXCircle, FiLogOut } from "react-icons/fi";
 
 export function MemberMenu() {
+  const { logout } = useAuth()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,7 +34,7 @@ export function MemberMenu() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={logout}>
             <FiLogOut className="mr-2 h-4 w-4" />
             <span>로그아웃</span>
           </DropdownMenuItem>

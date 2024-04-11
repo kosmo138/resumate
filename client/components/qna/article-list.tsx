@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Mail } from "@/config/qna-content"
-import { useMail } from "@/config/use-mail"
+import { Article } from "@/config/qna-content"
+import { useBoard } from "@/components/qna/use-board"
 
-interface MailListProps {
-  items: Mail[]
+interface ArticleListProps {
+  items: Article[]
 }
 
-export function MailList({ items }: MailListProps) {
-  const [mail, setMail] = useMail()
+export function ArticleList({ items }: ArticleListProps) {
+  const [board, setBoard] = useBoard()
 
   return (
     <ScrollArea className="h-screen">
@@ -18,11 +18,11 @@ export function MailList({ items }: MailListProps) {
             key={item.id}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              mail.selected === item.id && "bg-muted"
+              board.selected === item.id && "bg-muted"
             )}
             onClick={() =>
-              setMail({
-                ...mail,
+              setBoard({
+                ...board,
                 selected: item.id,
               })
             }

@@ -6,7 +6,6 @@ import { ArticleList } from "@/components/qna/article-list"
 import { Article } from "@/config/qna-content"
 import { useBoard } from "@/components/qna/use-board"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { TooltipProvider } from "@/components/ui/tooltip"
 import {
   ResizableHandle,
   ResizablePanel,

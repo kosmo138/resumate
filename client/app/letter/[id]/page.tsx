@@ -34,7 +34,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     ]
   }
   `)
-  
+
   const [letterBody, setLetterBody] = useState<LetterBody>()
 
   useEffect(() => {
@@ -120,7 +120,5 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
         </div>
       </div>
     </main>
-  );
+  )
 }
-// axjax fatch axiox.get.post
-// axjax fatch axiox.get.post

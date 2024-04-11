@@ -120,6 +120,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
         </div>
       </div>
     </main>
-  )
+  );
 }
+// axjax fatch axiox.get.post
 // axjax fatch axiox.get.post

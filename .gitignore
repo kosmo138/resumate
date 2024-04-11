@@ -253,6 +253,9 @@ web_modules/
 env.properties
 env.py
 
+env.properties
+env.py
+
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

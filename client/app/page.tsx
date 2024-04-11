@@ -1,6 +1,6 @@
-import Hero from "@/components/landing/hero"
-import FeatureCards from "@/components/landing/feature-cards"
-import Features from "@/components/landing/features"
+import Hero from "@/components/landing/hero";
+import FeatureCards from "@/components/landing/feature-cards";
+import Features from "@/components/landing/features";
 
 export default function Home() {
   return (
@@ -9,5 +9,5 @@ export default function Home() {
       <FeatureCards />
       <Features />
     </main>
-  )
+  );
 }

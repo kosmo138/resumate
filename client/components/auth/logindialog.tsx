@@ -12,10 +12,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 
+type env = string | undefined
+
 export function LoginDialog() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const REST_API_KEY: env = process.env.NEXT_PUBLIC_REST_API_KEY
+  const REDIRECT_URI: env = process.env.NEXT_PUBLIC_REDIRECT_URI
+  const LOGIN_LINK: env = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     fetch("/api/login", {
       method: "POST",
@@ -26,7 +31,7 @@ export function LoginDialog() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.status === "success") {
+        if (data.status === "success") {
           window.location.reload()
         } else {
           alert(data.message)
@@ -75,6 +80,11 @@ export function LoginDialog() {
             <Button type="submit" className="col-start-4">
               로그인
             </Button>
+          </div>
+          <div className="flex flex-row justify-center">
+            <a href={LOGIN_LINK}>
+              <img src="kakao_login_medium_wide.png" className="col-start-1" />
+            </a>
           </div>
         </form>
       </DialogContent>

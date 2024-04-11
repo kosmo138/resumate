@@ -101,8 +101,7 @@ https://github.com/orgs/kosmo138/projects/1
 
 **역할**
 
-- Q&A 게시판 페이지 프론트엔드 구현
-- ~~채용정보 Open API 연동 → Key 발급 불가 문제로 취소~~
+- Q&A 메뉴 페이지 프론트엔드 구현
 
 **브랜치**
 
@@ -154,10 +153,14 @@ Figma를 이용하여 이력서/자소서 작성, 채용공고 페이지를 구�
 **이수진 [@WGCAT](https://github.com/WGCAT)**
 
 각 인원이 작성한 다이어그램 초안을 취합하여 아래의 초안을 작성하였습니다.
+각 인원이 작성한 다이어그램 초안을 취합하여 아래의 초안(Ver. 1)을 작성하였습니다.
 
 **김수영 [@suyons](https://github.com/suyons)**
 
 ERD를 검토 및 수정하여 AWS RDS에서 실행 중인 MySQL 데이터베이스에 반영할 예정입니다.
+
+- ERD를 검토 및 수정하여 Ver.2 파일을 작성하였습니다.
+- 쿼리를 작성하여 AWS RDS에서 실행 중인 MySQL 데이터베이스에 반영하였습니다.
 
 ## Diagram
 
@@ -173,7 +176,11 @@ ERD를 검토 및 수정하여 AWS RDS에서 실행 중인 MySQL 데이터베이
 
 **Ver. 1**
 
-![E-R Diagram](/docs/diagram/er-diagram.png)
+![E-R Diagram 1](/docs/diagram/er-diagram-1.png)
+
+**Ver. 2**
+
+![E-R Diagram 2](/docs/diagram/er-diagram-2.svg)
 
 ## 개발 환경 준비
 
@@ -245,16 +252,14 @@ docker compose up
 ```
 main: 사용자에게 배포 가능한 상태
 └── dev: 개별 기능 통합, 테스트 이후 main 병합
-    ├── feat/database: 데이터베이스 구축
-    ├── feat/prototype: 프로토타입 (프론트 우선 진행)
+    ├── feat/prototype: 프로토타입
     ├── feat/login-1: 이메일 로그인
     ├── feat/login-2: 카카오 OAuth 로그인
-    ├── feat/resume-1: 이력서 기능 - 1
-    ├── feat/resume-2: 이력서 기능 - 2
-    ├── feat/letter: 자기소개서 기능
-    ├── feat/web-scrap: 웹 스크래핑 기능
-    ├── feat/natural-language: 자연어 처리 기능
-    └── feat/recruit: 채용정보 기능
+    ├── feat/resume-1: 이력서 편집기
+    ├── feat/resume-2: 이력서 목록
+    ├── feat/letter: 자기소개서 메뉴
+    ├── feat/web-scrap: 웹 스크래핑 및 FastAPI 백엔드
+    └── feat/qna: Q&A 메뉴
 ```
 
 1. 본인에게 배정된 브랜치만을 이용해 주시기 바랍니다. 타인의 브랜치에 commit & push 하면 충돌이 발생합니다.
@@ -335,6 +340,7 @@ CSS 라이브러리로 Tailwind CSS를 적용하였습니다.
 
 1. [Radix UI](https://www.radix-ui.com/) 기반으로 사용자가 주도권을 가지고 자유롭게 수정할 수 있도록 수정된 컴포넌트 라이브러리
 2. 주요 링크
+
    - [Next.js 프로젝트 생성부터 버튼 추가까지](https://ui.shadcn.com/docs/installation/next)
    - [컴포넌트 목록](https://ui.shadcn.com/docs/components/accordion)
    - [적용 예시](https://ui.shadcn.com/)

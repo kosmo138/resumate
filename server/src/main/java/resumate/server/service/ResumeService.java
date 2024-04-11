@@ -30,19 +30,6 @@ public class ResumeService {
         return jsonObject.get("title").getAsString();
     }
 
-    /* 이력서 복제 시 문자열 " - 복사본" 추가
-     * 입력: JSON 문자열
-     * 출력: 수정된 JSON 문자열1
-     */
-    public String jsonCloneResume(String json) {
-        final JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        final String newTitle = jsonObject.get("title").getAsString() + " - 복사본";
-        jsonObject.addProperty("title", newTitle);
-        final Gson gson = new Gson();
-        final String clonedJson = gson.toJson(jsonObject);
-        return clonedJson;
-    }
-
     /*
      * 입력: 이메일, 이력서 ID
      * 출력: 이력서 소유 여부
@@ -211,11 +198,7 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-<<<<<<< HEAD
-            String email = getEmailFromBearer(bearer);
-=======
             String email = memberService.getEmailFromBearer(bearer);
->>>>>>> origin/dev
 
             if (!isResumeOwner(email, id)) {
                 String responseJson = jsonBuilder
@@ -225,18 +208,10 @@ public class ResumeService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
             } else {
                 String resumeBody = resumeMapper.selectResumeBody(id);
-<<<<<<< HEAD
-                String newResumeBody = jsonCloneResume(resumeBody);
-                Resume resume = new Resume();
-                resume.setEmail(email);
-                resume.setTitle(getTitleFromJson(newResumeBody));
-                resume.setContent(newResumeBody);
-=======
                 Resume resume = new Resume();
                 resume.setEmail(email);
                 resume.setTitle(getTitleFromJson(resumeBody));
                 resume.setContent(resumeBody);
->>>>>>> origin/dev
                 resumeMapper.insertResume(resume);
                 String responseJson = jsonBuilder
                         .put("status", "success")

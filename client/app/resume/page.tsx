@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-"use client"
-
-import { useState, useEffect } from "react"
-import Cookies from "js-cookie"
-import HeadingText from "@/components/heading-text"
-import ResumeAddButton from "@/components/resume/resumeaddbutton"
-import ResumeCard from "@/components/resume/resumecard"
-import { ResumeHead } from "@/types/resume"
-import UnauthorizedDialog from "@/components/auth/unauthorized-dialog"
-
-export default function ResumeSelector() {
-  const [resumeList, setResumeList] = useState<Array<ResumeHead>>([])
-  const [isError, setIsError] = useState<boolean>(false)
-=======
 "use client";
 
 import { useState, useEffect } from "react";
@@ -26,7 +11,6 @@ import UnauthorizedDialog from "@/components/auth/unauthorized-dialog";
 export default function ResumeSelector() {
   const [resumeList, setResumeList] = useState<Array<ResumeHead>>([]);
   const [isError, setIsError] = useState<boolean>(false);
->>>>>>> origin/dev
 
   useEffect(() => {
     const fetchResumeList = () => {
@@ -39,28 +23,6 @@ export default function ResumeSelector() {
       })
         .then((response) => {
           if (response.status === 200) {
-<<<<<<< HEAD
-            return response.json()
-          } else {
-            setIsError(true)
-          }
-        })
-        .then((data) => {
-          setResumeList(data)
-        })
-    }
-    fetchResumeList()
-  }, [])
-
-  // UNIX 타임스탬프를 YYYY-MM-DD 형식으로 변환하는 함수
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp * 1000) // UNIX 타임스탬프(ms)를 받습니다.
-    const year = date.getFullYear()
-    const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    const day = date.getDate().toString().padStart(2, "0")
-    return `${year}-${month}-${day}`
-  }
-=======
             return response.json();
           } else {
             setIsError(true);
@@ -81,7 +43,6 @@ export default function ResumeSelector() {
     const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
->>>>>>> origin/dev
 
   return (
     <main className="container flex flex-col items-center py-8">

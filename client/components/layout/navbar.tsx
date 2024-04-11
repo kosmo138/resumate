@@ -4,10 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { LoginDialog } from "@/components/auth/logindialog"
-<<<<<<< HEAD
-=======
 import { RegisterDialog } from "@/components/auth/registerdialog"
->>>>>>> origin/dev
 import { ModeToggle } from "@/components/mode-toggle"
 import { siteConfig } from "@/config/metadata"
 import { navLinks } from "@/config/navlinks"
@@ -17,12 +14,7 @@ import { useAuth } from "@/components/auth/authcontext"
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false)
-<<<<<<< HEAD
-  /* true: 드롭다운 메뉴, false: 로그인 버튼 */
-  const { email } = useAuth()
-=======
   const { loggedin } = useAuth()
->>>>>>> origin/dev
 
   const handleClick = async () => {
     setNavbar(false);
@@ -125,11 +117,6 @@ export default function Navbar() {
         </div>
         {settings.themeToggleEnabled && (
           <div className="hidden space-x-4 md:block">
-<<<<<<< HEAD
-            {/* 로그인되어있지 않다면 로그인 버튼 표시 */}
-            {email && <MemberMenu />}
-            {!email && <LoginDialog />}
-=======
             {loggedin && <MemberMenu />}
             {!loggedin && (
               <>
@@ -137,7 +124,6 @@ export default function Navbar() {
                 <RegisterDialog />
               </>
             )}
->>>>>>> origin/dev
             <ModeToggle />
           </div>
         )}

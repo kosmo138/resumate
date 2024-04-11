@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/dialog";
 import React, { useState } from "react";
 
-export default function ResumeSubmitButton() {
+export default function ResumeSubmitButton({
+  isError,
+  saveError,
+}: {
+  isError: boolean;
+  saveError: boolean;
+}) {
   //dialog 상태 관리
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,20 +32,39 @@ export default function ResumeSubmitButton() {
             저장
           </Button>
         </DialogTrigger>
-        {/* dialog 열렸을시 내용 */}
+        {/* DialogContent 조건부 렌더링 */}
+        {/* 제목을 입력하지 않았을경우 */}
         {isOpen && (
           <DialogContent>
             <DialogClose onClick={closeDialog} />
-            <p className="font-bold text-center text-lg">
-              이력서 작성내용이 저장되었습니다.
-            </p>
-            <DialogFooter>
-              <Link href="/resume">
-                <Button variant="default" className="w-full">
-                  확인
-                </Button>
-              </Link>
-            </DialogFooter>
+            {isError && saveError && (
+              <>
+                <div className="font-bold text-center text-lg">
+                  <p>이력서 저장에 실패했습니다.</p>
+                  <p>제목을 입력해주세요.</p>
+                </div>
+                <DialogFooter></DialogFooter>
+              </>
+            )}
+            {/* 제목은 입력했는데 특정 사유로 저장에 실패했을때, 저장에 정공했을때 */}
+            {(!isError || (isError && !saveError)) && (
+              <>
+                <p className="font-bold text-center text-lg">
+                  {isError
+                    ? "이력서 저장에 실패했습니다."
+                    : "이력서 작성내용이 저장되었습니다."}
+                </p>
+                {!isError && (
+                  <DialogFooter>
+                    <Link href="/resume">
+                      <Button variant="default" className="w-full">
+                        확인
+                      </Button>
+                    </Link>
+                  </DialogFooter>
+                )}
+              </>
+            )}
           </DialogContent>
         )}
       </Dialog>

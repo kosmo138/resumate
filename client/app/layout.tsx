@@ -82,7 +82,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </AuthProvider>
           </ThemeProvider>
         ) : (
-          <ThemeProvider attribute="class" enableSystem>
+          <ThemeProvider attribute="class" forcedTheme="light" enableSystem>
             <AuthProvider>
               <Navbar />
               {children}

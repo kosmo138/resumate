@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import resumate.server.config.JsonBuilder;
-import resumate.server.config.JwtConfig;
 import resumate.server.dto.Resume;
 import resumate.server.mybatis.ResumeMapper;
 
@@ -19,17 +18,8 @@ import resumate.server.mybatis.ResumeMapper;
 @RequiredArgsConstructor
 public class ResumeService {
     private final ResumeMapper resumeMapper;
+    private final MemberService memberService;
     private final JsonBuilder jsonBuilder;
-    private final JwtConfig jwtConfig;
-
-    /*
-     * 입력: Authorization 요청 헤더 - Bearer 토큰
-     * 출력: 로그인된 이메일 주소
-     */
-    public String getEmailFromBearer(String bearer) {
-        String token = bearer.substring(7);
-        return jwtConfig.getEmailFromToken(token);
-    }
 
     /*
      * 입력: JSON 문자열
@@ -38,15 +28,6 @@ public class ResumeService {
     public String getTitleFromJson(String json) {
         final JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         return jsonObject.get("title").getAsString();
-    }
-
-    /*
-     * 입력: Bearer 토큰
-     * 출력: 로그인 여부
-     */
-    public boolean isLoggedin(String bearer) {
-        String email = getEmailFromBearer(bearer);
-        return email != null && !email.isEmpty();
     }
 
     /*
@@ -76,8 +57,8 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
-            if (!isLoggedin(bearer)) {
+            String email = memberService.getEmailFromBearer(bearer);
+            if (!memberService.isLoggedin(bearer)) {
                 String responseJson = jsonBuilder
                         .put("status", "fail")
                         .put("message", "로그인이 필요합니다.")
@@ -105,7 +86,7 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
+            String email = memberService.getEmailFromBearer(bearer);
             if (!isResumeOwner(email, id)) {
                 String responseJson = jsonBuilder
                         .put("status", "fail")
@@ -132,7 +113,7 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
+            String email = memberService.getEmailFromBearer(bearer);
 
             if (!isResumeOwner(email, id)) {
                 String responseJson = jsonBuilder
@@ -175,9 +156,9 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
+            String email = memberService.getEmailFromBearer(bearer);
 
-            if (!isLoggedin(bearer)) {
+            if (!memberService.isLoggedin(bearer)) {
                 String responseJson = jsonBuilder
                         .put("status", "fail")
                         .put("message", "권한이 없습니다.")
@@ -217,7 +198,7 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
+            String email = memberService.getEmailFromBearer(bearer);
 
             if (!isResumeOwner(email, id)) {
                 String responseJson = jsonBuilder
@@ -254,7 +235,7 @@ public class ResumeService {
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseJson);
         } else {
-            String email = getEmailFromBearer(bearer);
+            String email = memberService.getEmailFromBearer(bearer);
 
             if (!isResumeOwner(email, id)) {
                 String responseJson = jsonBuilder

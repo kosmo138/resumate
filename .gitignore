@@ -558,6 +558,3 @@ gradle-app.setting
 docker
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,eclipse,jupyternotebooks,java,gradle,nextjs,node,python
-
-### Chatgpt 
-chatgpt/chatgpt.js

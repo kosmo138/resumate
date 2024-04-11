@@ -9,47 +9,41 @@ import { LetterBody, LetterContent } from "@/types/letter"
 import Cookies from "js-cookie"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
-  // const mock_data: LetterBody = JSON.parse(`
-  // {
-  //   "resume_id": 1,
-  //   "title": "테스트 제목",
-  //   "company": "테스트 회사명",
-  //   "job": "테스트 직무",
-  //   "content": [
-  //     {
-  //       "category": "성장과정",
-  //       "text": "성장과정 내용"
-  //     },
-  //     {
-  //       "category": "지원동기",
-  //       "text": "지원동기 내용"
-  //     },
-  //     {
-  //       "category": "성격의 장단점",
-  //       "text": "성격의 장단점 내용"
-  //     },
-  //     {
-  //       "category": "입사 후 포부",
-  //       "text": "입사 후 포부 내용"
-  //     }
-  //   ]
-  // }
-  // `)
+  // 필요한 변수 및 상태 선언
   const apiUrl = `/api/letter/${params.id}`;
   const jwt = Cookies.get("authorization");
-  const [errorPageOpen, setErrorPageOpen] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [saveError, setSaveError] = useState(false);
 
-  
+  // useState 초기화
   const [letterBody, setLetterBody] = useState<LetterBody>({
-    resume_id: 1,
+    resume_id: 0,
     title: "",
     company: "",
     job: "",
     content: [{ category: "", text: "" }],
   });
+  // 카테고리 텍스트에어리어 추가함수
+  const handleAddContent = () => {
+    setLetterBody({
+      ...letterBody,
+      content: [
+        ...letterBody.content,
+        { category: "", text: "" } // new content 추가
+      ]
+    });
+  };
+  // 카테고리 텍스트에어리어 삭제함수
+  const handleRemoveContent = (key: number) => {
+    const newContent = [...letterBody.content];
+    newContent.splice(key, 1); // 해당 인덱스의 content 제거
+    setLetterBody({ ...letterBody, content: newContent });
+  };
 
+  // 삭제 가능 여부 확인 함수
+  const canRemoveContent = () => {
+    return letterBody.content.length > 1; // content가 1개 이상일 때 삭제 가능
+  };
+
+  // 페이지가 로드될 때마다 이력서 정보를 가져옴
   useEffect(() => {
     fetch(apiUrl, {
       method: "GET",
@@ -67,108 +61,96 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       .then((data) => setLetterBody(data))
       .catch(() => {
         // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
-        setErrorPageOpen(true);
+        // setErrorPageOpen(true);
       });
-  }, [apiUrl]); // 웹 경로 변경될 때마다 useEffect 재실행
-
-  const handleInputChange = (key: string, value: string) => {
-    setLetterBody({ ...letterBody, [key]: value });
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const filteredFormData = {
-      ...letterBody,
-      // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
-      title: letterBody.title === "" ? setIsError(true) : letterBody.title,
-      careerData: letterBody.content.filter(
-        (value, index) =>
-          index === 0 || value.category.trim() !== "" || value.text.trim() !== ""
-      ),
-    };  
-  }  
-
-  return (
-    <main className="container flex flex-col items-center py-8">
-      <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
-        자기소개서
-      </HeadingText>
-
-      <div className="my-3 ml-20 flex w-full">
-        <div className="flex items-center">
-          <Label className="text-2xl font-bold">제목</Label>
-        </div>
-        <Input
-          className="ml-7 w-5/6 border-transparent"
-          placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."
-          value={letterBody?.title}
-          onChange={(e) => {
-            if (letterBody) {
-              setLetterBody({ ...letterBody, title: e.target.value })
-            }
-          }}
-        ></Input>
-      </div>
-
-      <div className="my-3 ml-20 flex w-full flex-col">
-        <div className="mb-6 flex flex-row items-center">
-          <Label className="text-1xl font-bold">직무</Label>
+  }, [apiUrl]); // apiUrl 경로 변경될 때마다 useEffect 재실행
+  
+    return (
+      <main className="container flex flex-col items-center py-8">
+        <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
+          자기소개서
+        </HeadingText>
+  
+        <div className="my-3 ml-20 flex w-full">
+          <div className="flex items-center">
+            <Label className="text-2xl font-bold">제목</Label>
+          </div>
           <Input
-            className="ml-2 w-2/5"
-            placeholder="직무명 입력"
-            value={letterBody?.job}
+            className="ml-7 w-5/6 border-transparent"
+            placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."
+            value={letterBody.title}
             onChange={(e) => {
               if (letterBody) {
-                setLetterBody({ ...letterBody, job: e.target.value })
+                setLetterBody({ ...letterBody, title: e.target.value })
               }
             }}
-          />
+          ></Input>
         </div>
-        <div className="flex flex-row items-center">
-          <Label className="text-1xl font-bold">지원회사</Label>
-          <Input
-            className="ml-2 mr-4 w-2/5"
-            placeholder="지원 회사명 입력"
-            value={letterBody?.company}
-            onChange={(e) => {
-              if (letterBody) {
-                setLetterBody({ ...letterBody, company: e.target.value })
-              }
-            }}
-          />
-        </div>
-      </div>
-      {letterBody &&
-        letterBody.content &&
-        letterBody.content.map((content: LetterContent, key: number) => {
-          return (
-            <ContentForm
-              content={content}
-              key={key}
-              letterBody={letterBody}
-              setLetterBody={setLetterBody}
+  
+        <div className="my-3 ml-20 flex w-full flex-col">
+          <div className="mb-6 flex flex-row items-center">
+            <Label className="text-1xl font-bold">직무</Label>
+            <Input
+              className="ml-2 w-2/5"
+              placeholder="직무명 입력"
+              value={letterBody.job}
+              onChange={(e) => {
+                if (letterBody) {
+                  setLetterBody({ ...letterBody, job: e.target.value })
+                }
+              }}
             />
-          )
-        })}
-      {!letterBody && (
-        <div className="text-2xl font-bold">로딩 중입니다...</div>
-      )}
-      <div className="ml-20 w-full">
-        <div>
-          <Button variant="outline" className="mr-2">
-            삭제
-          </Button>
-          <Button>추가</Button>
+          </div>
+          <div className="flex flex-row items-center">
+            <Label className="text-1xl font-bold">지원회사</Label>
+            <Input
+              className="ml-2 mr-4 w-2/5"
+              placeholder="지원 회사명 입력"
+              value={letterBody.company}
+              onChange={(e) => {
+                if (letterBody) {
+                  setLetterBody({ ...letterBody, company: e.target.value })
+                }
+              }}
+            />
+          </div>
         </div>
-        <div className="mt-4 flex justify-center">
-          <Button onClick={() => console.log(JSON.stringify(letterBody))}>
-            저장
-          </Button>
+        {/* 컴포넌트 렌더링 */}
+        {letterBody.content.map((content, index) => (
+        <ContentForm
+          key={index}
+          content={content}
+          letterBody={letterBody}
+          setLetterBody={setLetterBody}
+          onRemove={handleRemoveContent} // 삭제 함수 전달
+        />
+      ))}
+        {!letterBody && (
+          <div className="text-2xl font-bold">로딩 중입니다...</div>
+        )}
+        {/* 추가 및 삭제 버튼 */}
+        <div className="ml-20 w-full">
+          <div>
+            <Button 
+              variant="outline"
+              className="mr-2"
+              onClick={() => {
+                if (canRemoveContent()) {
+                  handleRemoveContent(letterBody.content.length - 1);
+                } else {
+                  alert("더 이상 삭제할 수 없습니다.");
+                }
+              }}
+            >삭제</Button>
+            <Button onClick={handleAddContent}>추가</Button>
+          </div>
+          <div className="mt-4 flex justify-center">
+            <Button onClick={() => console.log(JSON.stringify(letterBody))}>
+              저장
+            </Button>
+          </div>
         </div>
-      </div>
-    </main>
-  );
-}
-// axjax fatch axiox.get.post
-// axjax fatch axiox.get.post
+      </main>
+    );
+  }
+

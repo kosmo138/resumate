@@ -5,9 +5,9 @@ interface Selector {
   onValueChange: (value: string) => void
 }
 
-export default function CategorySelector(selector: Selector) {
+export default function CategorySelector({ value, onValueChange }: Selector) {
   return (
-    <Select value={selector.value} onValueChange={selector.onValueChange}>
+    <Select value={value} onValueChange={onValueChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="선택하세요" />
           </SelectTrigger>

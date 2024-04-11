@@ -1,10 +1,10 @@
 "use client"
-import * as React from "react"
+import React from "react"
 
-import { MailDisplay } from "@/components/qna/mail-display"
-import { MailList } from "@/components/qna/mail-list"
-import { Mail } from "@/config/qna-content"
-import { useMail } from "@/config/use-mail"
+import { ArticleDisplay } from "@/components/qna/article-display"
+import { ArticleList } from "@/components/qna/article-list"
+import { Article } from "@/config/qna-content"
+import { useBoard } from "@/components/qna/use-board"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import {
@@ -13,16 +13,15 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 
-interface MailProps {
-  mails: Mail[]
+interface BoardProps {
+  articles: Article[]
   defaultLayout: number[] | undefined
 }
 
-export function Mail({ mails, defaultLayout = [265, 440, 655] }: MailProps) {
-  const [mail] = useMail()
+export function Board({ articles, defaultLayout = [265, 440, 655] }: BoardProps) {
+  const [board] = useBoard()
 
   return (
-    <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(sizes: number[]) => {
@@ -34,18 +33,17 @@ export function Mail({ mails, defaultLayout = [265, 440, 655] }: MailProps) {
       >
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <Tabs defaultValue="all">
-            <TabsContent value="all" className="m-0">
-              <MailList items={mails} />
+            <TabsContent value="all" className="m-0 h-full">
+              <ArticleList items={articles} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]}>
-          <MailDisplay
-            mail={mails.find((item) => item.id === mail.selected) || null}
+          <ArticleDisplay
+            article={articles.find((item) => item.id === board.selected) || null}
           />
         </ResizablePanel>
       </ResizablePanelGroup>
-    </TooltipProvider>
   )
 }

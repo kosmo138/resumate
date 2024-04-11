@@ -6,40 +6,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
 import { LetterBody, LetterContent } from "@/types/letter"
+import Cookies from "js-cookie"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
-  const mock_data: LetterBody = JSON.parse(`
-  {
-    "resume_id": 1,
-    "title": "테스트 제목",
-    "company": "테스트 회사명",
-    "job": "테스트 직무",
-    "content": [
-      {
-        "category": "성장과정",
-        "text": "성장과정 내용"
-      },
-      {
-        "category": "지원동기",
-        "text": "지원동기 내용"
-      },
-      {
-        "category": "성격의 장단점",
-        "text": "성격의 장단점 내용"
-      },
-      {
-        "category": "입사 후 포부",
-        "text": "입사 후 포부 내용"
-      }
-    ]
-  }
-  `)
-  
   const [letterBody, setLetterBody] = useState<LetterBody>()
 
   useEffect(() => {
-    setLetterBody(mock_data)
-  }, [])
+    const fetchLetter = () => {
+      fetch(`/api/letter/${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("authorization")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setLetterBody(data);
+        })
+        .catch((error) => console.error(error));
+    };
+
+    fetchLetter();
+  }, [params.id]);
 
   return (
     <main className="container flex flex-col items-center py-8">

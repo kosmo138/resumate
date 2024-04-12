@@ -1,4 +1,5 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
+import { useState } from 'react';
 
 interface Selector {
   value: string | undefined
@@ -6,8 +7,14 @@ interface Selector {
 }
 
 export default function CategorySelector({ value, onValueChange }: Selector) {
+  const [selectedValue, setSelectedValue] = useState(value);
+
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+    onValueChange(newValue);
+  };
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={selectedValue} onValueChange={handleChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="선택하세요" />
           </SelectTrigger>

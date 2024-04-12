@@ -176,10 +176,14 @@ public class LetterService {
                 newLetter.setCompany(letter.getCompany());
                 newLetter.setJob(letter.getJob());
                 newLetter.setContent(letter.getContent());
+
                 letterMapper.insertLetter(newLetter);
+                
+                int newLetterId = newLetter.getId();
                 String responseJson = jsonBuilder
                         .put("status", "success")
                         .put("message", "자소서가 추가되었습니다.")
+                        .put("letterId", String.valueOf(newLetterId) )
                         .build();
                 return ResponseEntity.ok().body(responseJson);
             }

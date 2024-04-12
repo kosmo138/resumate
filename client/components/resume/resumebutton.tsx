@@ -44,10 +44,7 @@ export default function ResumeButton({ resumeId }: { resumeId: number }) {
         return response.json();
       })
       .then((data) => {
-        // 응답에서 letterId 가져오기
         const letterId = data.letterId;
-        // 리다이렉트 수행
-        console.log(letterId);
         window.location.href = `/letter/${letterId}`;
       })
       .catch((error) => {

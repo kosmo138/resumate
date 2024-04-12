@@ -1,28 +1,28 @@
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
-import ResumeButton from "./resumebutton"
-import Cookies from "js-cookie"
-import CloneDialog from "@/components/auth/clone-dialog"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import ResumeButton from "./resumebutton";
+import Cookies from "js-cookie";
+import CloneDialog from "@/components/auth/clone-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export default function ResumeCard({
   id,
   title,
   modified,
 }: {
-  id?: number
-  title?: string
-  modified?: string
+  id: number;
+  title?: string;
+  modified?: string;
 }) {
-  const [isCloneOpen, setCloneOpen] = useState<boolean>(false)
-  const url = `/api/resume/${id}`
+  const [isCloneOpen, setCloneOpen] = useState<boolean>(false);
+  const url = `/api/resume/${id}`;
 
   const handleCloneClick = () => {
     fetch(`/api/resume/${id}`, {
@@ -34,18 +34,18 @@ export default function ResumeCard({
     })
       .then((response) => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         }
-        throw new Error("클론에 실패했습니다.")
+        throw new Error("클론에 실패했습니다.");
       })
       .then((data) => {
-        console.log(data)
-        setCloneOpen(true) // 클론에 성공했을 때 클론 다이얼로그를 열도록 상태를 업데이트합니다.
+        console.log(data);
+        setCloneOpen(true); // 클론에 성공했을 때 클론 다이얼로그를 열도록 상태를 업데이트합니다.
       })
       .catch((error) => {
-        console.error("에러 발생:", error)
-      })
-  }
+        console.error("에러 발생:", error);
+      });
+  };
 
   const deleteClick = () => {
     fetch(url, {
@@ -57,15 +57,15 @@ export default function ResumeCard({
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         } else {
-          location.reload()
+          location.reload();
         }
       })
       .catch((error) => {
-        console.log("Error:", error)
-      })
-  }
+        console.log("Error:", error);
+      });
+  };
 
   return (
     <Card>
@@ -99,12 +99,10 @@ export default function ResumeCard({
           </div>
           <div>{modified}</div>
           <div className="flex justify-end">
-            <Link href="/letter/edit/${resumeHead.id}">
-              <ResumeButton />
-            </Link>
+            <ResumeButton resumeId={id} />
           </div>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

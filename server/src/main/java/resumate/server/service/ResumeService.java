@@ -210,7 +210,7 @@ public class ResumeService {
                 String resumeBody = resumeMapper.selectResumeBody(id);
                 Resume resume = new Resume();
                 resume.setEmail(email);
-                resume.setTitle(getTitleFromJson(resumeBody));
+                resume.setTitle(getTitleFromJson(resumeBody) + " - 복사본");
                 resume.setContent(resumeBody);
                 resumeMapper.insertResume(resume);
                 String responseJson = jsonBuilder

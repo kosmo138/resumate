@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
 import { LetterBody, LetterContent } from "@/types/letter"
 import Cookies from "js-cookie"
+import LetterError from "@/components/letter/letter-error-modal"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
   // 필요한 변수 및 상태 선언
   const apiUrl = `/api/letter/${params.id}`;
   const jwt = Cookies.get("authorization");
-
+  // 이전 상태 저장 변수
+  const [prevLetterBody, setPrevLetterBody] = useState<LetterBody | null>(null);
   // useState 초기화
   const [letterBody, setLetterBody] = useState<LetterBody>({
     resume_id: 0,
@@ -33,9 +35,19 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
   };
   // 카테고리 텍스트에어리어 삭제함수
   const handleRemoveContent = (key: number) => {
-    const newContent = [...letterBody.content];
-    newContent.splice(key, 1); // 해당 인덱스의 content 제거
-    setLetterBody({ ...letterBody, content: newContent });
+    if (letterBody.content.length > 1) {
+      const newContent = [...letterBody.content];
+      newContent.splice(key, 1); // 해당 인덱스의 content 제거
+      setPrevLetterBody(letterBody); // 삭제 전 상태 저장
+      setLetterBody({ ...letterBody, content: newContent });
+    } else {
+      setPrevLetterBody(letterBody); // 삭제 전 상태 저장
+      // 카테고리 텍스트 에어리어를 1개로 초기화
+      setLetterBody({
+        ...letterBody,
+        content: [{ category: "", text: "" }],
+      });
+    }
   };
 
   // 삭제 가능 여부 확인 함수
@@ -64,7 +76,14 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
         // setErrorPageOpen(true);
       });
   }, [apiUrl]); // apiUrl 경로 변경될 때마다 useEffect 재실행
-  
+
+  // 확인 버튼 클릭 시 이전 상태로 되돌리기
+  const handleConfirm = () => {
+    if (prevLetterBody) {
+      setLetterBody(prevLetterBody);
+      setPrevLetterBody(null);
+    }
+  };
     return (
       <main className="container flex flex-col items-center py-8">
         <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
@@ -128,6 +147,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
         {!letterBody && (
           <div className="text-2xl font-bold">로딩 중입니다...</div>
         )}
+        
         {/* 추가 및 삭제 버튼 */}
         <div className="ml-20 w-full">
           <div>
@@ -138,7 +158,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
                 if (canRemoveContent()) {
                   handleRemoveContent(letterBody.content.length - 1);
                 } else {
-                  alert("더 이상 삭제할 수 없습니다.");
+                  <LetterError error={prevLetterBody !== null} onConfirm={handleConfirm} />
                 }
               }}
             >삭제</Button>

@@ -7,52 +7,42 @@ import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
 import { LetterBody, LetterContent } from "@/types/letter"
 import Cookies from "js-cookie"
-import LetterError from "@/components/letter/letter-error-modal"
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
   // 필요한 변수 및 상태 선언
   const apiUrl = `/api/letter/${params.id}`;
   const jwt = Cookies.get("authorization");
-  // 이전 상태 저장 변수
-  const [prevLetterBody, setPrevLetterBody] = useState<LetterBody | null>(null);
-  // useState 초기화
-  const [letterBody, setLetterBody] = useState<LetterBody>({
+
+  // 동적으로 변하는 letter 데이터를 useState로 관리하기 위해 letterBody초기화
+  const [letterForm, setLetterBody] = useState<LetterBody>({
     resume_id: 0,
     title: "",
     company: "",
     job: "",
     content: [{ category: "", text: "" }],
   });
-  // 카테고리 텍스트에어리어 추가함수
+
+  // content 추가함수
   const handleAddContent = () => {
     setLetterBody({
-      ...letterBody,
+      ...letterForm,
       content: [
-        ...letterBody.content,
+        ...letterForm.content,
         { category: "", text: "" } // new content 추가
       ]
     });
   };
-  // 카테고리 텍스트에어리어 삭제함수
+
+  // content 삭제함수
   const handleRemoveContent = (key: number) => {
-    if (letterBody.content.length > 1) {
-      const newContent = [...letterBody.content];
-      newContent.splice(key, 1); // 해당 인덱스의 content 제거
-      setPrevLetterBody(letterBody); // 삭제 전 상태 저장
-      setLetterBody({ ...letterBody, content: newContent });
-    } else {
-      setPrevLetterBody(letterBody); // 삭제 전 상태 저장
-      // 카테고리 텍스트 에어리어를 1개로 초기화
-      setLetterBody({
-        ...letterBody,
-        content: [{ category: "", text: "" }],
-      });
-    }
+    const newContent = [...letterForm.content];
+    newContent.splice(key, 1); // 해당 인덱스의 content 제거
+    setLetterBody({ ...letterForm, content: newContent });
   };
 
-  // 삭제 가능 여부 확인 함수
+  // content 삭제 가능 여부 확인 함수
   const canRemoveContent = () => {
-    return letterBody.content.length > 1; // content가 1개 이상일 때 삭제 가능
+    return letterForm.content.length > 1; // content가 1개 이상일 때 삭제 가능
   };
 
   // 페이지가 로드될 때마다 이력서 정보를 가져옴
@@ -72,18 +62,34 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       })
       .then((data) => setLetterBody(data))
       .catch(() => {
-        // 브라우저 통해 권한없는 이력서 경로로 접속시 모달창 활성화
-        // setErrorPageOpen(true);
       });
   }, [apiUrl]); // apiUrl 경로 변경될 때마다 useEffect 재실행
 
-  // 확인 버튼 클릭 시 이전 상태로 되돌리기
-  const handleConfirm = () => {
-    if (prevLetterBody) {
-      setLetterBody(prevLetterBody);
-      setPrevLetterBody(null);
-    }
+   // API를 통해 데이터를 서버로 전송하는 함수
+   const handleSave = () => {
+    fetch(apiUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify(letterForm), // 텍스트박스 내의 값 전체를 전송
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("저장에 실패했습니다.");
+        }
+        return response.json();
+      })
+      .catch(() => {
+        // 임의의 사유로 모달창 에러 발생시
+        // setSaveError(true);
+      });
   };
+
+ 
+    
+  
     return (
       <main className="container flex flex-col items-center py-8">
         <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
@@ -97,10 +103,10 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
           <Input
             className="ml-7 w-5/6 border-transparent"
             placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."
-            value={letterBody.title}
+            value={letterForm.title}
             onChange={(e) => {
-              if (letterBody) {
-                setLetterBody({ ...letterBody, title: e.target.value })
+              if (letterForm) {
+                setLetterBody({ ...letterForm, title: e.target.value })
               }
             }}
           ></Input>
@@ -112,10 +118,10 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             <Input
               className="ml-2 w-2/5"
               placeholder="직무명 입력"
-              value={letterBody.job}
+              value={letterForm.job}
               onChange={(e) => {
-                if (letterBody) {
-                  setLetterBody({ ...letterBody, job: e.target.value })
+                if (letterForm) {
+                  setLetterBody({ ...letterForm, job: e.target.value })
                 }
               }}
             />
@@ -125,29 +131,28 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             <Input
               className="ml-2 mr-4 w-2/5"
               placeholder="지원 회사명 입력"
-              value={letterBody.company}
+              value={letterForm.company}
               onChange={(e) => {
-                if (letterBody) {
-                  setLetterBody({ ...letterBody, company: e.target.value })
+                if (letterForm) {
+                  setLetterBody({ ...letterForm, company: e.target.value })
                 }
               }}
             />
           </div>
         </div>
         {/* 컴포넌트 렌더링 */}
-        {letterBody.content.map((content, index) => (
+        {letterForm.content.map((content, index) => (
         <ContentForm
           key={index}
           content={content}
-          letterBody={letterBody}
+          letterBody={letterForm}
           setLetterBody={setLetterBody}
           onRemove={handleRemoveContent} // 삭제 함수 전달
         />
       ))}
-        {!letterBody && (
+        {!letterForm && (
           <div className="text-2xl font-bold">로딩 중입니다...</div>
         )}
-        
         {/* 추가 및 삭제 버튼 */}
         <div className="ml-20 w-full">
           <div>
@@ -156,16 +161,14 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
               className="mr-2"
               onClick={() => {
                 if (canRemoveContent()) {
-                  handleRemoveContent(letterBody.content.length - 1);
-                } else {
-                  <LetterError error={prevLetterBody !== null} onConfirm={handleConfirm} />
+                  handleRemoveContent(letterForm.content.length - 1);
                 }
               }}
             >삭제</Button>
             <Button onClick={handleAddContent}>추가</Button>
           </div>
           <div className="mt-4 flex justify-center">
-            <Button onClick={() => console.log(JSON.stringify(letterBody))}>
+            <Button onClick={handleSave}>
               저장
             </Button>
           </div>
@@ -173,4 +176,3 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       </main>
     );
   }
-

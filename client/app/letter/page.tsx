@@ -68,25 +68,3 @@ export default function LetterSelector() {
     </main>
   );
 }
-
-//   useEffect(() => {
-//     setLetterHead(mock_data)
-//   }, [])
-
-//   return (
-//     <main className="container flex flex-col items-center py-8">
-//       <HeadingText subtext="수정할 자소서를 선택해 주세요">
-//         자기소개서
-//       </HeadingText>
-//       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-//         {Array.isArray(letterHead) &&
-//           letterHead.map((letter) => (
-//             <LetterCard key={letter.id} letterHead={letter} />
-//           ))}
-//         {!Array.isArray(letterHead) && (
-//           <div className="text-2xl font-bold">로딩 중입니다...</div>
-//         )}
-//       </div>
-//     </main>
-//   )
-// }

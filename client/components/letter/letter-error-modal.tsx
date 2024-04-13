@@ -15,6 +15,9 @@ export default function LetterError({ error, onConfirm }: { error: boolean; onCo
   //dialog 상태 관리
   const [isOpen, setIsOpen] = useState(false);
 
+  const openDialog = () => setIsOpen(true);
+  const closeDialog = () => setIsOpen(false);
+
 
   // 부모 컴포넌트에서 전달된 error props 값이 true일 때 isOpen 상태를 true로 변경
   useEffect(() => {
@@ -23,13 +26,14 @@ export default function LetterError({ error, onConfirm }: { error: boolean; onCo
     }
   }, [error]);
 
+
   return (
     <div>
       <Dialog open={isOpen}>
         {/* dialog 열렸을시 내용 */}
         {isOpen && (
           <DialogContent>
-              <DialogClose />
+              <DialogClose onClick={closeDialog}/>
             <p className="font-bold text-center text-lg">
               더 이상 삭제할 수 없습니다.
             </p>

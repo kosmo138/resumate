@@ -2,7 +2,7 @@
 
 # 실행 방법
 # docker exec -it data /bin/sh
-# sh /data/installer/install-scipy.sh
+# sh /data/installer/dependencies.sh
 
 # 아래의 명령어 실행 시 다음 오류 표시
 # fatal error: asm/hwcap.h: No such file or directory
@@ -14,5 +14,8 @@
 
 # Debian Linux (Solved)
 apt update
-apt install -y build-essential gfortran libblas-dev pkg-config default-libmysqlclient-dev
+# scipy 설치에 필요한 패키지 설치
+apt install -y build-essential gfortran libblas-dev libopenblas-dev pkg-config
+# mysqlclient 설치에 필요한 패키지 설치
+apt install -y default-libmysqlclient-dev libmariadb-dev
 pip install scipy==1.11.1

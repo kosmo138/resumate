@@ -2,15 +2,14 @@ import json
 import requests
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
-from app.core.models import Letter
+from app.core.models import Resume, Letter
 
 
 class LetterService:
     def post_letter(self, authorization: str, letter: Letter) -> str:
-        args = (authorization, letter)
         with ThreadPoolExecutor() as executor:
             try:
-                future = executor.submit(self.get_resume_by_id, *args)
+                future = executor.submit(self.get_resume_by_id, authorization, letter)
                 result = future.result(timeout=30)
                 return json.dumps(result)
             except TimeoutError:
@@ -31,3 +30,6 @@ class LetterService:
                 status_code=response.status_code,
                 detail="이력서 정보 가져오기에 실패했습니다",
             )
+
+    def openai_draft(self, resume: Resume, letter: Letter):
+        pass

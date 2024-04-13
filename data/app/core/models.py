@@ -1,6 +1,9 @@
+from typing import List
+from datetime import date
 from sqlalchemy import Column, Integer, String, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
+
 
 Base = declarative_base()
 
@@ -20,3 +23,28 @@ class Letter(BaseModel):
     category: str
     text: str
     command: str
+
+
+class Award(BaseModel):
+    date: date
+    content: str
+
+
+class Education(BaseModel):
+    date: str
+    content: str
+
+
+class CareerData(BaseModel):
+    date: str
+    content: str
+
+
+class Resume(BaseModel):
+    award: List[Award]
+    skill: str
+    title: str
+    language: str
+    education: List[Education]
+    careerData: List[CareerData]
+    careerText: str

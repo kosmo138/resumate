@@ -5,6 +5,7 @@ konlpy
 langchain
 langchain_openai
 mysqlclient
+pydantic
 requests
 selenium
 sqlalchemy

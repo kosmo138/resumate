@@ -20,7 +20,7 @@ export function LoginDialog() {
   const REST_API_KEY: env = process.env.NEXT_PUBLIC_REST_API_KEY
   const REDIRECT_URI: env = process.env.NEXT_PUBLIC_REDIRECT_URI
   const LOGIN_LINK: env = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     fetch("/api/login", {
       method: "POST",
@@ -45,12 +45,12 @@ export function LoginDialog() {
           로그인
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[350px]">
         <DialogHeader>
-          <DialogTitle>로그인</DialogTitle>
+          <DialogTitle style={{ textAlign: "center" }}>로그인</DialogTitle>
         </DialogHeader>
         <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="items-center gap-4">
             <Label htmlFor="email" className="text-right">
               이메일
             </Label>
@@ -58,12 +58,12 @@ export function LoginDialog() {
               id="email"
               type="text"
               placeholder="이메일을 입력해 주세요"
-              className="col-span-3"
+              className="col-span-3 mt-1"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="items-center gap-4">
             <Label htmlFor="password" className="text-right">
               비밀번호
             </Label>
@@ -71,19 +71,19 @@ export function LoginDialog() {
               id="password"
               type="password"
               placeholder="비밀번호를 입력해 주세요"
-              className="col-span-3"
+              className="col-span-3 mt-1"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Button type="submit" className="col-start-4">
+          <div className="mt-3 w-full items-center gap-4">
+            <Button type="submit" className="w-full">
               로그인
             </Button>
           </div>
-          <div className="flex flex-row justify-center">
+          <div className="flex w-full flex-row justify-center">
             <a href={LOGIN_LINK}>
-              <img src="kakao_login_medium_wide.png" className="col-start-1" />
+              <img src="kakao_login_medium_wide.png" className="w-full" />
             </a>
           </div>
         </form>

@@ -3,8 +3,8 @@ from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.entity import Keyword
 from app.core.database import session
-from app.service.textscraper import TextScraper
-from app.service.keywordextractor import KeywordExtractor
+from app.service.text_scraper import TextScraper
+from app.service.keyword_extractor import KeywordExtractor
 
 
 class KeywordService:

@@ -3,7 +3,7 @@ import json
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.models import Resume, Letter
-from app.service.keywordservice import KeywordService
+from app.service.keyword_service import KeywordService
 
 
 class LetterService:
@@ -14,7 +14,7 @@ class LetterService:
     def main(self, letter: Letter) -> str:
         resume = self.get_resume_by_id(letter.resume_id)
         company_keyword = self.keyword_service.thread_search_keyword(letter.company)
-        resume['company_keyword'] = company_keyword
+        resume["keyword"] = company_keyword
         resume_json = json.dumps(resume)
         return resume_json
 
@@ -29,7 +29,9 @@ class LetterService:
                     status_code=408, detail="요청 시간이 초과되었습니다"
                 )
             except Exception:
-                raise HTTPException(status_code=500, detail="자기소개서 서비스에서 오류가 발생했습니다")
+                raise HTTPException(
+                    status_code=500, detail="자기소개서 서비스에서 오류가 발생했습니다"
+                )
             finally:
                 executor.shutdown(wait=False)
                 del self
@@ -47,4 +49,3 @@ class LetterService:
                 status_code=response.status_code,
                 detail="이력서 정보 가져오기에 실패했습니다",
             )
-

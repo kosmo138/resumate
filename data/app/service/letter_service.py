@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.models import Resume, Letter
 from app.service.keyword_service import KeywordService
+from app.service.openai_prompt import OpenaiPrompt
 
 
 class LetterService:
@@ -13,10 +14,10 @@ class LetterService:
 
     def main(self, letter: Letter) -> str:
         resume = self.get_resume_by_id(letter.resume_id)
-        company_keyword = self.keyword_service.thread_search_keyword(letter.company)
-        resume["keyword"] = company_keyword
-        resume_json = json.dumps(resume)
-        return resume_json
+        keyword: list[str] = self.keyword_service.thread_search_keyword(letter.company)
+        openai_prompt = OpenaiPrompt(resume, letter, keyword)
+        draft_letter = openai_prompt.draft_letter()
+        return draft_letter
 
     def thread_main(self, letter: Letter) -> str:
         with ThreadPoolExecutor() as executor:

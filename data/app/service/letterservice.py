@@ -29,7 +29,7 @@ class LetterService:
                     status_code=408, detail="요청 시간이 초과되었습니다"
                 )
             except Exception:
-                raise HTTPException(status_code=500, detail="서버 오류가 발생했습니다")
+                raise HTTPException(status_code=500, detail="자기소개서 서비스에서 오류가 발생했습니다")
             finally:
                 executor.shutdown(wait=False)
                 del self

@@ -14,8 +14,10 @@
 
 # Debian Linux (Solved)
 apt update
-# scipy 설치에 필요한 패키지 설치
+# scipy
 apt install -y build-essential gfortran libblas-dev libopenblas-dev pkg-config
-# mysqlclient 설치에 필요한 패키지 설치
+# mysqlclient
 apt install -y default-libmysqlclient-dev libmariadb-dev
+# konlpy
+apt install -y default-jdk
 pip install scipy==1.11.1

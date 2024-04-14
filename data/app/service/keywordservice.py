@@ -9,11 +9,11 @@ from app.service.keywordextractor import KeywordExtractor
 
 class KeywordService:
     # MySQL에서 먼저 조회를 시도하고 없으면 스크래핑을 시도
-    def search_keyword(self, company: str):
+    def search_keyword(self, company: str) -> list[str]:
         try:
-            keyword_list = self.select_keyword(company)
-            if keyword_list == None:
-                print("[Debug] DB에 없어 스크래핑을 시작합니다.")
+            company = company.lower().replace(" ", "")
+            keyword_list: str = self.select_keyword(company)
+            if len(keyword_list) == 0:
                 keyword_list = []
                 text_scraper = TextScraper()
                 keyword_extractor = KeywordExtractor()
@@ -34,11 +34,15 @@ class KeywordService:
                     )
                 related_keywords = keyword_extractor.extract_related_keywords(nouns)
                 keyword_list = list(related_keywords)
-                keyword_json = json.dumps(keyword_list)
+                keyword_json = json.dumps(keyword_list, ensure_ascii=False)
                 self.insert_keyword(company, keyword_json)
-            return keyword_json
-        except Exception as e:
-            print(e)
+            else:
+                keyword_list = json.loads(keyword_list)
+            return keyword_list
+        except Exception:
+            raise HTTPException(
+                status_code=500, detail="인재상 키워드 탐색 중 오류가 발생했습니다."
+            )
 
     # 인재상 검색 함수를 병렬로 처리하면서 30초 이상 걸리면 408 Request Timeout 에러를 반환
     def thread_search_keyword(self, company: str):

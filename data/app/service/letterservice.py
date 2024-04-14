@@ -1,5 +1,5 @@
-import json
 import requests
+import json
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.models import Resume, Letter
@@ -7,20 +7,23 @@ from app.service.keywordservice import KeywordService
 
 
 class LetterService:
-    def __init__(self):
+    def __init__(self, authorization: str = ""):
         self.keyword_service = KeywordService()
-        self.authorization = ""
+        self.authorization = authorization
 
     def main(self, letter: Letter) -> str:
-        # resume = self.get_resume_by_id(self.authorization, letter.resume_id)
-        company_keyword = self.keyword_service.search_keyword(letter.company)
-        return company_keyword
+        resume = self.get_resume_by_id(letter.resume_id)
+        company_keyword = self.keyword_service.thread_search_keyword(letter.company)
+        resume['company_keyword'] = company_keyword
+        resume_json = json.dumps(resume)
+        return resume_json
 
     def thread_main(self, letter: Letter) -> str:
         with ThreadPoolExecutor() as executor:
             try:
-                future = executor.submit(self.main, self.authorization, letter)
-                return future.result(timeout=30)
+                thread = executor.submit(self.main, letter)
+                result = thread.result(timeout=30)
+                return result
             except TimeoutError:
                 raise HTTPException(
                     status_code=408, detail="요청 시간이 초과되었습니다"

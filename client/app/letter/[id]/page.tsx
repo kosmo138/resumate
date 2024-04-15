@@ -66,16 +66,6 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     newContent[indexkey] = { ...newContent[indexkey], category: value };
     setLetterBody({ ...letterBody, content: newContent });
   };
-  const onAreaChange = (indexkey: number, value: string) => {
-    const newContent = [...letterBody.content];
-    newContent[indexkey] = { ...newContent[indexkey], text: value };
-    setLetterBody({ ...letterBody, content: newContent });
-  }
-  const onInputChange = (indexkey: number, value: string) => {
-    const newContent = [...letterBody.content];
-    newContent[indexkey] = { ...newContent[indexkey], command: value };
-    setLetterBody({ ...letterBody, content: newContent });
-  }
 
   // 페이지가 로드될 때마다 이력서 정보를 가져옴
   useEffect(() => {
@@ -194,8 +184,6 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
           setLetterBody={setLetterBody} // setLetterBody 함수를 props로 전달
           onRemove={handleRemoveContent} // 삭제 함수 전달
           onCategoryChange={onCategoryChange}
-          onAreaChange={onAreaChange}
-          onInputChange={onInputChange}
         />
       ))}
         {!letterBody && (

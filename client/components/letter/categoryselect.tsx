@@ -9,6 +9,10 @@ interface Selector {
 export default function CategorySelector({ value, onValueChange }: Selector) {
   const [selectedValue, setSelectedValue] = useState(value);
 
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
+
   const handleChange = (newValue: string) => {
     setSelectedValue(newValue);
     onValueChange(newValue);

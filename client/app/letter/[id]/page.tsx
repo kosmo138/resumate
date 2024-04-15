@@ -5,45 +5,77 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ContentForm from "@/components/letter/contentform"
-import { LetterBody, LetterContent } from "@/types/letter"
+import { LetterBody } from "@/types/letter"
 import Cookies from "js-cookie"
+import LetterSubmitButton from "@/components/letter/letter-submit-button"
+import { Dialog, DialogClose, DialogContent, DialogFooter } from "@/components/ui/dialog"
+
 
 export default function LetterEditor({ params }: { params: { id: string } }) {
   // 필요한 변수 및 상태 선언
   const apiUrl = `/api/letter/${params.id}`;
   const jwt = Cookies.get("authorization");
-
+  // 이력서 제목이 없을 경우에 모달창 조건부 랜더링
+  const [isError, setIsError] = useState(false);
+  // 자소서 저장이 무언가로 인해 오류가 발생겼을경우 모달창 조건부 랜더링
+  const [saveError, setSaveError] = useState(false);
+  // 모달 여닫는 랜더링
+  const [openDialog, closeDialog] = useState(false);
   // 동적으로 변하는 letter 데이터를 useState로 관리하기 위해 letterBody초기화
-  const [letterForm, setLetterBody] = useState<LetterBody>({
+  const [letterBody, setLetterBody] = useState<LetterBody>({
     resume_id: 0,
     title: "",
     company: "",
     job: "",
-    content: [{ category: "", text: "" }],
+    content: [{ category: "", text: "", command:"" }],
   });
 
   // content 추가함수
   const handleAddContent = () => {
     setLetterBody({
-      ...letterForm,
+      ...letterBody,
       content: [
-        ...letterForm.content,
-        { category: "", text: "" } // new content 추가
+        ...letterBody.content,
+        { category: "", text: "", command:""  } // new content 추가
       ]
     });
   };
 
   // content 삭제함수
-  const handleRemoveContent = (key: number) => {
-    const newContent = [...letterForm.content];
-    newContent.splice(key, 1); // 해당 인덱스의 content 제거
-    setLetterBody({ ...letterForm, content: newContent });
+  const handleRemoveContent = (indexkey: number) => {
+    const newContent = [...letterBody.content];
+    newContent.splice(indexkey, 1); // 해당 인덱스의 content 제거
+    setLetterBody({ ...letterBody, content: newContent });
   };
 
   // content 삭제 가능 여부 확인 함수
   const canRemoveContent = () => {
-    return letterForm.content.length > 1; // content가 1개 이상일 때 삭제 가능
+    const isRemovable = letterBody.content.length > 1
+    if (!isRemovable) {
+      closeDialog(true)
+    }
+    return isRemovable // content가 1개 이상일 때 삭제 가능
   };
+
+  const exitDialog = () => {
+    closeDialog(false)
+  }
+
+  const onCategoryChange = (indexkey: number, value: string) => {
+    const newContent = [...letterBody.content];
+    newContent[indexkey] = { ...newContent[indexkey], category: value };
+    setLetterBody({ ...letterBody, content: newContent });
+  };
+  const onAreaChange = (indexkey: number, value: string) => {
+    const newContent = [...letterBody.content];
+    newContent[indexkey] = { ...newContent[indexkey], text: value };
+    setLetterBody({ ...letterBody, content: newContent });
+  }
+  const onInputChange = (indexkey: number, value: string) => {
+    const newContent = [...letterBody.content];
+    newContent[indexkey] = { ...newContent[indexkey], command: value };
+    setLetterBody({ ...letterBody, content: newContent });
+  }
 
   // 페이지가 로드될 때마다 이력서 정보를 가져옴
   useEffect(() => {
@@ -62,18 +94,31 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       })
       .then((data) => setLetterBody(data))
       .catch(() => {
+        // 임의의 사유로 모달창 에러 발생시
+        setSaveError(true);
       });
   }, [apiUrl]); // apiUrl 경로 변경될 때마다 useEffect 재실행
 
+  // 폼 제출 이벤트 핸들러
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // '2번째 목록 이후'로 공백(입력을 아무것도 하지 않은)을 제외한 데이터만 필터링해서 저장하기 위함
+    // formdata를 저장할 때 아무것도 입력하지 않은 공백란은 저장하지 않으려고 trim 함수 사용
+    // ex) 2번째 경력란에 날짜와 컨텐츠에 "  " 처럼 공백만 있을 경우 DB에 전달하지 않기 위함
+    const filteredletterBody = {
+      ...letterBody,
+      // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
+      title: letterBody.title === "" ? setIsError(true) : letterBody.title,
+    };
+      console.log(filteredletterBody);
    // API를 통해 데이터를 서버로 전송하는 함수
-   const handleSave = () => {
     fetch(apiUrl, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify(letterForm), // 텍스트박스 내의 값 전체를 전송
+      body: JSON.stringify(filteredletterBody), // 텍스트박스 내의 값 전체를 전송
     })
       .then((response) => {
         if (!response.ok) {
@@ -83,7 +128,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       })
       .catch(() => {
         // 임의의 사유로 모달창 에러 발생시
-        // setSaveError(true);
+        setSaveError(true);
       });
   };
 
@@ -103,10 +148,10 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
           <Input
             className="ml-7 w-5/6 border-transparent"
             placeholder="자기소개서 생성에 필요한 제목을 입력해주세요."
-            value={letterForm.title}
+            value={letterBody.title}
             onChange={(e) => {
-              if (letterForm) {
-                setLetterBody({ ...letterForm, title: e.target.value })
+              if (letterBody) {
+                setLetterBody({ ...letterBody, title: e.target.value })
               }
             }}
           ></Input>
@@ -118,10 +163,10 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             <Input
               className="ml-2 w-2/5"
               placeholder="직무명 입력"
-              value={letterForm.job}
+              value={letterBody.job}
               onChange={(e) => {
-                if (letterForm) {
-                  setLetterBody({ ...letterForm, job: e.target.value })
+                if (letterBody) {
+                  setLetterBody({ ...letterBody, job: e.target.value })
                 }
               }}
             />
@@ -131,26 +176,29 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             <Input
               className="ml-2 mr-4 w-2/5"
               placeholder="지원 회사명 입력"
-              value={letterForm.company}
+              value={letterBody.company}
               onChange={(e) => {
-                if (letterForm) {
-                  setLetterBody({ ...letterForm, company: e.target.value })
+                if (letterBody) {
+                  setLetterBody({ ...letterBody, company: e.target.value })
                 }
               }}
             />
           </div>
         </div>
         {/* 컴포넌트 렌더링 */}
-        {letterForm.content.map((content, index) => (
+        {letterBody.content.map((content, indexkey) => (
         <ContentForm
-          key={index}
+          indexkey={indexkey}
           content={content}
-          letterBody={letterForm}
-          setLetterBody={setLetterBody}
+          letterBody={letterBody}
+          setLetterBody={setLetterBody} // setLetterBody 함수를 props로 전달
           onRemove={handleRemoveContent} // 삭제 함수 전달
+          onCategoryChange={onCategoryChange}
+          onAreaChange={onAreaChange}
+          onInputChange={onInputChange}
         />
       ))}
-        {!letterForm && (
+        {!letterBody && (
           <div className="text-2xl font-bold">로딩 중입니다...</div>
         )}
         {/* 추가 및 삭제 버튼 */}
@@ -161,16 +209,27 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
               className="mr-2"
               onClick={() => {
                 if (canRemoveContent()) {
-                  handleRemoveContent(letterForm.content.length - 1);
+                  handleRemoveContent(letterBody.content.length - 1);
                 }
               }}
             >삭제</Button>
             <Button onClick={handleAddContent}>추가</Button>
           </div>
-          <div className="mt-4 flex justify-center">
-            <Button onClick={handleSave}>
-              저장
-            </Button>
+        </div>
+        <div>
+          <Dialog open={openDialog}>
+              <DialogContent>
+                <DialogClose onClick={exitDialog}/>
+                  <p>더 이상 삭제할 수 없습니다</p>
+                <DialogFooter>
+                  <Button onClick={exitDialog}>확인</Button>
+                </DialogFooter>
+              </DialogContent>
+          </Dialog>
+          <div className="mt-4 w-full">
+            <form className="w-full" onSubmit={handleSubmit}>
+              <LetterSubmitButton isError={isError} saveError={saveError} />
+            </form>
           </div>
         </div>
       </main>

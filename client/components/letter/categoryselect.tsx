@@ -1,5 +1,5 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Selector {
   value: string | undefined
@@ -13,6 +13,7 @@ export default function CategorySelector({ value, onValueChange }: Selector) {
     setSelectedValue(newValue);
     onValueChange(newValue);
   };
+  
   return (
     <Select value={selectedValue} onValueChange={handleChange}>
           <SelectTrigger className="w-[180px]">

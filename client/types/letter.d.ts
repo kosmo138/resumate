@@ -15,4 +15,5 @@ export type LetterBody = {
 export type LetterContent = {
   category: string
   text: string
+  command: string
 }

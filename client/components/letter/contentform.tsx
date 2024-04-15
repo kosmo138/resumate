@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { LetterBody, LetterContent } from "@/types/letter"
-import { useState } from "react"
 import { Input } from "../ui/input"
 import Cookies from "js-cookie"
 
@@ -12,7 +11,6 @@ interface ContentFormProps {
   content: LetterContent
   letterBody: LetterBody
   setLetterBody: (letterBody: LetterBody) => void
-  // setLetterContent: (content: LetterContent) => void
   onRemove: (indexkey: number) => void
   onCategoryChange: (indexkey: number, category: string) => void;
 }
@@ -43,8 +41,6 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
         return response.json();
       })
       .catch(() => {
-        // 임의의 사유로 모달창 에러 발생시
-        // setSaveError(true);
       });
   };
 

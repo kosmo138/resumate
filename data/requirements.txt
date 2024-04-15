@@ -5,9 +5,9 @@ konlpy
 langchain
 langchain_openai
 mysqlclient
-torch
+pydantic
+pyyaml
 requests
 selenium
 sqlalchemy
-transformers
 uvicorn

@@ -3,9 +3,8 @@
 # From: https://gist.github.com/varyonic/dea40abcf3dd891d204ef235c6e8dd79?permalink_comment_id=4986528#gistcomment-4986528
 
 # 실행 방법
-# docker ps -a
-# docker exec -it <container_id> /bin/bash
-# sh /data/install-chromedriver.sh
+# docker exec -it data /bin/sh
+# sh /data/installer/install-chromedriver.sh
 
 # Install Chrome and Chromedriver
 

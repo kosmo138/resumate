@@ -9,6 +9,5 @@ pydantic
 pyyaml
 requests
 scipy==1.11.1
-selenium
 sqlalchemy
 uvicorn

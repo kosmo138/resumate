@@ -25,7 +25,7 @@ services:
     volumes:
       - ./server:/server
       - ./server/.m2:/root/.m2
-    command: sh -c "chmod +x run-aws.sh && sh run-aws.sh"
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
   data:
     image: python:3.11-slim
     container_name: data
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./data:/data
       - ./data/site-packages:/usr/local/lib/python3.11/site-packages
-    command: sh -c "chmod +x run-aws.sh && sh run-aws.sh"
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
   client:
     image: node:alpine
     container_name: client
@@ -44,6 +44,6 @@ services:
     working_dir: /client
     volumes:
       - ./client:/client
-    command: sh -c "chmod +x run-aws.sh && sh run-aws.sh"
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
     environment:
       - WATCHPACK_POLLING=true

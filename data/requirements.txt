@@ -5,6 +5,8 @@ konlpy
 langchain
 langchain_openai
 mysqlclient
+pydantic
+pyyaml
 requests
 scipy==1.11.1
 selenium

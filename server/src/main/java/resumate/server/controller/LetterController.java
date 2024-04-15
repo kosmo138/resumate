@@ -45,7 +45,8 @@ public class LetterController {
 
     /*
      * POST /api/letter -> 자소서 등록
-     * 입력: 헤더 JWT, {"title": "제목", "company": "회사명", "content": ...}
+     * 자소서 페이지가 아닌 이력서 목록 페이지의 "자기소개서 작성" 버튼을 눌렀을 때 호출
+     * 입력: 헤더 JWT, {"resume_id": 1, "title": "제목", "company": "회사명", "job": "직무", "content": ... }
      * 출력: 자소서 등록 성공 메시지
      */
     @PostMapping(value = { "", "/" }, consumes = "application/json", produces = "application/json")

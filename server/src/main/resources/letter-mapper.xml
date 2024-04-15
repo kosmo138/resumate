@@ -31,7 +31,7 @@
   <select id="selectLetterId" parameterType="String" resultType="Integer">
     SELECT id FROM letter WHERE email = #{email}
   </select>
-  <insert id="insertLetter" parameterType="resumate.server.dto.Letter">
+  <insert id="insertLetter" parameterType="resumate.server.dto.Letter" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO letter (email, resume_id, title, company, job, content)
     VALUES (#{email}, #{resume_id}, #{title}, #{company}, #{job}, 
     #{content, typeHandler=resumate.server.mybatis.LetterContentHandler})

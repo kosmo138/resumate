@@ -89,7 +89,6 @@ export default function Navbar() {
                 )}
               </button>
               {/* 햄버거 버튼 종료 */}
-              <ModeToggle />
             </div>
           </div>
         </div>
@@ -126,6 +125,7 @@ export default function Navbar() {
                 <RegisterDialog />
               </>
             )}
+            <ModeToggle />
           </div>
         )}
       </nav>

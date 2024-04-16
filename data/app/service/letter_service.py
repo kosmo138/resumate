@@ -16,8 +16,10 @@ class LetterService:
         resume = self.get_resume_by_id(letter.resume_id)
         keyword: list[str] = self.keyword_service.thread_search_keyword(letter.company)
         openai_prompt = OpenaiPrompt(resume, letter, keyword)
-        draft_letter = openai_prompt.draft_letter()
-        return draft_letter
+        if letter.text == "":
+            return openai_prompt.draft_letter()
+        else:
+            return openai_prompt.modify_letter()
 
     def thread_main(self, letter: Letter) -> str:
         with ThreadPoolExecutor() as executor:

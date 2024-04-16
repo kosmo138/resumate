@@ -1,0 +1,49 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="resumate.server.mybatis.LetterMapper">
+  <resultMap id="LetterHeadMap" type="resumate.server.dto.Letter">
+    <id property="id" column="id"/>
+    <result property="resume_id" column="resume_id"/>
+    <result property="title" column="title"/>
+    <result property="modified" column="modified"/>
+  </resultMap>
+  <resultMap id="LetterBodyMap" type="resumate.server.dto.Letter">
+    <id property="id" column="id"/>
+    <result property="resume_id" column="resume_id"/>
+    <result property="title" column="title"/>
+    <result property="company" column="company"/>
+    <result property="job" column="job"/>
+    <result property="content" column="content" 
+      javaType="List" jdbcType="LONGVARCHAR"
+      typeHandler="resumate.server.mybatis.LetterContentHandler"/>
+    <result property="modified" column="modified"/>
+  </resultMap>
+  <select id="selectLetterHead" parameterType="String" resultMap="LetterHeadMap">
+    SELECT id, resume_id, title, UNIX_TIMESTAMP(modified) AS modified FROM letter
+    WHERE email = #{email}
+    ORDER BY modified DESC
+  </select>
+  <select id="selectLetterBody" parameterType="_int" resultMap="LetterBodyMap">
+    SELECT id, resume_id, title, company, job, content, 
+    UNIX_TIMESTAMP(modified) AS modified FROM letter WHERE id = #{id}
+  </select>
+  <select id="selectLetterId" parameterType="String" resultType="Integer">
+    SELECT id FROM letter WHERE email = #{email}
+  </select>
+  <insert id="insertLetter" parameterType="resumate.server.dto.Letter" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO letter (email, resume_id, title, company, job, content)
+    VALUES (#{email}, #{resume_id}, #{title}, #{company}, #{job}, 
+    #{content, typeHandler=resumate.server.mybatis.LetterContentHandler})
+  </insert>
+  <update id="updateLetter" parameterType="resumate.server.dto.Letter">
+    UPDATE letter SET title = #{title}, company = #{company},
+    job = #{job}, 
+    content = #{content, typeHandler=resumate.server.mybatis.LetterContentHandler}, 
+    modified = NOW() 
+    WHERE id = #{id}
+  </update>
+  <delete id="deleteLetter" parameterType="_int">
+    DELETE FROM letter WHERE id = #{id}
+  </delete>
+</mapper>

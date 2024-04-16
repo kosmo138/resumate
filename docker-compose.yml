@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./nginx:/etc/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - server
+      - data
+      - client
+  server:
+    image: amazoncorretto:21-alpine-jdk
+    container_name: server
+    ports:
+      - "8080:8080"
+    working_dir: /server
+    volumes:
+      - ./server:/server
+      - ./server/.m2:/root/.m2
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
+  data:
+    image: python:3.11-slim
+    container_name: data
+    ports:
+      - "8000:8000"
+    working_dir: /data
+    volumes:
+      - ./data:/data
+      - ./data/site-packages:/usr/local/lib/python3.11/site-packages
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
+  client:
+    image: node:alpine
+    container_name: client
+    ports:
+      - "3000:3000"
+    working_dir: /client
+    volumes:
+      - ./client:/client
+    command: sh -c "chmod +x run-dev.sh && sh run-dev.sh"
+    environment:
+      - WATCHPACK_POLLING=true

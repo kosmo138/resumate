@@ -6,7 +6,7 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Selector {
   value: string | undefined;
@@ -17,10 +17,10 @@ export default function CategorySelector({ value, onValueChange }: Selector) {
   const [selectedValue, setSelectedValue] = useState(value);
 
   const handleChange = (newValue: string) => {
-    console.log("3번째자식" + newValue);
     setSelectedValue(newValue);
     onValueChange(newValue);
   };
+
   return (
     <Select value={selectedValue} onValueChange={handleChange}>
       <SelectTrigger className="w-[180px]">

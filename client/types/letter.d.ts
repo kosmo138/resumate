@@ -2,6 +2,7 @@ type LetterHead = {
   id: number;
   title: string;
   modified: string;
+  resume_id: number;
 };
 
 export type LetterBody = {
@@ -15,4 +16,5 @@ export type LetterBody = {
 export type LetterContent = {
   category: string;
   text: string;
+  command: string;
 };

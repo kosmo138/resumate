@@ -16,10 +16,12 @@ export default function LetterCard({
   id,
   title,
   modified,
+  resumetitle,
 }: {
   id?: number;
   title?: string;
   modified?: string;
+  resumetitle: string;
 }) {
   const [isCloneOpen, setCloneOpen] = useState<boolean>(false);
   const url = `/api/letter/${id}`;
@@ -97,6 +99,7 @@ export default function LetterCard({
               {title}
             </Link>
           </div>
+          <div>기반 이력서 : {resumetitle}</div>
           <div>{modified}</div>
           <div className="flex justify-end">
             <Link href="/letter/edit/${letterHead.id}"></Link>

@@ -73,3 +73,31 @@ class OpenaiPrompt:
             raise HTTPException(
                 status_code=500, detail="ChatGPT 요청 도중 오류가 발생했습니다"
             )
+
+    def modify_letter(self):
+        template = (
+            "아래의 초안을 토대로 자기소개서를 수정해 줘\n"
+            "\n"
+            "[초안]\n"
+            "{text}\n"
+            "\n"
+            "[수정 사항]\n"
+            "{command}\n"
+        )
+        try:
+            prompt_template = PromptTemplate(
+                template=template,
+                input_variables=["text", "command"],
+            )
+            llm = OpenAI(openai_api_key=OPENAI_API_KEY)
+            chain = LLMChain(prompt=prompt_template, llm=llm)
+            result = chain.run(
+                text=self.letter.text,
+                command=self.letter.command,
+            )
+            return result
+
+        except Exception:
+            raise HTTPException(
+                status_code=500, detail="ChatGPT 요청 도중 오류가 발생했습니다"
+            )

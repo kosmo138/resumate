@@ -9,4 +9,4 @@ router = APIRouter()
 def post_letter(authorization: str = Header(None), letter: Letter = Body(...)):
     letter_service = LetterService(authorization=authorization)
     result: str = letter_service.thread_main(letter)
-    return Response(content=result, media_type="application/json")
+    return Response(content=result, media_type="text/plain")

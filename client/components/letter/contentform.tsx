@@ -27,8 +27,15 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
     onCategoryChange(indexkey, value); // 선택된 값을 부모 컴포넌트로 전달
   };
   // 저장 버튼 클릭 시 실행되는 함수
-  const handleSave = () => {
-    console.log(letterBody)
+  const handleCreate = () => {
+    const body_json = JSON.stringify({
+      resume_id: letterBody.resume_id,
+      company: letterBody.company,
+      job: letterBody.job,
+      category: content.category,
+      text: content.text,
+      command: content.command || "",
+    });
     // API를 통해 데이터를 서버로 전송하는 함수
     fetch(apiUrl, {
       method: "POST",
@@ -36,13 +43,23 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify(letterBody), // 텍스트박스 내의 값 전체를 전송
+      body: body_json, // 텍스트박스 내의 값 전체를 전송
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("저장에 실패했습니다.");
+          alert("생성에 실패했습니다.");
+        } else {
+          response.text().then((data) => {
+            setLetterBody({
+              ...letterBody,
+              content: [
+                ...letterBody.content.slice(0, indexkey), // 이전 요소들을 그대로 유지
+                { ...content, text: data }, // 현재 요소 업데이트
+                ...letterBody.content.slice(indexkey + 1), // 나머지 요소들을 그대로 유지
+              ]
+            });
+          });
         }
-        return response.json();
       })
       .catch(() => {
       });
@@ -60,8 +77,7 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
             value={content.category}
             onValueChange={handleCategoryChange}
           />
-          {/* 저장 버튼 */}
-          <Button onClick={handleSave} className="ml-4">생성</Button>
+          <Button onClick={handleCreate} className="ml-4">생성</Button>
         </div>
       {/* 텍스트 입력란 */}
       <div className="mb-4 ml-20 w-full">

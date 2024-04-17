@@ -180,6 +180,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
       {/* 컴포넌트 렌더링 */}
       {letterBody.content.map((content, indexkey) => (
         <ContentForm
+          key={indexkey}
           indexkey={indexkey}
           content={content}
           letterBody={letterBody}

@@ -52,6 +52,7 @@ export default function Navbar() {
              * @see https://tailwindcss.com/docs/responsive-design
              */}
             <div className="flex gap-1 md:hidden">
+              {/* 햄버거 버튼 시작 */}
               <button
                 className="rounded-md p-2 text-primary outline-none focus:border focus:border-primary"
                 aria-label="Hamburger Menu"
@@ -87,7 +88,7 @@ export default function Navbar() {
                   </svg>
                 )}
               </button>
-              <ModeToggle />
+              {/* 햄버거 버튼 종료 */}
             </div>
           </div>
         </div>
@@ -116,7 +117,7 @@ export default function Navbar() {
           </div>
         </div>
         {settings.themeToggleEnabled && (
-          <div className="hidden space-x-4 md:block">
+          <div className="mt-6 md:mt-0 space-x-4 justify-center flex">
             {loggedin && <MemberMenu />}
             {!loggedin && (
               <>

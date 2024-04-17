@@ -1,5 +1,6 @@
 beautifulsoup4
 fastapi
+scipy==1.11.1
 gensim
 konlpy
 langchain
@@ -8,6 +9,5 @@ mysqlclient
 pydantic
 pyyaml
 requests
-scipy==1.11.1
 sqlalchemy
 uvicorn

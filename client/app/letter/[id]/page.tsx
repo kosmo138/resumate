@@ -57,7 +57,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
     }
     return isRemovable // content가 1개 이상일 때 삭제 가능
   };
-
+  // 모달창 닫는 함수
   const exitDialog = () => {
     closeDialog(false)
   }

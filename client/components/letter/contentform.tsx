@@ -29,7 +29,7 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
   // 저장 버튼 클릭 시 실행되는 함수
   const handleSave = () => {
     console.log(letterBody)
-
+    // API를 통해 데이터를 서버로 전송하는 함수
     fetch(apiUrl, {
       method: "POST",
       headers: {

@@ -53,7 +53,7 @@ class OpenaiPrompt:
             "아래의 초안을 토대로 자기소개서를 수정해 줘\n"
             "\n"
             "[초안]\n"
-            "{letter}\n"
+            "{text}\n"
             "\n"
             "[수정 사항]\n"
             "{command}\n"
@@ -61,12 +61,12 @@ class OpenaiPrompt:
         try:
             prompt_template = PromptTemplate(
                 template=template,
-                input_variables=["letter", "command"],
+                input_variables=["text", "command"],
             )
             llm = OpenAI(openai_api_key=OPENAI_API_KEY)
             chain = LLMChain(prompt=prompt_template, llm=llm)
             result = chain.run(
-                letter=self.letter.letter,
+                text=self.letter.text,
                 command=self.letter.command,
             )
             return result

@@ -1,11 +1,11 @@
-import "./globals.css"
-import { siteConfig } from "@/config/metadata"
-import { Noto_Sans_KR } from "next/font/google"
-import Navbar from "@/components/layout/navbar"
-import Footer from "@/components/layout/footer"
-import { ThemeProvider } from "@/components/theme-provider"
-import { AuthProvider } from "@/components/auth/authcontext"
-import { settings } from "@/config/settings"
+import "./globals.css";
+import { siteConfig } from "@/config/metadata";
+import { Noto_Sans_KR } from "next/font/google";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth/authcontext";
+import { settings } from "@/config/settings";
 
 const noto_sans_kr = Noto_Sans_KR({
   subsets: ["latin"],

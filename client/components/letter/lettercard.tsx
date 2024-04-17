@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { LetterHead } from "@/types/letter"
 import Image from "next/image"
-import CloneDialog from "@/components/auth/clone-dialog"
+import CloneDialog from "@/components/letter/letter-clone-dialog"
 import Cookies from "js-cookie"
 import Link from "next/link"
 import {

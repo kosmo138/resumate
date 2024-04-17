@@ -10,12 +10,13 @@ import Cookies from "js-cookie"
 import LetterSubmitButton from "@/components/letter/letter-submit-button"
 import { Dialog, DialogClose, DialogContent, DialogFooter } from "@/components/ui/dialog"
 
-
+// LetterEditor 컴포넌트 정의
 export default function LetterEditor({ params }: { params: { id: string } }) {
-  // 필요한 변수 및 상태 선언
+  // API 엔드포인트 URL
   const apiUrl = `/api/letter/${params.id}`;
+  // JWT 토큰
   const jwt = Cookies.get("authorization");
-  // 이력서 제목이 없을 경우에 모달창 조건부 랜더링
+  // 이력서 제목이 없을 경우 모달창 조건부 랜더링
   const [isError, setIsError] = useState(false);
   // 자소서 저장이 무언가로 인해 오류가 발생겼을경우 모달창 조건부 랜더링
   const [saveError, setSaveError] = useState(false);
@@ -60,7 +61,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
   const exitDialog = () => {
     closeDialog(false)
   }
-
+  // 카테고리 변경 핸들러
   const onCategoryChange = (indexkey: number, value: string) => {
     const newContent = [...letterBody.content];
     newContent[indexkey] = { ...newContent[indexkey], category: value };
@@ -92,9 +93,6 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
   // 폼 제출 이벤트 핸들러
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // '2번째 목록 이후'로 공백(입력을 아무것도 하지 않은)을 제외한 데이터만 필터링해서 저장하기 위함
-    // formdata를 저장할 때 아무것도 입력하지 않은 공백란은 저장하지 않으려고 trim 함수 사용
-    // ex) 2번째 경력란에 날짜와 컨텐츠에 "  " 처럼 공백만 있을 경우 DB에 전달하지 않기 위함
     const filteredletterBody = {
       ...letterBody,
       // 제목란 공백으로 수정할 경우 모달창 조건부 랜더링
@@ -127,11 +125,13 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
   
     return (
       <main className="container flex flex-col items-center py-8">
+        {/* 페이지 제목 */}
         <HeadingText subtext="작성된 이력서를 토대로 자기소개서를 작성합니다">
           자기소개서
         </HeadingText>
-  
+        {/* 이력서 입력란 */}
         <div className="my-3 ml-20 flex w-full">
+          {/* 제목 입력 */}
           <div className="flex items-center">
             <Label className="text-2xl font-bold">제목</Label>
           </div>
@@ -146,8 +146,9 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             }}
           ></Input>
         </div>
-  
+        {/* 직무 및 지원 회사 입력란 */}
         <div className="my-3 ml-20 flex w-full flex-col">
+          {/* 직무 입력 */}
           <div className="mb-6 flex flex-row items-center">
             <Label className="text-1xl font-bold">직무</Label>
             <Input
@@ -161,6 +162,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
               }}
             />
           </div>
+          {/* 지원 회사 입력 */}
           <div className="flex flex-row items-center">
             <Label className="text-1xl font-bold">지원회사</Label>
             <Input
@@ -175,7 +177,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             />
           </div>
         </div>
-        {/* 컴포넌트 렌더링 */}
+        {/* 자기소개서 내용 입력 폼 */}
         {letterBody.content.map((content, indexkey) => (
         <ContentForm
           indexkey={indexkey}
@@ -183,9 +185,10 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
           letterBody={letterBody}
           setLetterBody={setLetterBody} // setLetterBody 함수를 props로 전달
           onRemove={handleRemoveContent} // 삭제 함수 전달
-          onCategoryChange={onCategoryChange}
+          onCategoryChange={onCategoryChange} // 카테고리 변경 함수 전달
         />
       ))}
+        {/* 컴포넌트 렌더링 */}
         {!letterBody && (
           <div className="text-2xl font-bold">로딩 중입니다...</div>
         )}
@@ -204,6 +207,7 @@ export default function LetterEditor({ params }: { params: { id: string } }) {
             <Button onClick={handleAddContent}>추가</Button>
           </div>
         </div>
+        {/* 모달 다이얼로그 */}
         <div>
           <Dialog open={openDialog}>
               <DialogContent>

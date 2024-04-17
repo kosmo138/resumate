@@ -5,7 +5,7 @@ from app.core.models import Letter
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("")
 def post_letter(authorization: str = Header(None), letter: Letter = Body(...)):
     letter_service = LetterService(authorization=authorization)
     result: str = letter_service.thread_main(letter)

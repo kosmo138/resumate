@@ -1,4 +1,4 @@
-import { LetterBody } from "@/types/letter"
+import { LetterBody } from "@/types/letter";
 
 export default function LetterForm({ letter }: { letter: LetterBody }) {
   return (
@@ -8,5 +8,5 @@ export default function LetterForm({ letter }: { letter: LetterBody }) {
         <li>수정일: {letter.modified}</li>
       </ul>
     </>
-  )
+  );
 }

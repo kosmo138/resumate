@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 
 export default function CloneDialog() {
   return (
@@ -28,5 +28,5 @@ export default function CloneDialog() {
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

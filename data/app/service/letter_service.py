@@ -1,5 +1,4 @@
 import requests
-import json
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.models import Resume, Letter

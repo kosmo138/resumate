@@ -1,5 +1,4 @@
 import requests
-import json
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from fastapi import HTTPException
 from app.core.models import Resume, Letter
@@ -16,8 +15,10 @@ class LetterService:
         resume = self.get_resume_by_id(letter.resume_id)
         keyword: list[str] = self.keyword_service.thread_search_keyword(letter.company)
         openai_prompt = OpenaiPrompt(resume, letter, keyword)
-        draft_letter = openai_prompt.draft_letter()
-        return draft_letter
+        if letter.text == "":
+            return openai_prompt.draft_letter()
+        else:
+            return openai_prompt.modify_letter()
 
     def thread_main(self, letter: Letter) -> str:
         with ThreadPoolExecutor() as executor:
@@ -40,7 +41,12 @@ class LetterService:
     def get_resume_by_id(self, resume_id: int) -> Resume:
         if self.authorization == "":
             raise HTTPException(status_code=401, detail="로그인이 필요합니다")
-        url: str = f"http://host.docker.internal/api/resume/{resume_id}"
+        
+        # Docker 개발 환경에서 실행 시
+        # url: str = f"http://host.docker.internal/api/resume/{resume_id}"
+        # AWS EC2 배포 환경에서 실행 시
+        url: str = f"http://localhost/api/resume/{resume_id}"
+        
         headers: dict = {"Authorization": self.authorization}
         response = requests.get(url=url, headers=headers)
         if response.status_code == 200:

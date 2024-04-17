@@ -41,7 +41,7 @@ class LetterService:
     def get_resume_by_id(self, resume_id: int) -> Resume:
         if self.authorization == "":
             raise HTTPException(status_code=401, detail="로그인이 필요합니다")
-        url: str = f"http://host.docker.internal/api/resume/{resume_id}"
+        url: str = f"http://localhost/api/resume/{resume_id}"
         headers: dict = {"Authorization": self.authorization}
         response = requests.get(url=url, headers=headers)
         if response.status_code == 200:

@@ -6,6 +6,7 @@ import { LetterBody, LetterContent } from "@/types/letter"
 import { Input } from "../ui/input"
 import Cookies from "js-cookie"
 
+// ContentFormProps 인터페이스 정의
 interface ContentFormProps {
   indexkey: number
   content: LetterContent
@@ -15,14 +16,17 @@ interface ContentFormProps {
   onCategoryChange: (indexkey: number, category: string) => void;
 }
 
+// ContentForm 컴포넌트 정의
 export default function ContentForm({ indexkey, content, letterBody, setLetterBody, onCategoryChange }: ContentFormProps) {
+  // API 엔드포인트 URL
   const apiUrl = `/data/letter`;
+  // JWT 토큰
   const jwt = Cookies.get("authorization");
-
+  // 카테고리 변경 핸들러
   const handleCategoryChange = (value: string) => {
     onCategoryChange(indexkey, value); // 선택된 값을 부모 컴포넌트로 전달
   };
-
+  // 저장 버튼 클릭 시 실행되는 함수
   const handleSave = () => {
     console.log(letterBody)
 
@@ -47,18 +51,19 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
 
   return (
     <>
-      {indexkey !== 0 && (
-        <div className="my-2 ml-20 flex w-full">
-          <div className="flex items-center">
+        <div className=" my-2 ml-20 flex w-full">
+          {/* 카테고리 선택란 */}
+          <div className=" flex items-center">
             <Label className="text-1xl mr-3 font-bold">카테고리</Label>
           </div>
           <CategorySelector
             value={content.category}
             onValueChange={handleCategoryChange}
           />
+          {/* 저장 버튼 */}
           <Button onClick={handleSave} className="ml-4">생성</Button>
         </div>
-      )}
+      {/* 텍스트 입력란 */}
       <div className="mb-4 ml-20 w-full">
         <div>
         <Textarea
@@ -74,6 +79,7 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
           })}
         />
         </div>
+        {/* 추가 요구사항 입력란 */}
         <div className="mt-3 mb-6 flex flex-row items-center">
             <Input
               className="w-2/5"

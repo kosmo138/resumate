@@ -1,10 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
-import Cookies from "js-cookie"
-import { LetterHead } from "@/types/letter"
+import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import Cookies from "js-cookie";
+import { LetterHead } from "@/types/letter";
 
 interface AddButtonProps {
-  setLetterList: (headList: Array<LetterHead>) => void
+  setLetterList: (headList: Array<LetterHead>) => void;
 }
 
 export default function LetterAddButton({ setLetterList }: AddButtonProps) {
@@ -18,17 +18,17 @@ export default function LetterAddButton({ setLetterList }: AddButtonProps) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         }
-        return response.json()
+        return response.json();
       })
       .then((data) => {
-        setLetterList(data)
+        setLetterList(data);
       })
       .catch((error) => {
-        console.log("POST 에러:", error)
-      })
-  }
+        console.log("POST 에러:", error);
+      });
+  };
 
   const handleButtonClick = () => {
     const Letterdata = {
@@ -37,7 +37,7 @@ export default function LetterAddButton({ setLetterList }: AddButtonProps) {
       company: "",
       job: "",
       content: [{ category: "", text: "" }],
-    }
+    };
 
     fetch(`/api/letter`, {
       method: "POST",
@@ -49,14 +49,14 @@ export default function LetterAddButton({ setLetterList }: AddButtonProps) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         }
-        reloadLetterList()
+        reloadLetterList();
       })
       .catch((error) => {
-        console.log("POST 에러:", error)
-      })
-  }
+        console.log("POST 에러:", error);
+      });
+  };
   return (
     <>
       <Card onClick={handleButtonClick}>
@@ -70,5 +70,5 @@ export default function LetterAddButton({ setLetterList }: AddButtonProps) {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }

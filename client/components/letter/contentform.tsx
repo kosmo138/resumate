@@ -1,18 +1,18 @@
-import CategorySelector from "@/components/letter/categoryselect"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { LetterBody, LetterContent } from "@/types/letter"
-import { Input } from "../ui/input"
-import Cookies from "js-cookie"
+import CategorySelector from "@/components/letter/categoryselect";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { LetterBody, LetterContent } from "@/types/letter";
+import { Input } from "../ui/input";
+import Cookies from "js-cookie";
 
 // ContentFormProps 인터페이스 정의
 interface ContentFormProps {
-  indexkey: number
-  content: LetterContent
-  letterBody: LetterBody
-  setLetterBody: (letterBody: LetterBody) => void
-  onRemove: (indexkey: number) => void
+  indexkey: number;
+  content: LetterContent;
+  letterBody: LetterBody;
+  setLetterBody: (letterBody: LetterBody) => void;
+  onRemove: (indexkey: number) => void;
   onCategoryChange: (indexkey: number, category: string) => void;
 }
 
@@ -82,37 +82,40 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
       {/* 텍스트 입력란 */}
       <div className="mb-4 ml-20 w-full">
         <div>
-        <Textarea
-          className="mt-2 w-2/3"
-          value={content.text}
-          onChange={(e) => setLetterBody({
-            ...letterBody,
-            content: [
-              ...letterBody.content.slice(0, indexkey), // 이전 요소들을 그대로 유지
-              { ...content, text: e.target.value }, // 현재 요소 업데이트
-              ...letterBody.content.slice(indexkey + 1), // 나머지 요소들을 그대로 유지
-            ]
-          })}
-        />
+          <Textarea
+            className="mt-2 w-2/3"
+            value={content.text}
+            onChange={(e) =>
+              setLetterBody({
+                ...letterBody,
+                content: [
+                  ...letterBody.content.slice(0, indexkey), // 이전 요소들을 그대로 유지
+                  { ...content, text: e.target.value }, // 현재 요소 업데이트
+                  ...letterBody.content.slice(indexkey + 1), // 나머지 요소들을 그대로 유지
+                ],
+              })
+            }
+          />
         </div>
-        {/* 추가 요구사항 입력란 */}
         <div className="mt-3 mb-6 flex flex-row items-center">
-            <Input
-              className="w-2/5"
-              placeholder="추가 요구사항 입력"
-              value={content.command}
-              onChange={(e) => setLetterBody({
+          <Input
+            className="w-2/5"
+            placeholder="추가 요구사항 입력"
+            value={content.command}
+            onChange={(e) =>
+              setLetterBody({
                 ...letterBody,
                 content: [
                   ...letterBody.content.slice(0, indexkey), // 이전 요소들을 그대로 유지
                   { ...content, command: e.target.value }, // 현재 요소 업데이트
                   ...letterBody.content.slice(indexkey + 1), // 나머지 요소들을 그대로 유지
-                ]
-              })}
-            />
-          </div>
+                ],
+              })
+            }
+          />
+        </div>
       </div>
 
     </>
-  )
+  );
 }

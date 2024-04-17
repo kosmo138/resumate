@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 export default function CloneDialog() {
   return (
@@ -20,7 +20,7 @@ export default function CloneDialog() {
           <div className="grid grid-cols-4 items-center gap-4">
             <Button
               className="col-start-4"
-              onClick={() => (window.location.href = "/resume")}
+              onClick={() => (window.location.href = "/letter")}
             >
               확인
             </Button>
@@ -28,5 +28,5 @@ export default function CloneDialog() {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

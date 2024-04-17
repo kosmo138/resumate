@@ -6,11 +6,12 @@ import LetterCard from "@/components/letter/lettercard";
 import UnauthorizedDialog from "@/components/auth/unauthorized-dialog";
 import { LetterHead } from "@/types/letter";
 import Cookies from "js-cookie";
-import LetterAddButton from "@/components/letter/letteraddbutton";
+import { ResumeHead } from "@/types/resume";
 
 export default function LetterSelector() {
   const [letterList, setLetterList] = useState<Array<LetterHead>>([]);
   const [isError, setIsError] = useState<boolean>(false);
+  const [resumeList, setResumeList] = useState<Array<ResumeHead>>([]);
 
   useEffect(() => {
     const fetchLetterList = () => {
@@ -35,6 +36,40 @@ export default function LetterSelector() {
     fetchLetterList();
   }, []);
 
+  useEffect(() => {
+    const fetchResumeList = () => {
+      fetch("/api/resume", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("authorization")}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            setIsError(true);
+          }
+        })
+        .then((data) => {
+          setResumeList(data);
+        });
+    };
+    fetchResumeList();
+  }, []);
+
+  // 기반 이력서 제공을 위한 콜백함수
+  const getResumeTitle = (resumeId: number) => {
+    const resumetitle = resumeList.find((resume) => resume.id === resumeId);
+    if (resumetitle) {
+      return resumetitle.title;
+    } else {
+      setIsError(true); // 해당 이력서가 없을 경우 에러 모달 활성화
+      return ""; // 빈 문자열 반환 또는 다른 처리 방법 선택
+    }
+  };
+
   // UNIX 타임스탬프를 YYYY-MM-DD 형식으로 변환하는 함수
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp * 1000); // UNIX 타임스탬프(ms)를 받습니다.
@@ -57,6 +92,7 @@ export default function LetterSelector() {
               key={index}
               id={letterHead.id}
               title={letterHead.title}
+              resumetitle={getResumeTitle(letterHead.resume_id)}
               modified={
                 typeof letterHead.modified === "number"
                   ? formatDate(letterHead.modified)

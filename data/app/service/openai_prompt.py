@@ -32,7 +32,7 @@ class OpenaiPrompt:
                 template=template,
                 input_variables=["category", "company", "job", "keyword", "resume"],
             )
-            llm = OpenAI(openai_api_key=OPENAI_API_KEY)
+            llm = OpenAI(openai_api_key=OPENAI_API_KEY, max_tokens=2000)
             chain = LLMChain(prompt=prompt_template, llm=llm)
             result = chain.run(
                 category=self.letter.category,
@@ -63,7 +63,7 @@ class OpenaiPrompt:
                 template=template,
                 input_variables=["text", "command"],
             )
-            llm = OpenAI(openai_api_key=OPENAI_API_KEY)
+            llm = OpenAI(openai_api_key=OPENAI_API_KEY, max_tokens=2000)
             chain = LLMChain(prompt=prompt_template, llm=llm)
             result = chain.run(
                 text=self.letter.text,

@@ -5,7 +5,7 @@ import { SiteConfig } from "@/types"
 -- Fill the details about your website
  ==================== */
 
-export const baseUrl = "https://www.resumate.site"
+export const baseUrl = "https://www.resumate.store"
 
 export const siteConfig: SiteConfig = {
   name: "Resumate",

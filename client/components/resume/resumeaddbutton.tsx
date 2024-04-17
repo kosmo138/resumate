@@ -1,10 +1,10 @@
-import { ResumeHead } from "@/types/resume"
-import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
-import Cookies from "js-cookie"
+import { ResumeHead } from "@/types/resume";
+import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import Cookies from "js-cookie";
 
 interface AddButtonProps {
-  setResumeList: (headList: Array<ResumeHead>) => void
+  setResumeList: (headList: Array<ResumeHead>) => void;
 }
 
 export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
@@ -18,17 +18,17 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         }
-        return response.json()
+        return response.json();
       })
       .then((data) => {
-        setResumeList(data)
+        setResumeList(data);
       })
       .catch((error) => {
-        console.log("POST 에러:", error)
-      })
-  }
+        console.log("POST 에러:", error);
+      });
+  };
 
   const handleButtonClick = () => {
     const Resumedata = {
@@ -39,7 +39,7 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
       skill: "",
       award: [{ date: "", content: "" }],
       language: "",
-    }
+    };
 
     fetch(`/api/resume`, {
       method: "POST",
@@ -51,14 +51,14 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok")
+          throw new Error("Network response was not ok");
         }
-        reloadResumeList()
+        reloadResumeList();
       })
       .catch((error) => {
-        console.log("POST 에러:", error)
-      })
-  }
+        console.log("POST 에러:", error);
+      });
+  };
   return (
     <>
       <Card onClick={handleButtonClick}>
@@ -72,5 +72,5 @@ export default function ResumeAddButton({ setResumeList }: AddButtonProps) {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }

@@ -1,13 +1,13 @@
 beautifulsoup4
 fastapi
+scipy==1.11.1
 gensim
 konlpy
 langchain
 langchain_openai
 mysqlclient
-torch
+pydantic
+pyyaml
 requests
-selenium
 sqlalchemy
-transformers
 uvicorn

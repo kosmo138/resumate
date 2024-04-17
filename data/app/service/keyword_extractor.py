@@ -1,5 +1,6 @@
 from konlpy.tag import Kkma
 from gensim.models import Word2Vec
+from fastapi import HTTPException
 
 
 class KeywordExtractor:
@@ -10,23 +11,21 @@ class KeywordExtractor:
 
     def extract_nouns(self, text):
         try:
-            print("[Debug] 명사를 추출하는 중...")
             nouns = self.kkma.nouns(text)
-            print("[Debug] 명사를 성공적으로 추출했습니다.")
             return nouns
-        except Exception as e:
-            print("[Debug] Error occurred while extracting nouns:", e)
-            return None
+        except Exception:
+            raise HTTPException(
+                status_code=500, detail="인재상 키워드 추출에 실패했습니다."
+            )
 
     def load_word2vec_model(self):
         try:
-            print("[Debug] Word2Vec 모델을 로드하는 중...")
             model = Word2Vec.load(self.model_path)
-            print("[Debug] Word2Vec 모델을 성공적으로 로드했습니다.")
             return model
-        except Exception as e:
-            print("[Debug] Error occurred while loading Word2Vec model:", e)
-            return None
+        except Exception:
+            raise HTTPException(
+                status_code=500, detail="Word2Vec 모델을 불러오는 데 실패했습니다."
+            )
 
     def extract_related_keywords(self, nouns, threshold=0.6):
         target_words = [

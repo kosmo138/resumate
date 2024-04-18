@@ -6,7 +6,7 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Selector 인터페이스 정의
 interface Selector {

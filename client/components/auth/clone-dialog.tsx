@@ -20,7 +20,7 @@ export default function CloneDialog() {
           <div className="grid grid-cols-4 items-center gap-4">
             <Button
               className="col-start-4"
-              onClick={() => (window.location.href = "/letter")}
+              onClick={() => (window.location.href = "/resume")}
             >
               확인
             </Button>

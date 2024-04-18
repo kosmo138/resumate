@@ -62,12 +62,7 @@ export default function LetterSelector() {
   // 기반 이력서 제공을 위한 콜백함수
   const getResumeTitle = (resumeId: number) => {
     const resumetitle = resumeList.find((resume) => resume.id === resumeId);
-    if (resumetitle) {
-      return resumetitle.title;
-    } else {
-      setIsError(true); // 해당 이력서가 없을 경우 에러 모달 활성화
-      return ""; // 빈 문자열 반환 또는 다른 처리 방법 선택
-    }
+    return resumetitle ? resumetitle.title : "";
   };
 
   // UNIX 타임스탬프를 YYYY-MM-DD 형식으로 변환하는 함수

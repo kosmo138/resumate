@@ -17,7 +17,13 @@ interface ContentFormProps {
 }
 
 // ContentForm 컴포넌트 정의
-export default function ContentForm({ indexkey, content, letterBody, setLetterBody, onCategoryChange }: ContentFormProps) {
+export default function ContentForm({
+  indexkey,
+  content,
+  letterBody,
+  setLetterBody,
+  onCategoryChange,
+}: ContentFormProps) {
   // API 엔드포인트 URL
   const apiUrl = `/data/letter`;
   // JWT 토큰
@@ -56,29 +62,29 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
                 ...letterBody.content.slice(0, indexkey), // 이전 요소들을 그대로 유지
                 { ...content, text: data }, // 현재 요소 업데이트
                 ...letterBody.content.slice(indexkey + 1), // 나머지 요소들을 그대로 유지
-              ]
+              ],
             });
           });
         }
       })
-      .catch(() => {
-      });
+      .catch(() => {});
   };
-
 
   return (
     <>
-        <div className=" my-2 ml-20 flex w-full">
-          {/* 카테고리 선택란 */}
-          <div className=" flex items-center">
-            <Label className="text-1xl mr-3 font-bold">카테고리</Label>
-          </div>
-          <CategorySelector
-            value={content.category}
-            onValueChange={handleCategoryChange}
-          />
-          <Button onClick={handleCreate} className="ml-4">생성</Button>
+      <div className=" my-2 ml-20 flex w-full">
+        {/* 카테고리 선택란 */}
+        <div className=" flex items-center">
+          <Label className="text-1xl mr-3 font-bold">카테고리</Label>
         </div>
+        <CategorySelector
+          value={content.category}
+          onValueChange={handleCategoryChange}
+        />
+        <Button onClick={handleCreate} className="ml-4">
+          생성
+        </Button>
+      </div>
       {/* 텍스트 입력란 */}
       <div className="mb-4 ml-20 w-full">
         <div>
@@ -115,7 +121,6 @@ export default function ContentForm({ indexkey, content, letterBody, setLetterBo
           />
         </div>
       </div>
-
     </>
   );
 }

@@ -43,7 +43,7 @@ public class KakaoAuthService {
         Cookie cookie = new Cookie("authorization", accessToken);
         cookie.setPath("/");
         response.addCookie(cookie);
-        return new RedirectView("http://localhost/");
+        return new RedirectView("https://www.resumate.store/");
     }
 
     private void registerKakaoMember(String email) {

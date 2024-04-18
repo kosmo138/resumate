@@ -12,6 +12,10 @@ https://www.resumate.store/
 
 비밀번호: `1111`
 
+### 기능 시연 영상
+
+https://youtu.be/VJO9gFIWUFo
+
 ### 프로젝트 일정 및 역할
 
 https://github.com/orgs/kosmo138/projects/1

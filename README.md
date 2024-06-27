@@ -26,6 +26,10 @@ https://github.com/orgs/kosmo138/projects/1
 
 https://bit.ly/3VZgZ9i
 
+### Figma Design
+
+https://bit.ly/4b09Iuj
+
 ### 개발 목적
 
 1. 자기소개서를 작성하는 것이 어렵고 시간이 오래 걸린다는 일상 속 불편함이 있었습니다.
@@ -140,10 +144,6 @@ https://bit.ly/3VZgZ9i
 ## 공동 진행 작업
 
 ### 프론트엔드 UI 설계
-
-**Figma Design**
-
-https://bit.ly/4b09Iuj
 
 **전체 인원**
 
